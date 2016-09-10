@@ -1,0 +1,67 @@
+#version 430 core
+
+// CONSTANTS - PI
+const float PI = 3.1415926535897932384626433832795;
+const float PI_2 = 1.57079632679489661923;
+const float PI_4 = 0.785398163397448309616;
+
+//	MAX LIGHTS
+#define MAX_LIGHTS 16
+
+//	ENVIRONMENT MAP SAMPLER CUBE.
+layout (binding = 0) uniform samplerCube u_EnvironmentMap;
+
+//	LIGHT DATA. 
+layout (binding = 1) uniform LightBlock
+{
+	vec4 lightEnabledLocalLightType;
+	vec4 lightColorAndLightIntensity;
+	vec4 lightPosition;
+	vec4 coneDirection;
+	vec4 attenuation;
+	vec4 spotCosCutOffAndExponent;
+
+} u_Lights;
+
+
+
+//	CAMERA DATA. UNIFORM CAMERA POSITION, CAMERA PERSPECTIVE MATRIX, CAMERA VIEW MATRIX.
+layout (location = 10) uniform vec4 u_WorldCameraPosition;
+layout (location = 11) uniform mat4 u_CameraPerspectiveMatrix;
+layout (location = 12) uniform mat4 u_CameraViewMatrix;
+
+//	MODEL DATA. UNIFORM MODEL, INVERSE MODEL, NORMAL MATRIX.
+layout (location = 20) uniform mat4 u_ModelMatrix;
+layout (location = 21) uniform mat3 u_InverseTransposeModelMatrix;
+layout (location = 22) uniform mat4 u_ModelViewMatrix;
+layout (location = 23) uniform mat3 u_InverseTransposeModelViewMatrix;
+
+//	MATERIAL DATA. DIFFUSE ALBEDO, METALLICNESS, ROUGHNESS, FRESNEL, OPACITY.
+layout (location = 25) uniform vec4 u_diffuseAlbedo;
+layout (location = 26) uniform vec4 u_materialMetallicnessRoughnessFresnelOpacity;
+
+
+//	SAMPLING CONSTANTS FOR HAMMERSLY SAMPLING.
+layout (location = 40) uniform uint u_samplesNumber;
+layout (location = 41) uniform uint u_bitsUsed;
+layout (location = 42) uniform float u_binaryFractionFactor;
+
+
+//	VERTEX ATTRIBUTES
+//	VERTEX POSITION, VERTEX NORMAL, VERTEX TANGENT, VERTEX BITANGENT.
+layout (location = 0) in vec4 v_vertexposition;
+layout (location = 1) in vec3 v_normal;
+layout (location = 2) in vec4 v_vertexcolor;
+layout (location = 3) in vec3 v_tangent;
+layout (location = 4) in vec3 v_bitangent;
+
+//	FRAGMENT COLOR.
+layout (location = 0) out vec4 o_fragColor;
+
+
+//	THE FRAGMENT SHADER MAIN.
+void main(void)
+{
+	//	Frag Color.
+	o_fragColor = vec4(1.0, 1.0, 1.0, 1.0);
+}

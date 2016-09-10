@@ -1,0 +1,34 @@
+#version 430 core
+
+in vec4 texture_coordinates;
+
+layout(binding = 0) uniform sampler2D TextureSampler0;
+
+out vec4 color;
+
+float near = 0.1; 
+float far  = 500.0; 
+  
+float LinearizeDepth(float depth) 
+{
+    float z = depth * 2.0 - 1.0; // Back to NDC 
+    return (2.0 * near * far) / (far + near - z * (far - near));	
+}
+
+
+void main()
+{
+	vec4 finalColor = texture2D(TextureSampler0, vec2(texture_coordinates.x, texture_coordinates.y));
+	float depth = LinearizeDepth(finalColor.z) / far; // divide by far for demonstration
+	
+	 const float gamma = 2.2;
+    vec3 hdrColor = finalColor.xyz;
+
+	// Reinhard tone mapping
+    vec3 mapped = hdrColor / (hdrColor + vec3(1.0));
+
+    // Gamma correction 
+	// mapped = pow(mapped, vec3(1.0 / gamma));
+  
+    color = vec4(mapped, 1.0);
+}

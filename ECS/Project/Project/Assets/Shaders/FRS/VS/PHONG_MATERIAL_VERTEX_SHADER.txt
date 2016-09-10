@@ -1,0 +1,38 @@
+#version 430 core
+
+
+struct Camera
+{
+	vec3 worldCameraPosition;
+	mat4 perspectiveMatrix;
+	mat4 viewMatrix;
+};
+
+struct Model
+{
+	mat4 modelMatrix;
+	mat3 inverseModelMatrix;
+	mat3 normalMatrix;
+};
+
+uniform Camera CurrentCamera;
+uniform Model CurrentModel;
+
+layout (location = 0) in vec3 vertex_position;
+layout (location = 1) in vec3 vertex_normal;
+layout (location = 2) in vec4 vertex_color;
+
+layout (location = 0) out vec4 transformed_vertex_position;
+layout (location = 1) out vec3 transformed_normal;
+layout (location = 2) out vec4 vertex_color_out;
+
+
+void main(void)
+{
+
+	transformed_normal = (CurrentModel.normalMatrix * vertex_normal);
+	transformed_vertex_position = CurrentCamera.viewMatrix * CurrentModel.modelMatrix * (vec4(vertex_position, 1.0));
+
+	gl_Position = CurrentCamera.perspectiveMatrix * CurrentCamera.viewMatrix * CurrentModel.modelMatrix * vec4(vertex_position, 1.0);
+	vertex_color_out = vertex_color;
+}

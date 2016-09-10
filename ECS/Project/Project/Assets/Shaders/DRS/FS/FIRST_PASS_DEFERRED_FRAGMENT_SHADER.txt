@@ -1,0 +1,40 @@
+#version 430 core
+
+
+
+uniform struct Material
+{
+	vec3 diffuseAlbedo;
+	vec3 specularAlbedo;
+	vec3 emissiveColor;
+	vec3 metallicnessRoughnessOpacity;
+};
+
+uniform Material CurrentMaterial;
+
+
+layout (location = 0) out vec4 output_vertex_position;
+layout (location = 1) out vec4 output_vertex_normal_and_materialID;
+layout (location = 2) out vec4 output_vertex_texture_coordinates;
+layout (location = 3) out vec4 output_diffuse_albedo;
+layout (location = 4) out vec4 output_specular_albedo_and_roughness;
+layout (location = 5) out vec4 output_emission_and_metallic;
+
+
+in vec4 interpolated_vertex_position;
+in vec4 interpolated_vertex_color;
+in vec3 interpolated_vertex_normal;
+in vec4 interpolated_vertex_texture_coordinates;
+
+
+void main()
+{
+	output_vertex_position = interpolated_vertex_position;
+	output_vertex_normal_and_materialID = vec4(interpolated_vertex_normal, CurrentMaterial.metallicnessRoughnessOpacity[2]);
+	output_vertex_texture_coordinates = interpolated_vertex_texture_coordinates;
+
+	output_diffuse_albedo = vec4(CurrentMaterial.diffuseAlbedo.xyz, 1.0); 
+	output_specular_albedo_and_roughness = vec4(CurrentMaterial.specularAlbedo, CurrentMaterial.metallicnessRoughnessOpacity[1]);
+	output_emission_and_metallic = vec4(CurrentMaterial.emissiveColor, CurrentMaterial.metallicnessRoughnessOpacity[0]);
+}
+

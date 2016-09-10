@@ -1,0 +1,195 @@
+#version 430 core
+
+#define MAX_LIGHTS 3
+
+uniform vec3 ambientLight;
+
+struct Light
+{
+	vec3 enabledLocalLightType;
+	vec4 colorAndLightIntensity;
+	vec4 position;
+	vec3 coneDirection;
+	vec3 attenuation;
+	vec3 spotCosCutOffAndExponent;
+
+};
+uniform Light Lights[MAX_LIGHTS];
+
+struct Material
+{
+	vec3 diffuseAlbedo;
+	vec3 specularAlbedo;
+	vec3 emissiveColor;
+	vec3 metallicnessRoughnessOpacity;
+};
+uniform Material CurrentMaterial;
+
+struct Camera
+{
+	vec3 worldCameraPosition;
+	mat4 perspectiveMatrix;
+	mat4 viewMatrix;
+};
+uniform Camera CurrentCamera;
+
+struct Model
+{
+	mat4 modelMatrix;
+	mat3 inverseModelMatrix;
+	mat3 normalMatrix;
+};
+uniform Model CurrentModel;
+
+
+layout (location = 0) in vec4 transformed_vertex_position;
+layout (location = 1) in vec3 transformed_normal;
+
+layout (location = 0) out vec4 shaded_color;
+
+
+void computeMaterialAmbientLighting(in vec3 ambientLight, in float currentMaterialMetallicness, out vec3 computedAmbientColor)
+{
+    computedAmbientColor = ambientLight * currentMaterialMetallicness;
+}
+
+void computeMaterialDiffuseLighting(in vec3 currentNormal, in vec3 viewVector, in vec3 vertexToLightDirection, in vec3 lightColor, in float lightIntensity, in vec3 currentMaterialDiffuseAlbedo, in float currentMaterialMetallicness, 
+                                    out vec3 computedDiffuseColor)
+{
+
+    float diffuseIntensity = max(dot(vertexToLightDirection, currentNormal), 0.0);
+    computedDiffuseColor = currentMaterialDiffuseAlbedo * lightColor * diffuseIntensity * (1.0/3.14) * lightIntensity * (1.0 - currentMaterialMetallicness);
+}
+
+
+void computeMaterialSpecularLighting(in vec3 currentNormal, in vec3 viewVector, in vec3 reflectedLightDirection, in vec3 lightColor, in float lightIntensity, in vec3 currentMaterialSpecularAlbedo, in float currentMaterialMetallicness, in float currentMaterialRoughness, out vec3 computedSpecularColor)
+{
+
+	float specularIntensity = max(dot(reflectedLightDirection, viewVector), 0.0);
+	computedSpecularColor = pow(specularIntensity, currentMaterialRoughness + 1.0) * lightColor *  currentMaterialSpecularAlbedo * ((currentMaterialRoughness + 2.0) / (2 * 3.14)) * lightIntensity * currentMaterialMetallicness;    
+}
+
+void computeMaterialLighting(in vec4 currentVertexPosition, in vec3 currentNormal, in vec3 viewVector, in vec3 vertexToLightDirection, in vec3 reflectedLightDirection, in vec3 lightColor, in float lightIntensity, in vec3 currentMaterialDiffuseAlbedo, in vec3 currentMaterialSpecularAlbedo, in float currentMaterialMetallicness, in float currentMaterialRoughness, out vec3 computedLightingColor)
+{
+    vec3 computedAmbientColor;
+    computeMaterialAmbientLighting(ambientLight, currentMaterialMetallicness, computedAmbientColor);
+
+    vec3 computedDiffuseColor;
+    computeMaterialDiffuseLighting(currentNormal, viewVector, vertexToLightDirection, lightColor, lightIntensity, currentMaterialDiffuseAlbedo, currentMaterialMetallicness, computedDiffuseColor); 
+    
+    vec3 computedSpecularColor;
+    computeMaterialSpecularLighting(currentNormal, viewVector, reflectedLightDirection, lightColor, lightIntensity, currentMaterialSpecularAlbedo, currentMaterialMetallicness, currentMaterialRoughness, computedSpecularColor);
+    
+    computedLightingColor = computedAmbientColor + computedDiffuseColor + computedSpecularColor;
+}
+
+void computeRequiredPointLightProperties(in vec4 currentVertexPosition, in vec3 currentNormal, in vec3 viewVector, in int lightNumber, out vec3 vertexToLightDirection, out vec3 reflectedLightDirection, out vec3 lightColor, out float lightIntensity)
+{
+	vec4 current_light_position = CurrentCamera.viewMatrix * Lights[lightNumber].position;
+    vertexToLightDirection = normalize((current_light_position - currentVertexPosition).xyz);
+    reflectedLightDirection = reflect(-vertexToLightDirection, currentNormal);
+    lightIntensity = Lights[lightNumber].colorAndLightIntensity.w;
+	lightColor = Lights[lightNumber].colorAndLightIntensity.xyz;
+}
+
+void computeRequiredSpotLightProperties(in vec4 currentVertexPosition, in vec3 currentNormal, in vec3 viewVector, in int lightNumber, out vec3 vertexToLightDirection, out vec3 reflectedLightDirection, out vec3 lightColor, out float lightIntensity)
+{
+	vec4 current_light_position = CurrentCamera.viewMatrix * Lights[lightNumber].position;
+    vertexToLightDirection = normalize((current_light_position - currentVertexPosition).xyz);
+    reflectedLightDirection = reflect(-vertexToLightDirection, currentNormal);
+    lightIntensity = Lights[lightNumber].colorAndLightIntensity.w;
+	lightColor = Lights[lightNumber].colorAndLightIntensity.xyz;
+}
+
+void computeRequiredDirectionalLightProperties(in vec4 currentVertexPosition, in vec3 currentNormal, in vec3 viewVector, in int lightNumber, out vec3 vertexToLightDirection, out vec3 reflectedLightDirection, out vec3 lightColor, out float lightIntensity)
+{
+	vec4 current_light_position = CurrentCamera.viewMatrix * Lights[lightNumber].position;
+    vertexToLightDirection = normalize((current_light_position - currentVertexPosition).xyz);
+    reflectedLightDirection = reflect(-vertexToLightDirection, currentNormal);
+    lightIntensity = Lights[lightNumber].colorAndLightIntensity.w;
+	lightColor = Lights[lightNumber].colorAndLightIntensity.xyz;
+}
+
+void computeRequiredLightProperties(in vec4 currentVertexPosition, in vec3 currentNormal, in vec3 viewVector, in int lightNumber,  out vec3 vertexToLightDirection, out vec3 reflectedLightDirection, out vec3 lightColor, out float lightIntensity)
+{
+	if(Lights[lightNumber].enabledLocalLightType[2] == 1.0)
+	{
+        computeRequiredPointLightProperties(currentVertexPosition, currentNormal, viewVector, lightNumber, vertexToLightDirection, reflectedLightDirection, lightColor, lightIntensity);
+    }
+	else if(Lights[lightNumber].enabledLocalLightType[2] == 2.0)
+    {
+        computeRequiredSpotLightProperties(currentVertexPosition, currentNormal, viewVector, lightNumber, vertexToLightDirection, reflectedLightDirection, lightColor, lightIntensity);    
+    }
+	else if(Lights[lightNumber].enabledLocalLightType[2] == 3.0)
+    {
+        computeRequiredDirectionalLightProperties(currentVertexPosition, currentNormal, viewVector, lightNumber, vertexToLightDirection, reflectedLightDirection, lightColor, lightIntensity);
+    }
+    else
+    {
+        vertexToLightDirection = vec3(0.0, 1.0, 0.0);
+        reflectedLightDirection = vec3(0.0, 1.0, 0.0);
+        lightIntensity = 0.0;
+    }
+}
+
+void computeAmbientDiffuseSpecularLightingColor(in vec4 currentVertexPosition, in vec3 currentNormal, in int lightNumber, in vec3 currentMaterialDiffuseAlbedo, in vec3 currentMaterialSpecularAlbedo, in float currentMaterialMetallicness, in float currentMaterialRoughness, out vec3 computedLightingColor)
+{
+    vec3 viewVector = normalize(-currentVertexPosition.xyz / currentVertexPosition.w);
+
+	vec3 vertexToLightDirection = vec3(0.0, 1.0, 0.0);
+	vec3 reflectedLightDirection = vec3(0.0, 1.0, 0.0);
+    vec3 lightColor = vec3(0.0, 1.0, 0.0);
+    
+    float lightIntensity = 0.0;
+    
+    
+    computeRequiredLightProperties(currentVertexPosition, currentNormal, viewVector, lightNumber, vertexToLightDirection, reflectedLightDirection, lightColor, lightIntensity);
+    
+    computeMaterialLighting(currentVertexPosition, currentNormal, viewVector, vertexToLightDirection, reflectedLightDirection, lightColor, lightIntensity, currentMaterialDiffuseAlbedo, currentMaterialSpecularAlbedo, currentMaterialMetallicness, currentMaterialRoughness, computedLightingColor);
+}
+
+
+
+void getMaterialProperties(out vec3 currentMaterialDiffuseAlbedo, out vec3 currentMaterialSpecularAlbedo, out vec3 currentMaterialEmissiveColor, out float currentMaterialMetallicness, out float currentMaterialRoughness, out float currentMaterialOpacity)
+{
+
+	currentMaterialDiffuseAlbedo = CurrentMaterial.diffuseAlbedo;
+	currentMaterialSpecularAlbedo = CurrentMaterial.specularAlbedo;
+	currentMaterialEmissiveColor = CurrentMaterial.emissiveColor;
+	currentMaterialMetallicness = CurrentMaterial.metallicnessRoughnessOpacity[0];
+	currentMaterialRoughness = CurrentMaterial.metallicnessRoughnessOpacity[1];
+	currentMaterialOpacity = CurrentMaterial.metallicnessRoughnessOpacity[2];
+}
+
+
+void main(void)
+{
+
+    vec4 currentVertexPosition = transformed_vertex_position;
+    vec3 currentNormal = normalize(transformed_normal);
+    
+	vec3 materialDiffuseAlbedo;
+	vec3 materialSpecularAlbedo;
+	vec3 materialEmissive;
+	float materialMetallicness;
+	float materialRoughness;
+	float materialOpacity;
+
+	getMaterialProperties(materialDiffuseAlbedo, materialSpecularAlbedo, materialEmissive, materialMetallicness, materialRoughness, materialOpacity);
+
+	vec3 currentLightingColor;
+	vec3 totalLightingColor;
+
+
+
+	for(int i = 0; i < MAX_LIGHTS; i++)
+	{
+		if(Lights[i].enabledLocalLightType[0] == 1.0)
+		{
+			computeAmbientDiffuseSpecularLightingColor(currentVertexPosition, currentNormal, i, materialDiffuseAlbedo, materialSpecularAlbedo, materialMetallicness, materialRoughness, currentLightingColor);            
+            totalLightingColor += currentLightingColor;
+		}
+	}
+
+	shaded_color = vec4(totalLightingColor, materialOpacity);
+}

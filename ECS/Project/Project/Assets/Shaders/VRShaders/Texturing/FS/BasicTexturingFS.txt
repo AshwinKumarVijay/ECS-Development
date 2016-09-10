@@ -1,0 +1,122 @@
+#version 430 core
+
+// CONSTANTS - PI
+const float PI = 3.1415926535897932384626433832795;
+const float PI_2 = 1.57079632679489661923;
+const float PI_4 = 0.785398163397448309616;
+
+//	MAX LIGHTS
+#define MAX_LIGHTS 16
+#define SAMPLES 32
+
+//	CAMERA DATA. UNIFORM CAMERA POSITION, CAMERA PERSPECTIVE MATRIX, CAMERA VIEW MATRIX.
+layout (location = 10) uniform vec4 u_worldCameraPosition;
+layout (location = 11) uniform mat4 u_cameraPerspectiveMatrix;
+layout (location = 12) uniform mat4 u_cameraViewMatrix;
+layout (location = 13) uniform vec4 u_cameraNearFarPlaneDistance;
+
+//	MODEL DATA. UNIFORM MODEL, INVERSE MODEL, NORMAL MATRIX.
+layout (location = 20) uniform mat4 u_modelMatrix;
+layout (location = 21) uniform mat3 u_inverseTransposeModelMatrix;
+layout (location = 22) uniform mat4 u_modelViewMatrix;
+layout (location = 23) uniform mat3 u_inverseTransposeModelViewMatrix;
+
+//	MATERIAL DATA. DIFFUSE ALBEDO, METALLICNESS, ROUGHNESS, FRESNEL, OPACITY.
+layout (location = 25) uniform vec4 u_diffuseAlbedo;
+layout (location = 26) uniform vec4 u_specularAlbedo;
+layout (location = 27) uniform vec4 u_emssionColorAndIntensity;
+layout (location = 28) uniform vec4 u_metallicnessRoughnessFresnelOpacity;
+
+
+//	SAMPLING CONSTANTS FOR HAMMERSLY SAMPLING. UNUSED FOR THIS SHADER.
+//	layout (location = 40) uniform uint u_samplesNumber;
+//	layout (location = 41) uniform uint u_bitsUsed;
+//	layout (location = 42) uniform float u_binaryFractionFactor;
+
+
+//	VERTEX ATTRIBUTES
+//	VERTEX POSITION, VERTEX NORMAL, VERTEX TANGENT, VERTEX BITANGENT.
+layout (location = 0) in vec4 v_vertexPosition;
+layout (location = 1) in vec3 v_vertexNormal;
+layout (location = 2) in vec4 v_vertexColor;
+
+//	UNUSED FOR THIS SHADER.
+//	layout (location = 3) in vec3 v_vertexTangent;
+//	layout (location = 4) in vec3 v_vertexBitangent;
+
+layout (location = 5) in vec2 v_vertexTextureCoordinatesOne;
+layout (location = 6) in vec2 v_vertexTextureCoordinatesTwo;
+
+
+//	FRAGMENT OUTPUT COLOR.
+//	FRAGMENT COLOR OUT.
+layout (location = 0) out vec4 o_fragColor;
+
+//	G BUFFER TEXTURES OUT.	UNUSED FOR THIS SHADER.
+//	layout (location = 1) out vec4 o_vertexPositionAndDepth;
+//	layout (location = 2) out vec4 o_vertexNormal;
+//	layout (location = 3) out vec4 o_vertexTextureCoordinates;
+//	layout (location = 4) out vec4 o_diffuseAlbedoAndMetallicness;
+//	layout (location = 5) out vec4 o_specularAlbedoAndRoughness;
+//	layout (location = 6) out vec4 o_emissionColorAndIntensity;
+
+
+//	SAMPLING TEXTURES
+
+//	ENVIRONMENT MAP SAMPLER CUBE.
+layout (binding = 0) uniform samplerCube u_environmentCubeMap;
+
+//	DIFFUSE TEXTURES.
+layout (binding = 5) uniform sampler2D u_diffuseAlbedoMap;
+layout (binding = 6) uniform sampler2D u_specularAlbedoMap;
+layout (binding = 7) uniform sampler2D u_emssionColorAndIntensityMap;
+layout (binding = 8) uniform sampler2D u_metallicnessRoughnessFresnelOpacityMap;
+
+//	G BUFFER TEXTURES FOR SECOND PASS OF DEFERRED RENDERING. //	UNUSED FOR THIS SHADER.
+//	layout (binding = 10) uniform sampler2D g_vertexPositionAndDepth;
+//	layout (binding = 11) uniform sampler2D g_vertexNormal;
+//	layout (binding = 12) uniform sampler2D g_vertexTextureCoordinates;
+//	layout (binding = 13) uniform sampler2D g_diffuseAlbedoAndMetallicness;
+//	layout (binding = 14) uniform sampler2D g_specularAlbedoAndRoughness;
+//	layout (binding = 15) uniform sampler2D g_emissionColorAndIntensity;
+
+
+//	Ambient Light.
+uniform vec4 u_ambientLight;
+
+struct Light
+{
+	//	Vector of Options: Light Enabled, Locality, Light Type.
+	vec4 lightEnabledLocalLightType;
+
+	//	Vector of Options: 
+	vec4 lightColorAndLightIntensity;
+
+	//	Vector of Options: 
+	vec4 lightPosition;
+
+	//	Vector of Options: 
+	vec4 lightConeDirection;
+
+	//	Vector of Options: 
+	vec4 lightAttenuation;
+
+	//	Vector of Options: 
+	vec4 lightSpotCosCutOffAndExponent;
+};
+
+
+//	The Array of Lights.
+uniform Light u_lights[MAX_LIGHTS];
+
+
+
+//	THE FRAGMENT SHADER MAIN.
+void main(void)
+{
+	//	Get Texture Color.
+	vec4 textureColor = texture(u_diffuseAlbedoMap, v_vertexTextureCoordinatesOne);
+	
+	//	Output the Final Color.
+	o_fragColor = vec4(textureColor.xyz * u_diffuseAlbedo.xyz, textureColor.w * u_diffuseAlbedo.w * 1.0);
+}

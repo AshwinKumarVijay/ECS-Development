@@ -1,0 +1,288 @@
+//	Fragment Shader.
+
+#version 430 core
+
+//	PI!
+const float PI = 3.1415926535897932384626433832795;
+
+//	PI/2!
+const float PI_2 = 1.57079632679489661923;
+
+//	PI/4!
+const float PI_4 = 0.785398163397448309616;
+
+//	Position of the SamplerCube for the EnvironmmentMap.
+layout (binding = 0) uniform samplerCube environmentMap;
+
+//	Define the Maximum Number of Lights that can be used.
+#define MAX_LIGHTS 3
+
+//	The Uniform Ambient Light.
+uniform vec3 ambientLight;
+
+//	Per Light Data.
+struct Light
+{
+	vec3 enabledLocalLightType;
+	vec4 colorAndLightIntensity;
+	vec4 position;
+	vec3 coneDirection;
+	vec3 attenuation;
+	vec3 spotCosCutOffAndExponent;
+
+};
+
+//	The Array of Lights.
+uniform Light Lights[MAX_LIGHTS];
+
+//	Per Material Data.
+struct Material
+{
+	vec3 diffuseAlbedo;
+	vec3 specularAlbedo;
+	vec3 emissiveColor;
+	vec3 metallicnessRoughnessOpacity;
+};
+
+//	The Material.
+uniform Material CurrentMaterial;
+
+//	The Camera Data.
+struct Camera
+{
+	vec3 worldCameraPosition;
+	mat4 perspectiveMatrix;
+	mat4 viewMatrix;
+};
+
+//	The Camera associated.
+uniform Camera CurrentCamera;
+
+//	The Model.
+struct Model
+{
+	mat4 modelMatrix;
+	mat3 inverseModelMatrix;
+	mat3 normalMatrix;
+};
+
+//	The Model associated.
+uniform Model CurrentModel;
+
+//	The Transformed Vertex Position.
+layout (location = 0) in vec4 transformed_vertex_position;
+
+//	The Transformed Normal.
+layout (location = 1) in vec3 transformed_normal;
+
+//	The Final Color.
+layout (location = 0) out vec4 shaded_color;
+
+
+
+//	Compute the Halfway Vector between the Eye and the Light.
+//	@in vec3 toEyeVector	: Normalized Vector to the Eye.
+//	@in vec3 toLightVector	: Normalized Vector to the Light.
+//	@out vec3 halfwayVector	: Normalized Halfway Vector.
+void computeHalfwayVector(in vec3 toEyeVector, in vec3 toLightVector, out vec3 halfwayVector)
+{
+	halfwayVector = normalize(toEyeVector + toLightVector);
+}
+
+
+//	Compute the Geometric Occlusion Function.
+//	@in vec3 normal : Normal.
+//	@in vec3 toEyeVector		: Normalized Vector to the Eye.
+//	@in vec3 halfwayVector		: Normalized Halfway Vector.
+//	@in float IOR				: The Index of Refraction of the Material.
+//	@out float fresnelFactor	: The Fresnel Factor.
+void computeFresnelFunction(in vec3 normal, in vec3 toEyeVector, in vec3 halfwayVector, in float IOR, out float fresnelFactor)
+{
+	fresnelFactor = IOR + (1.0 - IOR) * pow((1.0 - max(dot(toEyeVector, halfwayVector), 0)), 5.0);
+}
+
+
+//	Compute the Geometric Occlusion Function. (Implicit)
+//	@in vec3 normal : Normal.
+//	@in vec3 toEyeVector	: Normalized Vector to the Eye.
+//	@in vec3 toLightVector	: Normalized Vector to the Light.
+//	@in vec3 halfwayVector	: Normalized Halfway Vector.
+//	@in float roughness		: The Roughness of the Material.
+//	@in float IOR			: The Index of Refraction of the Material.
+//	@out float GOF			: The Geometric Occlusion Factor.
+void computeGeometricOcclusionFunction(in vec3 normal, in vec3 toEyeVector, in vec3 toLightVector, in vec3 halfwayVector, out float GOF)
+{
+	//	Compute the Geometric Occlusion Function.
+	GOF = max((dot(normal, toLightVector) * dot(normal, toEyeVector)), 0);
+}
+
+
+//	Compute the Normal Distribution Function. (Blinn-Phong)
+//	@in vec3 normal : Normal.
+//	@in vec3 halfwayVector	: Normalized Halfway Vector.
+//	@in float roughness		: The Roughness of the Material.
+//	@in float IOR			: The Index of Refraction of the Material.
+void computeNormalDistributionFunction(in vec3 normal, in vec3 halfwayVector, in float roughness, out float NDF)
+{
+	float roughness_squared = pow(roughness, 2.0);
+	float exponent = ((2.0 / pow(roughness_squared, 2.0)) - 2.0);
+	float normalization = (1.0 / (PI * pow(roughness_squared, 2.0)));
+	float NormalDotHalfway = max(dot(normal, halfwayVector), 0);
+
+	NDF = normalization * pow(NormalDotHalfway, exponent);
+
+}
+
+//	Compute the Cook-Torrance Specular BRDF
+//	@in vec3 normal			: Normal.
+//	@in vec3 toEyeVector	: Normalized Vector to the Eye.
+//	@in vec3 toLightVector	: Normalized Vector to the Light.
+//	@in vec3 halfwayVector	: Normalized Halfway Vector.
+//	@in float roughness		: The Roughness of the Material.
+//	@in float IOR			: The Index of Refraction of the Material.
+//	@out float CTSF			: The Cook Torrance Specular BRDF Factor.
+void computeCookTorranceSpecularBRDF(in vec3 normal, in vec3 toEyeVector, in vec3 toLightVector, in vec3 halfwayVector, in float roughness, in float IOR, out float CTSF)
+{
+	//	Initialize the Normal Distribution Factor.
+	float NDF = 0.0;
+
+	//	Initialize the Geometric Occlusion Factor.
+	float GOF = 0.0;
+
+	//	Initialize the Fresnel Factor.
+	float FF = 0.0;
+	
+	//	Conpute the Normal Distribution Factor.
+	computeNormalDistributionFunction(normal, halfwayVector, roughness, NDF);
+
+	//	Compute the Geometric Occlusion Factor.
+	computeGeometricOcclusionFunction(normal, toEyeVector, toLightVector, halfwayVector, GOF);
+
+	//	Compute the Fresnel Factor.
+	computeFresnelFunction(normal, toEyeVector, halfwayVector, IOR, FF);
+	
+	//	Compute the Cook Torrance Specular BRDF.
+	CTSF = NDF * GOF * FF / (4 * (dot(normal, toLightVector) * dot(normal, toEyeVector)));
+}
+
+
+void computeMaterialLighting(in vec4 currentVertexPosition, in vec3 currentNormal, in vec3 viewVector, in vec3 vertexToLightDirection, in vec3 reflectedLightDirection, in vec3 halfwayVector, in vec3 lightColor, in float lightIntensity, in vec3 currentMaterialDiffuseAlbedo, in vec3 currentMaterialSpecularAlbedo, in float currentMaterialMetallicness, in float currentMaterialRoughness, out vec3 computedLightingColor)
+{
+	//	Any Ambient Light Color.
+    vec3 computedAmbientColor = vec3(0.0, 0.0, 0.0);
+
+
+	//	Compute the Diffuse Color from the Light Color.
+	vec3 computedDiffuseColor = lightColor * currentMaterialDiffuseAlbedo * max(dot(currentNormal, vertexToLightDirection), 0.0) / PI;
+
+	//	Initialize the Specular Coefficient to be Zero.
+	float specularCoefficient = 0.0;
+	float IOR = 0.9;
+
+	//	Compute the Specular Coefficient from the Cook-Torrance BRDF.
+	computeCookTorranceSpecularBRDF(currentNormal, viewVector, vertexToLightDirection, halfwayVector, currentMaterialRoughness, IOR, specularCoefficient);
+	
+	//	Compute the Specular Color, based on the Specular Coefficient and the LightColor. 
+	vec3 computedSpecularColor = currentMaterialSpecularAlbedo * specularCoefficient * lightColor * max(dot(currentNormal, vertexToLightDirection), 0.0);
+
+	//	Compute the final lighting color.
+    computedLightingColor = (1.0 - currentMaterialMetallicness) * computedDiffuseColor + currentMaterialMetallicness * computedSpecularColor;
+}
+
+
+//	Compute the Point Light Properties
+void computeRequiredPointLightProperties(in vec4 currentVertexPosition, in vec3 currentNormal, in vec3 viewVector, in int lightNumber, out vec3 vertexToLightDirection, out vec3 reflectedLightDirection, out vec3 halfwayVector, out vec3 lightColor, out float lightIntensity)
+{
+	vec4 currentLightPosition = CurrentCamera.viewMatrix * Lights[lightNumber].position;
+    vertexToLightDirection = normalize((currentLightPosition - currentVertexPosition).xyz);
+    reflectedLightDirection = reflect(-vertexToLightDirection, currentNormal);
+	computeHalfwayVector(viewVector, vertexToLightDirection, halfwayVector);
+    lightIntensity = Lights[lightNumber].colorAndLightIntensity.w;
+	lightColor = Lights[lightNumber].colorAndLightIntensity.xyz;
+}
+
+
+
+void computeAmbientDiffuseSpecularLightingColor(in vec4 currentVertexPosition, in vec3 currentNormal, in int lightNumber, in vec3 currentMaterialDiffuseAlbedo, in vec3 currentMaterialSpecularAlbedo, in float currentMaterialMetallicness, in float currentMaterialRoughness, out vec3 computedLightingColor)
+{
+    vec3 viewVector = normalize(-currentVertexPosition.xyz / currentVertexPosition.w);
+
+	vec3 vertexToLightDirection = vec3(0.0, 1.0, 0.0);
+	vec3 reflectedLightDirection = vec3(0.0, 1.0, 0.0);
+	vec3 halfwayVector = vec3(0.0, 1.0, 0.0);
+    vec3 lightColor = vec3(0.0, 1.0, 0.0);
+    
+    float lightIntensity = 0.0;
+    
+     
+	computeRequiredPointLightProperties(currentVertexPosition, currentNormal, viewVector, lightNumber, vertexToLightDirection, reflectedLightDirection, halfwayVector, lightColor, lightIntensity);
+    
+    computeMaterialLighting(currentVertexPosition, currentNormal, viewVector, vertexToLightDirection, reflectedLightDirection, halfwayVector, lightColor, lightIntensity, currentMaterialDiffuseAlbedo, currentMaterialSpecularAlbedo, currentMaterialMetallicness, currentMaterialRoughness, computedLightingColor);
+}
+
+
+
+
+//	Get the Matieral Properties from the CurrentMaterial
+//	@out vec3 currentMaterialDiffuseAlbedo	: The Diffuse Albedo of the Material.
+//	@out vec3 currentMaterialSpecularAlbedo	: The Specular Albedo of the Material.
+//	@out vec3 currentMaterialEmissiveColor	: The Material Emissive Color of the Material. 
+//	@out float currentMaterialMetallicness	: The Metallicness of the Material.
+//	@out float currentMaterialRoughness		: The Roughness of the Material.
+//	@out float currentMaterialOpacity		: The Opacity of the Material.
+void getMaterialProperties(out vec3 currentMaterialDiffuseAlbedo, out vec3 currentMaterialSpecularAlbedo, out vec3 currentMaterialEmissiveColor, out float currentMaterialMetallicness, out float currentMaterialRoughness, out float currentMaterialOpacity)
+{
+
+	currentMaterialDiffuseAlbedo = CurrentMaterial.diffuseAlbedo;
+	currentMaterialSpecularAlbedo = CurrentMaterial.specularAlbedo;
+	currentMaterialEmissiveColor = CurrentMaterial.emissiveColor;
+	currentMaterialMetallicness = CurrentMaterial.metallicnessRoughnessOpacity[0];
+	currentMaterialRoughness = CurrentMaterial.metallicnessRoughnessOpacity[1];
+	currentMaterialOpacity = CurrentMaterial.metallicnessRoughnessOpacity[2];
+}
+
+
+
+//	The Main function of the Fragment Shader.
+void main(void)
+{
+
+	//	Get the Transformed Vertex Position.
+    vec4 currentVertexPosition = transformed_vertex_position;
+
+	//	Get the Normalized Transform.
+    vec3 currentNormal = normalize(transformed_normal);
+    
+	vec3 materialDiffuseAlbedo;
+	vec3 materialSpecularAlbedo;
+	vec3 materialEmissive;
+	float materialMetallicness;
+	float materialRoughness;
+	float materialOpacity;
+
+	//	Get the Material Properties.
+	getMaterialProperties(materialDiffuseAlbedo, materialSpecularAlbedo, materialEmissive, materialMetallicness, materialRoughness, materialOpacity);
+
+	//	The Lighting Color Per Light.
+	vec3 currentLightingColor = vec3(0.0, 0.0, 0.0);
+
+	//	The Total Lighting Color of all the Lights,
+	vec3 totalLightingColor = vec3(0.0, 0.0, 0.0);
+
+	//	Iterate over the Lights.
+	for(int i = 0; i < MAX_LIGHTS; i++)
+	{
+		//	Check if the Light has been enabled.
+		if(Lights[i].enabledLocalLightType[0] == 1.0)
+		{
+			//	Compute the Ambient, Diffuse and Specular Lighting Color.
+			computeAmbientDiffuseSpecularLightingColor(currentVertexPosition, currentNormal, i, materialDiffuseAlbedo, materialSpecularAlbedo, materialMetallicness, materialRoughness, currentLightingColor);
+
+			//	Compute the Total Lighting Color.
+            totalLightingColor += currentLightingColor;
+		}
+	}
+
+	//	The final shaded color of this vertex.
+	shaded_color = vec4(totalLightingColor, materialOpacity);
+}
