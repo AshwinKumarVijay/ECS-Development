@@ -5,6 +5,7 @@
 #include <memory>
 #include <map>
 
+#include "GL\glew.h"
 #include "glm\glm.hpp"
 
 class LightData;
@@ -12,24 +13,26 @@ class LightData;
 //	The Renderer Light Data.
 struct RendererLightData
 {
-	//	
-	glm::vec4 lightEnabledLocalLightType = glm::vec4(0.0, 1.0, 1.0, 0.0);
+	//	Light Enabled and Shadow Light Type.
+	glm::vec4 lightEnabledShadowLightType = glm::vec4(0.0, 1.0, 1.0, 0.0);
 
-	//	
+	//	Light Color and Light Intensity.
 	glm::vec4 lightColorAndLightIntensity = glm::vec4(1.0, 1.0, 0.0, 1.0);
 
-	//	
+	//	Light Position.
 	glm::vec4 lightPosition = glm::vec4(10, 10, 10, 1.0);
 
-	//	
+	//	Light Distance Attenuation.
 	glm::vec4 lightDistanceAttenuation = glm::vec4(0.0, 0.0, 0.0, 0.0);
 
-	//	
+	//	Light Cone Direction.
 	glm::vec4 lightConeDirection = glm::vec4(-1.0, -1.0, -1.0, 0.0);
 
-	//	
+	//	Spot Cosine Cutoff.
 	glm::vec4 spotCosCutOffAndExponent = glm::vec4();
 };
+
+
 
 class RendererLightManager
 {
@@ -65,6 +68,5 @@ private:
 
 	//	The Names of the Lights.
 	std::map<std::string, std::shared_ptr<RendererLightData>> mapNameToLightData;
-
 };
 

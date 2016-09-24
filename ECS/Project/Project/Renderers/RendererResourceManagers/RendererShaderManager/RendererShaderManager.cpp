@@ -27,38 +27,42 @@ void RendererShaderManager::addShader(std::shared_ptr<const ShaderData> newShade
 	}
 	else
 	{
+
 		//	Construct Renderer Shader Data.
 		std::shared_ptr<RendererShaderData> newRendererShaderData = std::make_shared<RendererShaderData>();
 
-		//	Get the Vertex Shader File.
-		std::string vertexShaderFile = newShader->getVertexShaderFileName();
-
-		//	Get the Fragment Shader File.
-		std::string fragmentShaderFile = newShader->getFragmentShaderFileName();
-
-		//	Get the Vertex Shader ID.
-		GLuint vertexShaderID = readShaderStageFromFile(GL_VERTEX_SHADER, vertexShaderFile);
-
-		//	Get the Fragment Shader ID.
-		GLuint fragmentShaderID = readShaderStageFromFile(GL_FRAGMENT_SHADER, fragmentShaderFile);
-
 		//	Create the ShaderProgram ID.
 		GLuint shaderID = glCreateProgram();
+		newRendererShaderData->shaderID = shaderID;
+		newRendererShaderData->shaderType = newShader->getShaderProgramName();
 
-		//	Attach the Vertex Shader to the Shader Program.
-		glAttachShader(shaderID, vertexShaderID);
+		//	Get the Vertex Shader ID. Geometry Shader ID, Fragment Shader ID.
+		
+		if (newShader->getVertexShaderFileName() != "NONE")
+		{
+			GLuint vertexShaderID = readShaderStageFromFile(GL_VERTEX_SHADER, newShader->getVertexShaderFileName());
+			glAttachShader(shaderID, vertexShaderID);
+			newRendererShaderData->vertexShaderID = vertexShaderID;
+		}
 
-		//	Attach the Fragment Shader to the Shader Program.
-		glAttachShader(shaderID, fragmentShaderID);
+		if (newShader->getGeometryShaderFileName() != "NONE")
+		{
+			GLuint geometryShaderID = readShaderStageFromFile(GL_GEOMETRY_SHADER, newShader->getGeometryShaderFileName());
+			glAttachShader(shaderID, geometryShaderID);
+			newRendererShaderData->geometryShaderID = geometryShaderID;
+		}
+		
+		if (newShader->getFragmentShaderFileName() != "NONE")
+		{
+
+			GLuint fragmentShaderID = readShaderStageFromFile(GL_FRAGMENT_SHADER, newShader->getFragmentShaderFileName());
+			glAttachShader(shaderID, fragmentShaderID);
+			newRendererShaderData->fragmentShaderID = fragmentShaderID;
+		}
 
 		//	Link the Shader.
 		glLinkProgram(shaderID);
 
-		//	Set the Shader Properties.
-		newRendererShaderData->shaderID = shaderID;
-		newRendererShaderData->shaderType = newShader->getShaderProgramName();
-		newRendererShaderData->vertexShaderID = vertexShaderID;
-		newRendererShaderData->fragmentShaderID = fragmentShaderID;
 		newRendererShaderData->shaderProperties = std::map<std::string, std::string>(newShader->getMapShaderPropertyToValue());
 
 		//	Set the Shader Uniform Locations.

@@ -12,14 +12,14 @@
 #include "../Components/TransformComponent/TransformComponent.h"
 #include "../Components/CameraComponent/CameraComponent.h"
 
-
+//	Default CameraSystem Constructor.
 CameraSystem::CameraSystem(std::shared_ptr<EntityManager> newEntityManager, std::shared_ptr<EventQueue> newEventQueue)
 	:System(newEntityManager, newEventQueue, ModuleType::CAMERA_SYSTEM)
 {
 	activeCameraEntity = -1;
 }
 
-
+//	Defautl CameraSystem Destructor.
 CameraSystem::~CameraSystem()
 {
 
@@ -32,14 +32,12 @@ void CameraSystem::initializeSystem()
 
 }
 
-
 //	Update the Camera System.
 void CameraSystem::update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
 {
 	processEvents(deltaTime,  currentFrameTime, lastFrameTime);
 
 }
-
 
 //	Process the Events.
 void CameraSystem::processEvents(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
@@ -60,20 +58,15 @@ void CameraSystem::processEvents(const float & deltaTime, const float & currentF
 				//	Interaction Event Type - Check if it is a No Camera.
 				if (interactionEvent->getInteractionEventType() == InteractionEventType::NO_CAMERA)
 				{
-					std::cout << "No Camera Set" << std::endl;
 					setNoCamera();
-
 
 				}	//	Interaction Event Type - Check if it is a Next Camera.
 				else if (interactionEvent->getInteractionEventType() == InteractionEventType::NEXT_CAMERA)
 				{
-					std::cout << "Next Camera Set" << std::endl;
 					setNextCamera();
-
 				}	//	Interaction Event Type - Check if it is a Previous Camera.
 				else if (interactionEvent->getInteractionEventType() == InteractionEventType::PREVIOUS_CAMERA)
 				{
-					std::cout << "Previous Camera Set" << std::endl;
 					setPreviousCamera();
 				}
 			}
@@ -100,8 +93,7 @@ void CameraSystem::processEvents(const float & deltaTime, const float & currentF
 	}
 }
 
-
-
+//	Update the Camera.
 void CameraSystem::updateCamera(long int entity)
 {
 	//	Get the Transform component.
@@ -109,10 +101,7 @@ void CameraSystem::updateCamera(long int entity)
 
 	//	Get the Camera Component.
 	std::shared_ptr<CameraComponent> cameraComponent = std::dynamic_pointer_cast<CameraComponent>(getEntityManager()->getComponentOfEntity(entity, ComponentType::CAMERA_COMPONENT, ModuleType::CAMERA_SYSTEM));
-
-
 }
-
 
 //	Shut Down the System.
 void CameraSystem::shutDownSystem()
@@ -295,25 +284,25 @@ void CameraSystem::setPreviousCamera()
 //	Set the Active Camera to be No Camera.
 void CameraSystem::setNoCamera()
 {
-		//	Get the EntityManager.
-		std::shared_ptr<EntityManager> entityManager = getEntityManager();
+	//	Get the EntityManager.
+	std::shared_ptr<EntityManager> entityManager = getEntityManager();
 
-		//	Get the entities with a Transform Component.
-		std::shared_ptr<std::vector<long int>> entities = entityManager->getEntitiesWithComponentOfType(ComponentType::CAMERA_COMPONENT);
+	//	Get the entities with a Transform Component.
+	std::shared_ptr<std::vector<long int>> entities = entityManager->getEntitiesWithComponentOfType(ComponentType::CAMERA_COMPONENT);
 
-		if (entities != NULL)
+	if (entities != NULL)
+	{
+		//	
+		for (int i = 0; i < entities->size(); i++)
 		{
-			//	
-			for (int i = 0; i < entities->size(); i++)
-			{
-				//	Get the Camera Component.
-				std::shared_ptr<CameraComponent> cameraComponent = std::dynamic_pointer_cast<CameraComponent>(entityManager->getComponentOfEntity((*entities)[i], ComponentType::CAMERA_COMPONENT, ModuleType::CAMERA_SYSTEM));
+			//	Get the Camera Component.
+			std::shared_ptr<CameraComponent> cameraComponent = std::dynamic_pointer_cast<CameraComponent>(entityManager->getComponentOfEntity((*entities)[i], ComponentType::CAMERA_COMPONENT, ModuleType::CAMERA_SYSTEM));
 
-				//	Set this to be the Active Camera Component.
-				cameraComponent->setInactive();
-			}
+			//	Set this to be the Active Camera Component.
+			cameraComponent->setInactive();
 		}
+	}
 
-		//	Active Camera Entity
-		activeCameraEntity = -1;
+	//	Active Camera Entity
+	activeCameraEntity = -1;
 }

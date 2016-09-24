@@ -117,6 +117,9 @@ private:
 	//	Initialize the Noise Textures.
 	virtual void initializeNoiseTextures();
 
+	//	Initialize the Lights.
+	virtual void initializeLights();
+
 	//	Render the Renderables that have to go through the Deferred Rendering Pipeline.
 	virtual void renderDeferredRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
@@ -126,14 +129,14 @@ private:
 	//	Render the Post Process Pipeline.
 	virtual void renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
-	//	Render the Scene.
-	virtual void renderScene(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
-
 	//	Render the Background.
 	virtual void renderBackgroundEnvironment(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
 	//	Render the Renderables of the Shader Type.
-	virtual void renderRenderablesOfShaderType(const RendererShaderData & rendererShaderData, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderRenderablesOfShaderType(const RendererShaderData & rendererShaderData, const glm::mat4 & currentViewMatrix, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+
+	//	Render the Shadow Maps.
+	virtual void renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
 	//	Bind the Environment Maps.
 	virtual void uploadBackgroundEnviroment(const RendererShaderData & rendererShaderData);
@@ -164,36 +167,42 @@ private:
 	virtual void destroyNoiseTextures();
 
 	//	The Names of the Active Lights.
-	std::vector<std::string> activeLights;
+	std::vector<std::string> activeLightNames;
+	std::vector<std::shared_ptr<const RendererLightData>> activeLights;
 
-	//	The Environment Cube Map Data.
-	BackgroundEnvironmentData backgroundEnvironmentData;
+	//	
+	std::vector<GLuint> pointLightShadowMaps;
+	std::vector<GLuint> lightShadowMaps;
+
+	//	The Camera used for Rendering.
+	std::shared_ptr<Camera> activeCamera;
 
 	//	The Renderable Storage associated with the Renderer.
 	RenderableManager renderableManager;
 
 	//	The VAOManager.
 	VAOManager vaoManager;
+	
+	//	The Sampler.
+	std::shared_ptr<Sampler> sampler;
 
-	//	The Camera used for Rendering.
-	std::shared_ptr<Camera> activeCamera;
+	//	The Environment Cube Map Data.
+	BackgroundEnvironmentData backgroundEnvironmentData;
+
+	//	The Noise Textures.
+	RendererNoiseTextures rendererNoiseTextures;
 
 	//	Renderer Framebuffers.
-	std::map<std::string, std::shared_ptr<RendererPipelineFramebuffer>> rendererFramebuffers;
+	std::map<std::string, std::shared_ptr<RendererPipelineFramebuffer>> rendererPipelineFramebuffers;
 
 	//	Deferred Renderer Textures.
-	std::map<std::string, std::shared_ptr<RendererPipelineTexture>> deferredRendererTextures;
+	std::map<std::string, std::shared_ptr<RendererPipelineTexture>> rendererPipelineTextures;
 
 	//	The Width of the Window we are Rendering to.
 	int windowScreenWidth;
 
 	//	The Hieght of the Window we are Rendering to.
 	int windowScreenHeight;
-	
-	//	The Sampler.
-	std::shared_ptr<Sampler> sampler;
 
-	//	The Noise Textures.
-	RendererNoiseTextures rendererNoiseTextures;
 };
 

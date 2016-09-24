@@ -15,28 +15,41 @@ class ShaderData;
 //	
 struct SamplingDataUniforms
 {
-	//	UNIT SQUARE SAMPLE AND HEMISPHERE SAMPLE ARRAY.
+	//	SCREEN SIZE UNIFORM.
 	GLuint u_screenSize = -1;
 
+	//	UNIT SQUARE SAMPLES UNIFORM.
 	GLuint u_unitSquareSamples = -1;
 
-	//	
+	//	HEMISPHERE SAMPLES UNIFORM.
 	GLuint u_hemisphereSamples = -1;
+
+	//	HEMISPHERE RADIUS.
 	GLuint u_hemisphereRadius = -1;
 };
 
 //
 struct NoiseTexturesUniforms
 {
+	//	NOISE TEXTURES
+
+	//	Noise Texture One Uniform.
 	GLuint t_noiseTextureOne = -1;
+
+	//	Noise Texture Two Uniform.
 	GLuint t_noiseTextureTwo = -1;
+
+	//	Noise Texture Three Uniform.
 	GLuint t_noiseTextureThree = -1;
+
+	//	Noise Texture Four Uniform.
 	GLuint t_noiseTextureFour = -1;
 };
 
 //	
 struct PostProcessInputUniforms
 {
+	//	Post Process Texture Input Uniforms.
 	GLuint pp_inputTextureOne = -1;
 	GLuint pp_inputTextureTwo = -1;
 	GLuint pp_inputTextureThree = -1;
@@ -148,10 +161,13 @@ struct RendererShaderData
 	//	Shader Name.
 	std::string shaderType = "";
 
-	//	The Vertex, Fragment and Linked Shader ID.
-	GLuint vertexShaderID = -1;
-	GLuint fragmentShaderID = -1;
+	//	Linked Shader ID.
 	GLuint shaderID = -1;
+
+	//	The Vertex, Geometry and Fragment Shader.
+	GLuint vertexShaderID = -1;
+	GLuint geometryShaderID = -1;
+	GLuint fragmentShaderID = -1;
 
 	//	The Names and Values of the Shader properties.
 	std::map<std::string, std::string> shaderProperties;

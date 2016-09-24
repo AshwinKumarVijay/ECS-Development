@@ -109,25 +109,47 @@ void DemoECS::initializeDemoECS()
 //	Initialize the VR Scene.
 void DemoECS::initializeScene()
 {
-	//	Create the Sphere Entity.
-	sphereEntity = getEntityManager()->createEntity();
+	//	Create the Cube Entity.
+	cubeEntity1 = getEntityManager()->createEntity();
 
 	//	Add the Hierarcy, Transform, Speed, Geometry and Rendering Component.
-	getEntityManager()->addComponentToEntity(sphereEntity, ComponentType::HIERARCHY_COMPONENT);
-	getEntityManager()->addComponentToEntity(sphereEntity, ComponentType::TRANSFORM_COMPONENT);
-	getEntityManager()->addComponentToEntity(sphereEntity, ComponentType::GEOMETRY_COMPONENT);
-	getEntityManager()->addComponentToEntity(sphereEntity, ComponentType::RENDERING_COMPONENT);
+	getEntityManager()->addComponentToEntity(cubeEntity1, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cubeEntity1, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cubeEntity1, ComponentType::GEOMETRY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cubeEntity1, ComponentType::RENDERING_COMPONENT);
 
-	std::shared_ptr<GeometryComponent> sphereGeometryComponent = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(sphereEntity, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
-	sphereGeometryComponent->setGeometryType("SPHERE");
+	std::shared_ptr<GeometryComponent> cubeGeometryComponent1 = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(cubeEntity1, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
+	std::shared_ptr<RenderingComponent> cubeRenderingComponent1 = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(cubeEntity1, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
+	std::shared_ptr<TransformComponent> cubeTransformComponent1 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cubeEntity1, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
 
-	std::shared_ptr<RenderingComponent> sphereRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(sphereEntity, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
-	sphereRenderingComponent->setMaterialType("DEFAULT MATERIAL 3");
-	sphereRenderingComponent->setShaderType("BASIC DEFERRED SHADER");
+	cubeGeometryComponent1->setGeometryType("CUBE");
+	cubeRenderingComponent1->setMaterialType("DEFAULT MATERIAL 3");
+	cubeRenderingComponent1->setShaderType("BASIC DEFERRED SHADER");
+	cubeTransformComponent1->getTransform()->translateBy(glm::vec3(0.0, 1.0, 0.0));
+	cubeTransformComponent1->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
 
-	std::shared_ptr<TransformComponent> sphereTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(sphereEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	sphereTransformComponent->getTransform()->translateBy(glm::vec3(0.0, 2.0, 0.0));
-	sphereTransformComponent->getTransform()->setScale(glm::vec3(2.0, 2.0, 2.0));
+
+
+
+	//	Create the Cube Entity.
+	cubeEntity2 = getEntityManager()->createEntity();
+
+	//	Add the Hierarcy, Transform, Speed, Geometry and Rendering Component.
+	getEntityManager()->addComponentToEntity(cubeEntity2, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cubeEntity2, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cubeEntity2, ComponentType::GEOMETRY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cubeEntity2, ComponentType::RENDERING_COMPONENT);
+
+	std::shared_ptr<GeometryComponent> cubeGeometryComponent2 = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(cubeEntity2, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
+	std::shared_ptr<RenderingComponent> cubeRenderingComponent2 = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(cubeEntity2, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
+	std::shared_ptr<TransformComponent> cubeTransformComponent2 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cubeEntity2, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+
+	cubeGeometryComponent2->setGeometryType("CUBE");
+	cubeRenderingComponent2->setMaterialType("DEFAULT MATERIAL 3");
+	cubeRenderingComponent2->setShaderType("BASIC DEFERRED SHADER");
+	cubeTransformComponent2->getTransform()->translateBy(glm::vec3(2.5, 1.0, 0.0));
+	cubeTransformComponent2->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
+
 
 
 	//	Create the Sphere Entity.
@@ -710,6 +732,13 @@ void DemoECS::loadShadersFromFile(const std::string & shaderResourceFile)
 				shaderPropertyValue = StringModifiers::trimmed(shaderPropertyLineParts[1]);
 				mapShaderPropertyToValue[shaderPropertyName] = shaderPropertyValue;
 
+				//	Get the Geometry Shader Source of the Shader.
+				getline(sourceFile, shaderPropertyLine);
+				shaderPropertyLineParts = StringModifiers::split_string(shaderPropertyLine, "=");
+				shaderPropertyName = StringModifiers::trimmed(shaderPropertyLineParts[0]);
+				shaderPropertyValue = StringModifiers::trimmed(shaderPropertyLineParts[1]);
+				mapShaderPropertyToValue[shaderPropertyName] = shaderPropertyValue;
+
 				//	Get the Fragment Shader source of the Shader.
 				getline(sourceFile, shaderPropertyLine);
 				shaderPropertyLineParts = StringModifiers::split_string(shaderPropertyLine, "=");
@@ -736,7 +765,7 @@ void DemoECS::loadShadersFromFile(const std::string & shaderResourceFile)
 //	Process the provided input.
 void DemoECS::processInput(const InputType & ecsKey, const InputEventType & inputEventType, const EventType & eventType)
 {
-
+	inputSystem->processInput(ecsKey, inputEventType, eventType);
 }
 
 //	Shut down the Demo ECS

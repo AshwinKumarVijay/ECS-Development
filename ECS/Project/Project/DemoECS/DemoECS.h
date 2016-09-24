@@ -125,8 +125,11 @@ private:
 	//	Texture Generator Selector
 	std::shared_ptr<TextureGeneratorSelector> textureGeneratorSelector;
 
-	//	Sphere Entity.
-	long int sphereEntity;
+	//	The Cube of the Entity.
+	long int cubeEntity1;
+	long int cubeEntity2;
+
+	//	The Base of the Entity.
 	long int baseEntity;
 
 };

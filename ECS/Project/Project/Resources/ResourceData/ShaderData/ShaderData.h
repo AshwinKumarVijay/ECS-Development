@@ -21,6 +21,9 @@ public:
 	//	Return the Vertex Shader FileName.
 	std::string getVertexShaderFileName() const;
 
+	//	Return the Geometry Shader FileName.
+	std::string getGeometryShaderFileName() const;
+
 	//	Return the Fragment Shader FileName.
 	std::string getFragmentShaderFileName() const;
 
@@ -34,6 +37,9 @@ private:
 
 	//	The Name of the Vertex Shader Filename.
 	std::string vertexShaderSourceName;
+
+	//	The Name of the Geometry Shader Filename.
+	std::string geometryShaderSourceName;
 
 	//	The Name of the Fragment Shader Filename.
 	std::string fragmentShaderSourceName;

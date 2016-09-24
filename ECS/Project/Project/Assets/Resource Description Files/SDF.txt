@@ -15,6 +15,7 @@ Output Base Color = TRUE
 Output Opacity = FALSE
 Output G Buffer = FALSE
 Vertex Shader Source = Assets/NewShaders/EnvironmentShaders/ECube.vert.glsl
+Geometry Shader Source = NONE
 Fragment Shader Source = Assets/NewShaders/EnvironmentShaders/ECube.frag.glsl
 #end Shader
 
@@ -36,6 +37,7 @@ Output Base Color = TRUE
 Output Opacity = FALSE
 Output G Buffer = FALSE
 Vertex Shader Source = Assets/NewShaders/LightingShaders/BasicLightingShader/BL.vert.glsl
+Geometry Shader Source = NONE
 Fragment Shader Source = Assets/NewShaders/LightingShaders/BasicLightingShader/BL.frag.glsl
 #end Shader
 
@@ -58,6 +60,7 @@ Output Base Color = TRUE
 Output Opacity = TRUE
 Output G Buffer = FALSE
 Vertex Shader Source = Assets/NewShaders/LightingShaders/MaterialLightingShader/MLOpaque.vert.glsl
+Geometry Shader Source = NONE
 Fragment Shader Source = Assets/NewShaders/LightingShaders/MaterialLightingShader/MLOpaque.frag.glsl
 #end Shader
 
@@ -79,12 +82,13 @@ Output Base Color = TRUE
 Output Opacity = TRUE
 Output G Buffer = FALSE
 Vertex Shader Source = Assets/NewShaders/LightingShaders/MaterialLightingShader/MLTranslucency.vert.glsl
+Geometry Shader Source = NONE
 Fragment Shader Source = Assets/NewShaders/LightingShaders/MaterialLightingShader/MLTranslucency.frag.glsl
 #end Shader
 
 #define Shader
 Shader Type = BASIC DEFERRED SHADER
-Shader Rendering Type = DEFERRED RENDERING
+Shader Rendering Type = DEFERRED RENDERING - FIRST PASS
 Require Camera Data = TRUE
 Require Model Data = TRUE
 Require Material Data = FALSE
@@ -98,8 +102,9 @@ Require G Buffer Data = FALSE
 Output Base Color = FALSE
 Output Opacity = FALSE
 Output G Buffer = TRUE
-Vertex Shader Source = Assets/NewShaders/DeferredShader/BasicDeferredShader/BasicDeferred.vert.glsl
-Fragment Shader Source = Assets/NewShaders/DeferredShader/BasicDeferredShader/BasicDeferred.frag.glsl
+Vertex Shader Source = Assets/NewShaders/DeferredShader/FirstPassDeferredShaders/BasicDeferredShader/BasicDeferred.vert.glsl
+Geometry Shader Source = NONE
+Fragment Shader Source = Assets/NewShaders/DeferredShader/FirstPassDeferredShaders/BasicDeferredShader/BasicDeferred.frag.glsl
 #end Shader
 
 
@@ -120,6 +125,7 @@ Output Base Color = TRUE
 Output Opacity = FALSE
 Output G Buffer = FALSE
 Vertex Shader Source = Assets/NewShaders/PostProcessShader/CopyTexture/CopyTexture.vert.glsl
+Geometry Shader Source = NONE
 Fragment Shader Source = Assets/NewShaders/PostProcessShader/CopyTexture/CopyTexture.frag.glsl
 #end Shader
 
@@ -141,5 +147,50 @@ Output Base Color = TRUE
 Output Opacity = FALSE
 Output G Buffer = FALSE
 Vertex Shader Source = Assets/NewShaders/PostProcessShader/SSAO/SSAO.vert.glsl
+Geometry Shader Source = NONE
 Fragment Shader Source = Assets/NewShaders/PostProcessShader/SSAO/SSAO.frag.glsl
+#end Shader
+
+
+#define Shader
+Shader Type = POINT LIGHT SHADOW MAP SHADER
+Shader Rendering Type = SHADOW PROCESS
+Require Camera Data = TRUE
+Require Model Data = TRUE
+Require Material Data = FALSE
+Require Vertex Basic Data = TRUE
+Require Vertex Tangent Bitangent Data = FALSE
+Require Vertex Texture Coordinates Data = FALSE
+Require Lights Data = FALSE
+Require Environment Data = FALSE
+Require Material Texture Data = FALSE
+Require G Buffer Data = FALSE
+Output Base Color = FALSE
+Output Opacity = FALSE
+Output G Buffer = FALSE
+Vertex Shader Source = Assets/NewShaders/LightingShaders/ShadowMapsShader/SMPointLight.vert.glsl
+Geometry Shader Source = NONE
+Fragment Shader Source = Assets/NewShaders/LightingShaders/ShadowMapsShader/SMPointLight.frag.glsl
+#end Shader
+
+
+#define Shader
+Shader Type = DEFERRED LIGHTING SHADOWING SHADER
+Shader Rendering Type = DEFERRED RENDERING - SECOND PASS
+Require Camera Data = TRUE
+Require Model Data = FALSE
+Require Material Data = FALSE
+Require Vertex Basic Data = FALSE
+Require Vertex Tangent Bitangent Data = FALSE
+Require Vertex Texture Coordinates Data = FALSE
+Require Lights Data = TRUE
+Require Environment Data = TRUE
+Require Material Texture Data = FALSE
+Require G Buffer Data = TRUE
+Output Base Color = FALSE
+Output Opacity = FALSE
+Output G Buffer = FALSE
+Vertex Shader Source = Assets/NewShaders/DeferredShader/SecondPassDeferredShaders/ShadowLightingDeferredShader/SLDeferredShader.vert.glsl
+Geometry Shader Source = NONE
+Fragment Shader Source = Assets/NewShaders/DeferredShader/SecondPassDeferredShaders/ShadowLightingDeferredShader/SLDeferredShader.frag.glsl
 #end Shader

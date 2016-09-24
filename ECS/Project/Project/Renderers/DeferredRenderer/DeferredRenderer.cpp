@@ -4,6 +4,7 @@
 #include "../Transform/Transform.h"
 #include "../Renderable/Renderable.h"
 #include "../Camera/Camera.h"
+#include "../RendererResourceManagers/RendererLightManager/RendererLightManager.h"
 
 //	Default DeferredRenderer Constructor
 DeferredRenderer::DeferredRenderer()
@@ -34,6 +35,7 @@ void DeferredRenderer::initializeRenderer()
 	initializeDeferredRenderingFramebuffers();
 	initializeSamplingValues();
 	initializeNoiseTextures();
+	initializeLights();
 }
 
 //	Initialize the Rendering Hints.
@@ -337,7 +339,7 @@ void DeferredRenderer::initializeDeferredRenderingTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the Deferred Renderer Color Texture under the name.
-	deferredRendererTextures[newDRTColorName] = newDRTColor;
+	rendererPipelineTextures[newDRTColorName] = newDRTColor;
 
 
 	//	Create the Deferred Pass Depth Stencil Texture.
@@ -353,7 +355,7 @@ void DeferredRenderer::initializeDeferredRenderingTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the Deferred Renderer Depth Stencil under the name.
-	deferredRendererTextures[newDRTDepthStencilName] = newDRTDepthStencil;
+	rendererPipelineTextures[newDRTDepthStencilName] = newDRTDepthStencil;
 
 	//	-----------------------------------------------------------------------------------------------------------------------------------	//
 
@@ -377,7 +379,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the World Space Vertex Position Texture for the G Buffer for the name.
-	deferredRendererTextures[newWSVPTextureName] = newWSVPTexture;
+	rendererPipelineTextures[newWSVPTextureName] = newWSVPTexture;
 
 
 	//	Create the World Space Vertex Normal Texture for the G Buffer.
@@ -393,7 +395,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the World Space Vertex Normal Texture for the G Buffer for the name.
-	deferredRendererTextures[newWSVNTextureName] = newWSVNTexture;
+	rendererPipelineTextures[newWSVNTextureName] = newWSVNTexture;
 
 
 	//	Create the View Space Vertex Position Texture for the G Buffer.
@@ -409,7 +411,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the View Space Vertex Position Texture for the G Buffer for the name.
-	deferredRendererTextures[newVSVPTextureName] = newVSVPTexture;
+	rendererPipelineTextures[newVSVPTextureName] = newVSVPTexture;
 
 
 	//	Create the View Space Normal Texture for the G Buffer.
@@ -425,9 +427,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the View Space Normal Texture for the G Buffer for the name.
-	deferredRendererTextures[newVSVNTextureName] = newVSVNTexture;
-
-
+	rendererPipelineTextures[newVSVNTextureName] = newVSVNTexture;
 
 	//	Create the Diffuse Albedo Texture for the G Buffer.
 	std::string newDATextureName = "G_BUFFER_DIFFUSE_ALBEDO_TEXTURE";
@@ -442,7 +442,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the Diffuse Albedo Texture for the G Buffer for the name.
-	deferredRendererTextures[newDATextureName] = newDATexture;
+	rendererPipelineTextures[newDATextureName] = newDATexture;
 
 	//	Create the Specular Albedo Texture for the G Buffer.
 	std::string newSATextureName = "G_BUFFER_SPECULAR_ALBEDO_TEXTURE";
@@ -457,7 +457,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the Specular Albedo Texture for the G Buffer for the name.
-	deferredRendererTextures[newSATextureName] = newSATexture;
+	rendererPipelineTextures[newSATextureName] = newSATexture;
 
 	//	Create the Emissive Color and Intensity Texture for the G Buffer.
 	std::string newEMCITextureName = "G_BUFFER_EMISSIVE_COLOR_INTENSITIY_TEXTURE";
@@ -472,7 +472,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the Emissive Color and Intensity Texture for the G Buffer for the name.
-	deferredRendererTextures[newEMCITextureName] = newEMCITexture;
+	rendererPipelineTextures[newEMCITextureName] = newEMCITexture;
 
 	//	Create the Metallicness Roughness Fresnel Opacity Texture for the G Buffer.
 	std::string newMRFOTextureName = "G_BUFFER_METALLICNESS_ROUGHNESS_FRESNEL_OPACITY_TEXTURE";
@@ -487,22 +487,55 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the Emissive Color and Intensity Texture for the G Buffer for the name.
-	deferredRendererTextures[newMRFOTextureName] = newMRFOTexture;
+	rendererPipelineTextures[newMRFOTextureName] = newMRFOTexture;
 
 	//	Create the Depth Stencil Texture for the G Buffer.
-	std::string newDepthStencilTextureName = "G_BUFFER_DEPTH_STENCIL_TEXTURE";
-	std::shared_ptr<RendererPipelineTexture> newDepthStencilTexture = std::make_shared<RendererPipelineTexture>();
+	std::string newGBufferDepthStencilTextureName = "G_BUFFER_DEPTH_STENCIL_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newGBufferDepthStencilTexture = std::make_shared<RendererPipelineTexture>();
 
 	//	Generate the G Buffer of the Texture ID.
-	glGenTextures(1, &newDepthStencilTexture->texureID);
-	glBindTexture(GL_TEXTURE_2D, newDepthStencilTexture->texureID);
+	glGenTextures(1, &newGBufferDepthStencilTexture->texureID);
+	glBindTexture(GL_TEXTURE_2D, newGBufferDepthStencilTexture->texureID);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, windowScreenWidth, windowScreenHeight, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//	Add the Depth Stencil Texture for the G Buffer for the name.
-	deferredRendererTextures[newDepthStencilTextureName] = newDepthStencilTexture;
+	rendererPipelineTextures[newGBufferDepthStencilTextureName] = newGBufferDepthStencilTexture;
+
+
+	//	Create the Texture for the Deferred Lighting Pass Texture.
+	std::string newDeferredLightingPassTextureName = "DEFERRED_LIGHTING_PASS_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newDeferredLightingPassTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the texture details.
+	glGenTextures(1, &newDeferredLightingPassTexture->texureID);
+	glBindTexture(GL_TEXTURE_2D, newDeferredLightingPassTexture->texureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowScreenWidth, windowScreenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Create the Entry for the Deferred Lighting Pass.
+	rendererPipelineTextures[newDeferredLightingPassTextureName] = newDeferredLightingPassTexture;
+
+
+	//	Create the Deferred Lighting Depth Stencil Texture for the G Buffer.
+	std::string newDeferredLightingDepthStencilTextureName = "DEFERRED_LIGHTING_DEPTH_STENCIL_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newDeferredLightingDepthStencilTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the Deferred Lighting Depth Stencil Texture of the Texture ID.
+	glGenTextures(1, &newDeferredLightingDepthStencilTexture->texureID);
+	glBindTexture(GL_TEXTURE_2D, newDeferredLightingDepthStencilTexture->texureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, windowScreenWidth, windowScreenHeight, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Add the Depth Stencil Texture for the G Buffer for the name.
+	rendererPipelineTextures[newDeferredLightingDepthStencilTextureName] = newDeferredLightingDepthStencilTexture;
+
 
 }
 
@@ -514,14 +547,27 @@ void DeferredRenderer::initializeDeferredRenderingFramebuffers()
 	std::shared_ptr<RendererPipelineFramebuffer> newRendererFramebuffer = std::make_shared<RendererPipelineFramebuffer>();
 	newRendererFramebuffer->framebufferID = 0;
 
-	//	Add the Default Renderer Framebuffer.
-	rendererFramebuffers[newFramebufferName] = newRendererFramebuffer;
+	//	Add the Default Framebuffer.
+	rendererPipelineFramebuffers[newFramebufferName] = newRendererFramebuffer;
 
 	
 	//	Initialize the Deferred Rendering G Buffer Framebuffer.
 	initializeDeferredRenderingGBufferFramebuffer();
 
-	//	
+	//	Initialize the Light Depth CubeMap.
+	std::string lightdepthFramebufferName = "LIGHT_DEPTH_MAP_FRAMEBUFFER";
+	std::shared_ptr<RendererPipelineFramebuffer> newLightDepthMapFramebuffer = std::make_shared<RendererPipelineFramebuffer>();
+	glGenFramebuffers(1, &newLightDepthMapFramebuffer->framebufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, newLightDepthMapFramebuffer->framebufferID);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+
+	rendererPipelineFramebuffers[lightdepthFramebufferName] = newLightDepthMapFramebuffer;
+
+	//	Bind the Default Framebuffer.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+
+
 }
 
 //	Initialize the Deferred Rendering G Buffer Framebuffer.
@@ -536,18 +582,17 @@ void DeferredRenderer::initializeDeferredRenderingGBufferFramebuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, newGBufferRendererFramebuffer->framebufferID);
 
 	//	Associate the Textures of the G Buffer with the G Buffer Framebuffer.
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->texureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 1, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->texureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 2, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->texureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 3, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->texureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 4, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_DIFFUSE_ALBEDO_TEXTURE"]->texureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 5, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_SPECULAR_ALBEDO_TEXTURE"]->texureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 6, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_EMISSIVE_COLOR_INTENSITIY_TEXTURE"]->texureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 7, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_METALLICNESS_ROUGHNESS_FRESNEL_OPACITY_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 1, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 2, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 3, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 4, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_DIFFUSE_ALBEDO_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 5, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_SPECULAR_ALBEDO_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 6, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_EMISSIVE_COLOR_INTENSITIY_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 7, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_METALLICNESS_ROUGHNESS_FRESNEL_OPACITY_TEXTURE"]->texureID, 0);
 	
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, deferredRendererTextures["G_BUFFER_DEPTH_STENCIL_TEXTURE"]->texureID, 0);
-
+	//	
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_DEPTH_STENCIL_TEXTURE"]->texureID, 0);
 
 	//	Check if the Framebuffer is complete.
 	checkFramebufferStatus();
@@ -557,16 +602,34 @@ void DeferredRenderer::initializeDeferredRenderingGBufferFramebuffer()
 	glDrawBuffers(8, GBufferedDrawBuffers);
 
 	//	Add the G Buffer Framebuffer.
-	rendererFramebuffers[newGBufferFramebufferName] = newGBufferRendererFramebuffer;
+	rendererPipelineFramebuffers[newGBufferFramebufferName] = newGBufferRendererFramebuffer;
+
+
+	//	Create the entry for the Deferred Lighting Pass Framebuffer.
+	std::string newDeferredLightingPassFramebufferName = "DEFERRED_LIGHTING_PASS_FRAMEBUFFER";
+	std::shared_ptr<RendererPipelineFramebuffer> newDeferredLightingPassFramebuffer = std::make_shared<RendererPipelineFramebuffer>();
+
+	//	Geneate the Framebuiffer for the Deferred Lighting Pass.
+	glGenFramebuffers(1, &newDeferredLightingPassFramebuffer->framebufferID);
+
+	//	Attach the Deferred Lighting Texture, and the Depth Stencil Texture.
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["DEFERRED_LIGHTING_PASS_TEXTURE"]->texureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["DEFERRED_LIGHTING_DEPTH_STENCIL_TEXTURE"]->texureID, 0);
+
+	//	Check if the Framebuffer is complete.
+	checkFramebufferStatus();
+
+	//	Add the Deferred Lighting Pass Framebuffer.
+	rendererPipelineFramebuffers[newDeferredLightingPassFramebufferName] = newDeferredLightingPassFramebuffer;
 
 	//	Bind the Default Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
 }
 
 //	Initialize Sampling Values.
 void DeferredRenderer::initializeSamplingValues()
 {
-	sampler = std::make_shared<Sampler>(64);	
+	sampler = std::make_shared<Sampler>(256);	
 
 }
 
@@ -713,6 +776,47 @@ void DeferredRenderer::initializeNoiseTextures()
 
 }
 
+//	Initialize the Lights.
+void DeferredRenderer::initializeLights()
+{
+	for (int i = 0; i < 16; i++)
+	{
+		activeLightNames.push_back("NONE");
+	}
+
+	for (int i = 0; i < activeLightNames.size(); i++)
+	{
+		activeLights.push_back(NULL);
+
+		pointLightShadowMaps.push_back(0);
+		lightShadowMaps.push_back(0);
+
+		glActiveTexture(GL_TEXTURE0);
+
+		glGenTextures(1, &lightShadowMaps[i]);
+		glBindTexture(GL_TEXTURE_2D, lightShadowMaps[i]);
+
+		glGenTextures(1, &pointLightShadowMaps[i]);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, pointLightShadowMaps[i]);
+
+		for (int j = 0; j < 6; j++)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, 0, GL_DEPTH_COMPONENT, 1600, 1600, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+
+			//	Initialize to NO ERRORs.
+			GLenum err = GL_NO_ERROR;
+
+			//	Check for any errors.
+			while ((err = glGetError()) != GL_NO_ERROR)
+			{
+				//Process/log the error.
+				std::cout << "ERROR : " << err << " ! " << std::endl;
+			}
+
+		}
+	}
+}
+
 //	Create the Renderable and return the RenderableID.
 long int DeferredRenderer::createRenderable()
 {
@@ -758,18 +862,11 @@ void DeferredRenderer::updateCamera(const float & deltaFrameTime, const float & 
 //	Render.
 void DeferredRenderer::render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
 {
-	//	Initialize to NO ERRORs.
-	GLenum err = GL_NO_ERROR;
-
-	//	Check for any errors.
-	while ((err = glGetError()) != GL_NO_ERROR)
-	{
-		//Process/log the error.
-		std::cout << "ERROR : " << err << " ! " << std::endl;
-	}
-
 	//	Get the list of the ShaderTypes and associated GeometryTypes.
 	const std::map<std::string, std::vector<std::string>> shaderAndGeometryTypes = renderableManager.getShaderAndGeometryTypes();
+
+	//	Render the Shadow Maps.
+	renderShadowMaps(deltaFrameTime, currentFrameTime, lastFrameTime);
 
 	//	Disable Blending.
 	glDisable(GL_BLEND);
@@ -834,70 +931,11 @@ void DeferredRenderer::renderBackgroundEnvironment(const float & deltaFrameTime,
 //	Render the Renderables that have to go through the Deferred Rendering Pipeline.
 void DeferredRenderer::renderDeferredRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
 {
-
-	//	Clear the Deferred Rendering Buffer.
-	//	Clear the Color.
-	glClearColor(0, 0, 0, 1);
-
-	//	Clear the Color.
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-
 	//	Bind the G Buffer Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererFramebuffers["RENDER_TO_G_BUFFER_FRAMEBUFFER"]->framebufferID);
-
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["RENDER_TO_G_BUFFER_FRAMEBUFFER"]->framebufferID);
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-
-	//	Render the Scene.
-	renderScene(deltaFrameTime, currentFrameTime, lastFrameTime);
-
-	//	Bind the Default Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
-
-}
-
-//	Render the Renderables that have to go through the Forward Rendering pipeline.
-void DeferredRenderer::renderForwardRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
-{
-	//	Clear the Forward Rendering Buffer.
-
-}
-
-//	Render the Post Process Pipeline.
-void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
-{
-	//	Bind the Default Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
-
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-	getShaderManager()->setActiveShader("SSAO SHADER");
-
-	//	Get the RendererShaderData for this Shader Type.
-	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("SSAO SHADER");
-
-	//	Upload the Camera Data.
-	uploadCameraData(*rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
-
-	//	Upload the Noise Textures.
-	uploadNoiseTextures(*rendererShaderData);
-
-	//	Upload the Sampling Data.
-	uploadSamplingData(*rendererShaderData);
-
-	//	Upload the Post Process Textures.
-	uploadPostProcessTextures(*rendererShaderData, deferredRendererTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->texureID, deferredRendererTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->texureID, deferredRendererTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->texureID, deferredRendererTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->texureID);
-
-	//	Draw the Arrays.
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-}
-
-//	Render the Scene.
-void DeferredRenderer::renderScene(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
-{
 	//	Get the list of the ShaderTypes and associated GeometryTypes.
 	const std::map<std::string, std::vector<std::string>> shaderAndGeometryTypes = renderableManager.getShaderAndGeometryTypes();
 
@@ -923,15 +961,59 @@ void DeferredRenderer::renderScene(const float & deltaFrameTime, const float & c
 					getShaderManager()->setActiveShader(shaderTypeIterator->first);
 
 					//	Render the Renderables that use the Shader Data specified by the Renderer.
-					renderRenderablesOfShaderType(*rendererShaderData, deltaFrameTime, currentFrameTime, lastFrameTime);
+					renderRenderablesOfShaderType(*rendererShaderData, activeCamera->getViewMatrix(), deltaFrameTime, currentFrameTime, lastFrameTime);
 				}
 			}
 		}
 	}
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFERRED_LIGHTING_PASS_FRAMEBUFFER"]->framebufferID);
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+
+
+
+
+	//	Bind the Default Framebuffer.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+
+}
+
+//	Render the Renderables that have to go through the Forward Rendering pipeline.
+void DeferredRenderer::renderForwardRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+{
+	//	Clear the Forward Rendering Buffer.
+
+}
+
+//	Render the Post Process Pipeline.
+void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+{
+	//	Bind the Default Framebuffer.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	getShaderManager()->setActiveShader("COPY TEXTURE SHADER");
+
+	//	Get the RendererShaderData for this Shader Type.
+	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("COPY TEXTURE SHADER");
+
+	//	Upload the Camera Data, the Noise Textures, the Sampling Data, and the Post Process Textures.
+	uploadCameraData(*rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
+	uploadNoiseTextures(*rendererShaderData);
+	uploadSamplingData(*rendererShaderData);
+	uploadPostProcessTextures(*rendererShaderData, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->texureID, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->texureID, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->texureID, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->texureID);
+
+	//	Draw the Arrays.
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 //	Render all the Renderables using the ShaderType.
-void DeferredRenderer::renderRenderablesOfShaderType(const RendererShaderData & rendererShaderData, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderRenderablesOfShaderType(const RendererShaderData & rendererShaderData, const glm::mat4 & currentViewMatrix, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
 {
 	GLuint currentShaderProgramID = rendererShaderData.shaderID;
 
@@ -1020,7 +1102,7 @@ void DeferredRenderer::renderRenderablesOfShaderType(const RendererShaderData & 
 							for (int i = 0; i < renderableList->size(); i++)
 							{
 								//	Update the Transform Matrix.
-								uploadModelData(rendererShaderData, activeCamera->getViewMatrix(), (*transformMatrixList)[i]);
+								uploadModelData(rendererShaderData, currentViewMatrix, (*transformMatrixList)[i]);
 
 								//	Get the Current Material Data.
 								std::shared_ptr<const std::pair<RendererMaterialValues, RendererMaterialMaps>> currentMaterialData = getMaterialManager()->viewMaterial((*materialsList)[i]);
@@ -1042,6 +1124,104 @@ void DeferredRenderer::renderRenderablesOfShaderType(const RendererShaderData & 
 			}
 		}
 	}
+}
+
+//	Render the Shadow Maps.
+void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+{
+	glDisable(GL_CULL_FACE);
+
+	//	Set the Viewport.
+	glViewport(0, 0, 1600, 1600);
+
+	//	Set the shader for the Point Light Shadow Map Rendering.
+	getShaderManager()->setActiveShader("POINT LIGHT SHADOW MAP SHADER");
+	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("POINT LIGHT SHADOW MAP SHADER");
+
+	//	Bind the Light Depth Map Framebuffer.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["LIGHT_DEPTH_MAP_FRAMEBUFFER"]->framebufferID);
+
+	//	Iterate over the active lights.
+	for (int lightNumber = 0; lightNumber < activeLightNames.size(); lightNumber++)
+	{
+		//	Check whether there is an active light name.
+		if (activeLightNames[lightNumber] != "NONE")
+		{
+			//	
+			std::shared_ptr<const RendererLightData> lightData = activeLights[lightNumber];
+
+			//	Get the aspect ratio of the screen.
+			GLfloat aspectRatio = (float)windowScreenWidth / (float)windowScreenHeight;
+			GLfloat nearClip = 0.1f;
+			GLfloat farClip = 500.0;
+
+			//	Compute the Shadow Projection Matrix.
+			glm::mat4 shadowProjectionMatrix = glm::perspective(glm::pi<float>() / 2.0f, aspectRatio, nearClip, farClip);
+
+			//	Construct the Light Projection Matrix in each direction.
+			glm::mat4 lightViewMatrix[6];
+			lightViewMatrix[0] = shadowProjectionMatrix * glm::lookAt(glm::vec3(lightData->lightPosition), glm::vec3(lightData->lightPosition) + glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0));
+			lightViewMatrix[1] = shadowProjectionMatrix * glm::lookAt(glm::vec3(lightData->lightPosition), glm::vec3(lightData->lightPosition) + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0));
+			lightViewMatrix[2] = shadowProjectionMatrix * glm::lookAt(glm::vec3(lightData->lightPosition), glm::vec3(lightData->lightPosition) + glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, 1.0));
+			lightViewMatrix[3] = shadowProjectionMatrix * glm::lookAt(glm::vec3(lightData->lightPosition), glm::vec3(lightData->lightPosition) + glm::vec3(0.0, -1.0, 0.0), glm::vec3(0.0, 0.0, -1.0));
+			lightViewMatrix[4] = shadowProjectionMatrix * glm::lookAt(glm::vec3(lightData->lightPosition), glm::vec3(lightData->lightPosition) + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0));
+			lightViewMatrix[5] = shadowProjectionMatrix * glm::lookAt(glm::vec3(lightData->lightPosition), glm::vec3(lightData->lightPosition) + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0));
+
+			//	Iterate over the faces of the Cube.
+			for (int i = 0; i < 6; i++)
+			{
+				//	Bind the correct cube face.
+				GLuint currentDepthCubeMapFace = GL_TEXTURE_CUBE_MAP_POSITIVE_X + i;
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, currentDepthCubeMapFace, pointLightShadowMaps[lightNumber], 0);
+				glClear(GL_DEPTH_BUFFER_BIT);
+
+				//	Check the Framebuffer Status.
+				checkFramebufferStatus();
+
+				//	Upload the Camera.
+				uploadCameraData(*rendererShaderData, lightData->lightPosition, shadowProjectionMatrix, lightViewMatrix[i], glm::vec4(nearClip, farClip, 0.0, 0.0));
+
+				//	Get the list of the ShaderTypes and associated GeometryTypes.
+				const std::map<std::string, std::vector<std::string>> shaderAndGeometryTypes = renderableManager.getShaderAndGeometryTypes();
+
+				//	Render all the Renderables of the Shader Type. Opaque pass.
+				for (auto shaderTypeIterator = shaderAndGeometryTypes.begin(); shaderTypeIterator != shaderAndGeometryTypes.end(); shaderTypeIterator++)
+				{
+					//	Check if there are any renderables using this shader.
+					if (renderableManager.getShaderTypeRenderableNumber(shaderTypeIterator->first) != 0)
+					{
+						//	Get the RendererShaderData for this Shader Type.
+						std::shared_ptr<const RendererShaderData> assignedRendererShaderData = getShaderManager()->viewShaderData(shaderTypeIterator->first);
+
+						//	Check whether this outputs opacity.
+						auto opacityFinder = assignedRendererShaderData->shaderProperties.find("Output Opacity");
+
+						//	Check if we have the property.
+						if (opacityFinder != assignedRendererShaderData->shaderProperties.end())
+						{
+							//	Check if are outputing opacity.
+							if (opacityFinder->second != "TRUE")
+							{
+								//	Render the Renderables.
+								renderRenderablesOfShaderType(*rendererShaderData, lightViewMatrix[i], deltaFrameTime, currentFrameTime, lastFrameTime);
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+
+
+		}
+	}
+
+	//	Bind the Default Framebuffer.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+
+	glViewport(0, 0, windowScreenWidth, windowScreenHeight);
+	glEnable(GL_CULL_FACE);
 }
 
 //	Remove the Renderable.
@@ -1122,12 +1302,20 @@ void DeferredRenderer::deleteShader(std::string deadShaderName)
 //	Add the Light to the Renderer, under the name.
 void DeferredRenderer::addLight(std::string newLightName, std::shared_ptr<const LightData> newLightData)
 {
-	if (activeLights.size() < 16)
+	//	Add the LightData under the specified name.
+	Renderer::addLight(newLightName, newLightData);
+
+	//	Iterate over the lights.
+	for (int i = 0; i < activeLightNames.size(); i++)
 	{
-		activeLights.push_back(newLightName);
+		if (activeLightNames[i] == "NONE")
+		{
+			activeLightNames[i] = newLightName;
+			activeLights[i] = getLightManager()->viewLight(newLightName);
+			break;
+		}
 	}
 
-	Renderer::addLight(newLightName, newLightData);
 }
 
 //	Update the Light, as specified by the LightData.
@@ -1139,14 +1327,17 @@ void DeferredRenderer::updateLight(std::string currentLightName, std::shared_ptr
 //	Delete the Light.
 void DeferredRenderer::deleteLight(std::string deadLightName)
 {
+	//	Iterate over the lights.
 	for (int i = 0; i < activeLights.size(); i++)
 	{
-		if (activeLights[i] == deadLightName)
+		if (activeLightNames[i] == deadLightName)
 		{
-			activeLights.erase(activeLights.begin() + i);
+			activeLightNames[i] = "NONE";
+			activeLights[i] = NULL;
 		}
 	}
-
+	
+	//	Delete the Light from the Lights.
 	Renderer::deleteLight(deadLightName);
 }
 
@@ -1180,6 +1371,9 @@ void DeferredRenderer::uploadBackgroundEnviroment(const RendererShaderData & ren
 	{
 		glActiveTexture(GL_TEXTURE0 + 0);
 		glBindTexture(textureDataOne->textureType, textureDataOne->textureID);
+		glUniform1i(rendererShaderData.shaderUniforms.environmentDataUniforms.u_backgroundEnvironmentCubeMapOne, 0);
+		glActiveTexture(GL_TEXTURE0);
+
 	}
 
 	//	The Active Texture 1.
@@ -1188,6 +1382,8 @@ void DeferredRenderer::uploadBackgroundEnviroment(const RendererShaderData & ren
 	{
 		glActiveTexture(GL_TEXTURE0 + 1);
 		glBindTexture(textureDataTwo->textureType, textureDataTwo->textureID);
+		glUniform1i(rendererShaderData.shaderUniforms.environmentDataUniforms.u_backgroundEnvironmentCubeMapTwo, 1);
+		glActiveTexture(GL_TEXTURE0);
 	}
 
 	//	The Active Texture 2.
@@ -1196,6 +1392,8 @@ void DeferredRenderer::uploadBackgroundEnviroment(const RendererShaderData & ren
 	{
 		glActiveTexture(GL_TEXTURE0 + 2);
 		glBindTexture(textureDataThree->textureType, textureDataThree->textureID);
+		glUniform1i(rendererShaderData.shaderUniforms.environmentDataUniforms.u_backgroundEnvironmentCubeMapThree, 2);
+		glActiveTexture(GL_TEXTURE0);
 	}
 
 	//	The Active Texture 3.
@@ -1204,6 +1402,8 @@ void DeferredRenderer::uploadBackgroundEnviroment(const RendererShaderData & ren
 	{
 		glActiveTexture(GL_TEXTURE0 + 3);
 		glBindTexture(textureDataFour->textureType, textureDataFour->textureID);
+		glUniform1i(rendererShaderData.shaderUniforms.environmentDataUniforms.u_backgroundEnvironmentCubeMapFour, 3);
+		glActiveTexture(GL_TEXTURE0);
 	}
 
 	//	-------------------------------------------------------------------------------------------------------------------------------------------	//
@@ -1318,13 +1518,12 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 	glUniform4fv(rendererShaderData.shaderUniforms.lightDataUniforms.u_ambientLight, 1, glm::value_ptr(glm::vec4(0.0, 0.0, 0.0, 0.0)));
 
 	//	Iterate over the active lights.
-	for (int lightNumber = 0; lightNumber < 16; lightNumber++)
+	for (int lightNumber = 0; lightNumber < activeLightNames.size(); lightNumber++)
 	{
-		if (lightNumber < activeLights.size())
+		if (activeLightNames[lightNumber] != "NONE")
 		{
 			//	
-			std::string currentLight = activeLights[lightNumber];
-			std::shared_ptr<const RendererLightData> lightData = getLightManager()->viewLight(currentLight);
+			std::shared_ptr<const RendererLightData> lightData = activeLights[lightNumber];
 
 			//	
 			std::string lightPrefix = "u_lights";
@@ -1332,13 +1531,13 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 			GLuint currentLightAttributeLocation = -1;
 
 			//	
-			currentLightAttribute = "lightEnabledLocalLightType";
+			currentLightAttribute = "lightEnabledShadowLightType";
 			currentLightAttributeLocation = -1;
 			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
-			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->lightEnabledLocalLightType));
+			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->lightEnabledShadowLightType));
 
 			//	If the Current Light is not enabled, do not bother uploading all the other stuff.
-			if (lightData->lightEnabledLocalLightType[0] == 1.0)
+			if (lightData->lightEnabledShadowLightType[0] == 1.0)
 			{
 				//	CurrentLight - Color
 				currentLightAttribute = "lightColorAndLightIntensity";
@@ -1363,6 +1562,21 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 				currentLightAttributeLocation = -1;
 				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
 				glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->spotCosCutOffAndExponent));
+
+
+				glActiveTexture(GL_TEXTURE0 + 20 + lightNumber);
+				glBindTexture(GL_TEXTURE_2D, lightShadowMaps[lightNumber]);
+				glBindTexture(GL_TEXTURE_CUBE_MAP, pointLightShadowMaps[lightNumber]);
+
+				currentLightAttribute = "lightDepthMap";
+				currentLightAttributeLocation = -1;
+				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
+				glUniform1i(currentLightAttributeLocation, 20 + lightNumber);
+
+				currentLightAttribute = "pointLightDepthMap";
+				currentLightAttributeLocation = -1;
+				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
+				glUniform1i(currentLightAttributeLocation, 20 + lightNumber);
 			}
 		}
 		else
@@ -1374,7 +1588,7 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 			GLuint currentLightAttributeLocation = -1;
 
 			//	
-			currentLightAttribute = "lightEnabledLocalLightType";
+			currentLightAttribute = "lightEnabledShadowLightType";
 			currentLightAttributeLocation = -1;
 			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
 			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(glm::vec4(0.0)));
@@ -1392,7 +1606,7 @@ void DeferredRenderer::uploadSamplingData(const RendererShaderData & rendererSha
 	glUniform2fv(rendererShaderData.shaderUniforms.samplingDataUniforms.u_screenSize, 1, glm::value_ptr(glm::vec2(windowScreenWidth, windowScreenHeight)));
 
 	//	Upload the Hemisphere Radius.
-	glUniform1f(rendererShaderData.shaderUniforms.samplingDataUniforms.u_hemisphereRadius, 10.0f);
+	glUniform1f(rendererShaderData.shaderUniforms.samplingDataUniforms.u_hemisphereRadius, 2.0f);
 
 	//	Upload the Unit Square Samples.
 	glUniform4fv(rendererShaderData.shaderUniforms.samplingDataUniforms.u_unitSquareSamples, (int)sampler->viewUnitSquareSamples().size(), glm::value_ptr(*sampler->viewUnitSquareSamples().data()));

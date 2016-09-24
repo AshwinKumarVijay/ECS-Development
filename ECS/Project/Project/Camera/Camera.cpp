@@ -10,7 +10,7 @@ Camera::Camera()
 
 	nearClip = 0.1f;
 
-	farClip = 500.0f;
+	farClip = 300.0f;
 
 	aspectRatio = 1920 / 1080.0f;
 

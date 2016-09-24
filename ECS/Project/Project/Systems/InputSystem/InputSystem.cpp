@@ -86,14 +86,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			}
 
 			//	
-			case InputType::KEY_J:
-			{
-				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::PREVIOUS_CAMERA, ModuleType::INPUT_SYSTEM);
-				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
-				break;
-			}
-
-			//	
 			case InputType::KEY_Q:
 			{
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::YAW_LEFT, ModuleType::INPUT_SYSTEM);
@@ -127,19 +119,36 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			}
 
 
-			//	
+			//	No Camera.
 			case InputType::KEY_K:
 			{
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::NO_CAMERA, ModuleType::INPUT_SYSTEM);
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
+
+				std::cout << "NO CAMERA" << std::endl;
+
 				break;
 			}
 
-			//	
+			//	Previous Camera.
+			case InputType::KEY_J:
+			{
+				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::PREVIOUS_CAMERA, ModuleType::INPUT_SYSTEM);
+				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
+
+				std::cout << "PREVIOUS CAMERA" << std::endl;
+
+				break;
+			}
+
+			//	Next Camera.
 			case InputType::KEY_L:
 			{
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::NEXT_CAMERA, ModuleType::INPUT_SYSTEM);
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
+
+				std::cout << "NEXT CAMERA" << std::endl;
+
 				break;
 			}
 

@@ -21,6 +21,12 @@ ShaderData::ShaderData(const std::map<std::string, std::string> & newMapShaderPr
 	else
 		vertexShaderSourceName = "ERROR";
 
+	shaderPropertiesIterator = mapShaderPropertyToValue.find("Geometry Shader Source");
+	if (shaderPropertiesIterator != mapShaderPropertyToValue.end())
+		geometryShaderSourceName = shaderPropertiesIterator->second;
+	else
+		geometryShaderSourceName = "ERROR";
+
 	//	Find the Fragment Shader Source.
 	shaderPropertiesIterator = mapShaderPropertyToValue.find("Fragment Shader Source");
 	if (shaderPropertiesIterator != mapShaderPropertyToValue.end())
@@ -40,6 +46,12 @@ ShaderData::~ShaderData()
 std::string ShaderData::getVertexShaderFileName() const
 {
 	return vertexShaderSourceName;
+}
+
+//	Return the Geometry Shader File Name associated with this Shader.
+std::string ShaderData::getGeometryShaderFileName() const
+{
+	return geometryShaderSourceName;
 }
 
 //	Return the Fragment Shader File Name associated with this Shader.

@@ -1,7 +1,9 @@
 #pragma once
 
-#include "../ECS/System/System.h"
+#include <string>
+#include <iostream>
 
+#include "../ECS/System/System.h"
 #include "../../TypesList/EventTypes.h"
 #include "../../TypesList/ModuleType.h"
 #include "../../TypesList/EntityState.h"

@@ -34,14 +34,14 @@ void RendererLightManager::addLight(std::string newLightName, std::shared_ptr<co
 
 		//	Check if the Light is actually active.
 		if (newLightData->getEnabled())
-			newRendererLightData->lightEnabledLocalLightType[0] = 1.0f;
+			newRendererLightData->lightEnabledShadowLightType[0] = 1.0f;
 
 		//	Check if the Light is local.
 		if (newLightData->getLocal())
-			newRendererLightData->lightEnabledLocalLightType[1] = 1.0f;
+			newRendererLightData->lightEnabledShadowLightType[1] = 1.0f;
 
 		//	Get the Light Type.
-		newRendererLightData->lightEnabledLocalLightType[2] = (float)newLightData->getLightType();
+		newRendererLightData->lightEnabledShadowLightType[2] = (float)newLightData->getLightType();
 		
 		//	Get the Distance Attenuation.
 		newRendererLightData->lightDistanceAttenuation = newLightData->getDistanceAttenuation();
@@ -70,14 +70,14 @@ void RendererLightManager::updateLight(std::string requestedLightName, std::shar
 
 		//	Check if the Light is actually active.
 		if (newLightData->getEnabled())
-			newRendererLightData->lightEnabledLocalLightType[0] = 1.0;
+			newRendererLightData->lightEnabledShadowLightType[0] = 1.0;
 
 		//	Check if the Light is local.
 		if (newLightData->getLocal())
-			newRendererLightData->lightEnabledLocalLightType[1] = 1.0;
+			newRendererLightData->lightEnabledShadowLightType[1] = 1.0;
 
 		//	Get the Light Type.
-		newRendererLightData->lightEnabledLocalLightType[2] = (float)newLightData->getLightType();
+		newRendererLightData->lightEnabledShadowLightType[2] = (float)newLightData->getLightType();
 
 		//	Get the Distance Attenuation.
 		newRendererLightData->lightDistanceAttenuation = newLightData->getDistanceAttenuation();

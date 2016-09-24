@@ -37,7 +37,6 @@ RenderingSystem::~RenderingSystem()
 
 }
 
-
 //	Initialize the Rendering System.
 void RenderingSystem::initializeSystem()
 {
@@ -54,9 +53,6 @@ void RenderingSystem::initializeSystem()
 	renderer->setActiveCamera(defaultCamera);
 }
 
-
-
-
 //	Update the Rendering System this frame.
 void RenderingSystem::update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
 {
@@ -66,7 +62,6 @@ void RenderingSystem::update(const float & deltaTime, const float & currentFrame
 	//	Render the Renderer
 	renderer->render(deltaTime, currentFrameTime, lastFrameTime);
 }
-
 
 //	Process the Events that have occurred.
 void RenderingSystem::processEvents(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
@@ -224,13 +219,22 @@ void RenderingSystem::processResourceEvents(std::shared_ptr<const ECSEvent> next
 	}
 }
 
+//	Process Camera Events.
+void RenderingSystem::processCameraEvents(std::shared_ptr<const ECSEvent> nextEvent)
+{
+	//	
+	if (nextEvent != NULL)
+	{
+
+	}
+}
 
 //	Return a pointer to the Renderer associated with the Renderer.
 std::shared_ptr<Renderer> RenderingSystem::getRenderer()
 {
 	return renderer;
 }
-
+	
 //	Shut Down the System.
 void RenderingSystem::shutDownSystem()
 {
@@ -242,7 +246,6 @@ void RenderingSystem::destroySystem()
 {
 
 }
-
 
 //	Add the Renderable to the associated Renderer.
 void RenderingSystem::addRenderable(const long int & entityID)
@@ -276,7 +279,6 @@ void RenderingSystem::addRenderable(const long int & entityID)
 	}
 }
 
-
 //	Update the Renderable.
 void RenderingSystem::updateRenderable(const long int & entityID)
 {
@@ -293,6 +295,7 @@ void RenderingSystem::updateRenderable(const long int & entityID)
 	updateRenderableTransformMatrix(entityID);
 }
 
+//	Update the Shader Type of the specified Renderable.
 void RenderingSystem::updateRenderableShaderType(const long int & entityID)
 {
 	//	Get the Rendering Component of the current entity.
@@ -306,6 +309,7 @@ void RenderingSystem::updateRenderableShaderType(const long int & entityID)
 	}
 }
 
+//	Update the Material Type of the specified Renderable.
 void RenderingSystem::updateRenderableMaterialType(const long int & entityID)
 {
 	//	Get the Rendering Component of the current entity.
@@ -319,6 +323,7 @@ void RenderingSystem::updateRenderableMaterialType(const long int & entityID)
 	}
 }
 
+//	Update the Geometry Type of the specified Renderable.
 void RenderingSystem::updateRenderableGeometryType(const long int & entityID)
 {
 	//	Get the Rendering Component of the current entity.
@@ -337,6 +342,7 @@ void RenderingSystem::updateRenderableGeometryType(const long int & entityID)
 	}
 }
 
+//	Update the Transform Matrix of the specified Renderable.
 void RenderingSystem::updateRenderableTransformMatrix(const long int & entityID)
 {
 	//	Get the Rendering Component of the current entity.

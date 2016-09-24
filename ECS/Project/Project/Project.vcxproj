@@ -294,7 +294,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Configurations\DefaultConfig.txt" />
-    <Text Include="Assets\NewShaders\DeferredShader\BasicDeferredShader\BasicDeferred.frag.glsl" />
+    <Text Include="Assets\NewShaders\DeferredShader\FirstPassDeferredShaders\BasicDeferredShader\BasicDeferred.frag.glsl" />
     <Text Include="Assets\NewShaders\EnvironmentShaders\ECube.frag.glsl" />
     <Text Include="Assets\NewShaders\EnvironmentShaders\ECube.vert.glsl" />
     <Text Include="Assets\NewShaders\LightingShaders\BasicLightingShader\BL.frag.glsl" />
@@ -303,6 +303,8 @@
     <Text Include="Assets\NewShaders\LightingShaders\MaterialLightingShader\MLOpaque.vert.glsl" />
     <Text Include="Assets\NewShaders\LightingShaders\MaterialLightingShader\MLTranslucency.vert.glsl" />
     <Text Include="Assets\NewShaders\LightingShaders\MaterialLightingShader\MLTranslucency.frag.glsl" />
+    <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.frag.glsl" />
+    <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.vert.glsl" />
     <Text Include="Assets\NewShaders\PostProcessShader\SSAO\SSAO.vert.glsl" />
     <Text Include="Assets\NewShaders\PostProcessShader\SSAO\SSAO.frag.glsl" />
     <Text Include="Assets\NewShaders\ShaderTemplate\FragementShaderTemplate.txt" />
@@ -345,9 +347,13 @@
     <Text Include="Assets\Shaders\VRShaders\Texturing\VS\BasicTexturingVS.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.frag.glsl" />
+    <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.vert.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\ShadowLightingShader\SVShader.frag.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\ShadowLightingShader\SVShader.vert.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.frag.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.vert.glsl" />
-    <None Include="Assets\NewShaders\DeferredShader\BasicDeferredShader\BasicDeferred.vert.glsl" />
+    <None Include="Assets\NewShaders\DeferredShader\FirstPassDeferredShaders\BasicDeferredShader\BasicDeferred.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

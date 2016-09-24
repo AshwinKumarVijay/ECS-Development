@@ -69,7 +69,7 @@ uniform vec4 u_ambientLight;
 struct Light
 {
 	//	Vector of Options: Light Enabled, Locality, Light Type.
-	vec4 lightEnabledLocalLightType;
+	vec4 lightEnabledShadowLightType;
 
 	//	Vector of Options: 
 	vec4 lightColorAndLightIntensity;
@@ -167,7 +167,7 @@ void computeSpecularLighting(int lightIndex, out vec3 specularColor)
 //	@out vec3 shadedColor		: The Shaded Color after computing the Lighting.
 void computeLighting(in int lightIndex, out vec3 shadedColor)
 {
-	if(u_lights[lightIndex].lightEnabledLocalLightType[0] == 1.0)
+	if(u_lights[lightIndex].lightEnabledShadowLightType[0] == 1.0)
 	{
 		vec3 diffuseColor = vec3(0.0, 0.0, 0.0);
 		vec3 specularColor = vec3(0.0, 0.0, 0.0);

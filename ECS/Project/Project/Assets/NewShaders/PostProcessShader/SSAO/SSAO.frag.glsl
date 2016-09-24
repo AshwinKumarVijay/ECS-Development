@@ -2,7 +2,7 @@
 
 //	MAX LIGHTS
 #define MAX_LIGHTS 16
-#define SAMPLES 64
+#define SAMPLES 256
 
 //	CAMERA DATA. UNIFORM CAMERA POSITION, CAMERA PERSPECTIVE MATRIX, CAMERA VIEW MATRIX.
 layout (location = 10) uniform vec4 u_worldCameraPosition;
@@ -94,7 +94,7 @@ void main(void)
 
 	}
 
-	occlusion = 1.0 - (occlusion / (float(SAMPLES)));
+	occlusion =	1.0 - (occlusion / (float(SAMPLES)));
 	
 	//	OUTPUT COLOR
 	o_baseOutputColor = vec4(occlusion, occlusion, occlusion, 1.0);

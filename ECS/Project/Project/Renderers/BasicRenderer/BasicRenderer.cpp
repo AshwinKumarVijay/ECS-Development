@@ -912,10 +912,10 @@ void BasicRenderer::uploadLightsData(const RendererShaderData & rendererShaderDa
 			currentLightAttribute = "lightEnabledLocalLightType";
 			currentLightAttributeLocation = -1;
 			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
-			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->lightEnabledLocalLightType));
+			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->lightEnabledShadowLightType));
 
 			//	If the Current Light is not enabled, do not bother uploading all the other stuff.
-			if (lightData->lightEnabledLocalLightType[0] == 1.0)
+			if (lightData->lightEnabledShadowLightType[0] == 1.0)
 			{
 				//	CurrentLight - Color
 				currentLightAttribute = "lightColorAndLightIntensity";
