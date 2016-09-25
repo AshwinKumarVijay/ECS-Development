@@ -90,14 +90,16 @@ uniform Light u_lights[MAX_LIGHTS];
 //	
 void getLightingProperties(in int lightIndex, out vec3 worldspace_vertexToEye, out vec3 worldspace_vertexToLightDirection, out vec3 worldspace_vertexNormal, out vec3 worldspace_reflectedLightDirection, out vec3 worldspace_halfVector, out vec3 lightColor, out float lightIntensity)
 {
-	vec3 worldspace_vertexPosition = (u_modelMatrix * v_vertexPosition).xyz;
+	vec3 worldspace_vertexPosition = texture(g_worldSpaceVertexPosition, v_vertexTextureCoordinates.xy).xyz;
 
 	vec3 worldspace_lightPosition = u_lights[lightIndex].lightPosition.xyz / u_lights[lightIndex].lightPosition.w;
+
 
 	//	
 	worldspace_vertexToEye = normalize(u_worldCameraPosition.xyz - worldspace_vertexPosition);
 
-	worldspace_vertexNormal = normalize(u_inverseTransposeModelMatrix * v_vertexNormal);
+	worldspace_vertexNormal = normalize(texture(g_worldSpaceVertexNormal, v_vertexTextureCoordinates.xy).xyz);
+
 
 	worldspace_vertexToLightDirection = normalize(worldspace_lightPosition - worldspace_vertexPosition);
 
@@ -113,7 +115,7 @@ void getLightingProperties(in int lightIndex, out vec3 worldspace_vertexToEye, o
 
 float computeShadowingFactor(in int lightIndex)
 {
-	vec3 worldspace_vertexPosition = (u_modelMatrix * v_vertexPosition).xyz;
+	vec3 worldspace_vertexPosition = texture(g_worldSpaceVertexPosition, v_vertexTextureCoordinates.xy).xyz;
 
 	vec3 worldspace_lightPosition = u_lights[lightIndex].lightPosition.xyz / u_lights[lightIndex].lightPosition.w;
 

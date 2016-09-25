@@ -1,5 +1,87 @@
-﻿  DeferredRenderer.cpp
+﻿  DemoECS.cpp
+  BasicRenderer.cpp
 c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
-  d:\github\ecs-development\ecs\project\project\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
-  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.exe
-  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)
+  c:\users\ashwin\documents\github\ecs-development\ecs\project\project\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
+  ResourceData.cpp
+  VAOStorage.cpp
+  VAOManager.cpp
+  RenderableManager.cpp
+  RendererTextureManager.cpp
+  RendererShaderManager.cpp
+  RendererMaterialManager.cpp
+  RendererLightManager.cpp
+  RendererGeometryManager.cpp
+  TextureData.cpp
+  MaterialData.cpp
+  ShaderData.cpp
+  ResourceEvent.cpp
+  ShaderResourceManager.cpp
+  TextureResourceManager.cpp
+  MaterialResourceManager.cpp
+  ResourceManager.cpp
+  main.cpp
+  Generating Code...
+  Compiling...
+  tiny_obj_loader.cc
+  LightData.cpp
+  LightResourceManager.cpp
+  InputEvent.cpp
+  GeometryGeneratorSelector.cpp
+  GeometryResourceManager.cpp
+  Transform.cpp
+  TimerSystem.cpp
+  TextureGeneratorSelector.cpp
+c:\users\ashwin\documents\github\ecs-development\ecs\project\project\texturegeneratorselector\texturegeneratorselector.cpp(212): warning C4244: '=': conversion from 'float' to 'GLubyte', possible loss of data
+c:\users\ashwin\documents\github\ecs-development\ecs\project\project\texturegeneratorselector\texturegeneratorselector.cpp(214): warning C4244: '=': conversion from 'float' to 'GLubyte', possible loss of data
+c:\users\ashwin\documents\github\ecs-development\ecs\project\project\texturegeneratorselector\texturegeneratorselector.cpp(216): warning C4244: '=': conversion from 'float' to 'GLubyte', possible loss of data
+c:\users\ashwin\documents\github\ecs-development\ecs\project\project\texturegeneratorselector\texturegeneratorselector.cpp(218): warning C4244: '=': conversion from 'float' to 'GLubyte', possible loss of data
+  TextureBufferData.cpp
+  TransformSystem.cpp
+  System.cpp
+  RenderingSystem.cpp
+c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  c:\users\ashwin\documents\github\ecs-development\ecs\project\project\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
+  Renderer.cpp
+c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  c:\users\ashwin\documents\github\ecs-development\ecs\project\project\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
+  Renderable.cpp
+  PhysicsData.cpp
+  GeometryData.cpp
+  EventQueue.cpp
+  Entity.cpp
+  EntityManager.cpp
+  Generating Code...
+  Compiling...
+  ECSEvent.cpp
+  ECS.cpp
+  Configuration.cpp
+  TransformComponent.cpp
+  RenderingComponent.cpp
+  PhysicsComponent.cpp
+  HierarchyComponent.cpp
+  GeometryComponent.cpp
+  Component.cpp
+  Camera.cpp
+  CameraComponent.cpp
+  CameraSystem.cpp
+  InteractionEvent.cpp
+  DeferredRenderer.cpp
+c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  c:\users\ashwin\documents\github\ecs-development\ecs\project\project\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
+  InputSystem.cpp
+  MovementSystem.cpp
+  SelectionSystem.cpp
+  InteractionMovementResponseSystem.cpp
+  Sampler.cpp
+  EventReceiver.cpp
+  Generating Code...
+  Compiling...
+  EventDispatcher.cpp
+  MovementResponseComponent.cpp
+  SelectionComponent.cpp
+  SpeedComponent.cpp
+  Generating Code...
+  LINK : C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.exe not found or not built by the last incremental link; performing full link
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.exe
+  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)

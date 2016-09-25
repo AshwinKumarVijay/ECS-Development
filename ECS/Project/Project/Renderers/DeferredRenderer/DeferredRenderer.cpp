@@ -973,8 +973,7 @@ void DeferredRenderer::renderDeferredRenderingPipeline(const float & deltaFrameT
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 
-
-
+	
 
 	//	Bind the Default Framebuffer.
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
@@ -997,10 +996,10 @@ void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, c
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	getShaderManager()->setActiveShader("COPY TEXTURE SHADER");
+	getShaderManager()->setActiveShader("SSAO SHADER");
 
 	//	Get the RendererShaderData for this Shader Type.
-	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("COPY TEXTURE SHADER");
+	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("SSAO SHADER");
 
 	//	Upload the Camera Data, the Noise Textures, the Sampling Data, and the Post Process Textures.
 	uploadCameraData(*rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
