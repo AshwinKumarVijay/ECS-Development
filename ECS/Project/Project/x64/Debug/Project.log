@@ -1,0 +1,5 @@
+﻿  DeferredRenderer.cpp
+c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  d:\github\ecs-development\ecs\project\project\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
+  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.exe
+  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)
