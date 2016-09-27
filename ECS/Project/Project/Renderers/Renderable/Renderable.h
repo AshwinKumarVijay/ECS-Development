@@ -11,46 +11,44 @@ class Renderable
 
 public:
 
-	//	Add Comments - TO DO
+	//	Default Renderable Constructor.
 	Renderable(const long int & newRenderableID);
 
-	//	Add Comments - TO DO
+	//	Default Renderable Destructor.
 	virtual ~Renderable();
-	
 
-	//	Add Comments - TO DO
+	//	Return the RenderableID.
+	virtual long int getRenderableID() const;
+
+	//	Activate the Renderable.
 	void activate();
-	//	Add Comments - TO DO
+	//	Return whether the Renderable is active.
 	bool getActive() const;
 
-	//	Add Comments - TO DO
+	//	Deactivate the Renderable.
 	void deactivate();
-	
-	//	Add Comments - TO DO
+		//	Return whether the Renderable is inactive.
 	bool getInactive() const;
 
 
-	//	Add Comments - TO DO
-	virtual long int getRenderableID() const;
-
-	//	Add Comments - TO DO
+	//	Set the Geometry Type.
 	virtual void setGeometryType(const std::string & newGeometryType);
-	//	Add Comments - TO DO
+	//	Return the Geometry Type.
 	virtual std::string getGeometryType() const;
 
-	//	Add Comments - TO DO
+	//	Set the Material Type
 	virtual void setMaterialType(const std::string & newMaterialType);
-	//	Add Comments - TO DO
+	//	Get the Material Type.
 	virtual std::string getMaterialType() const;
 
-	//	Add Comments - TO DO
+	//	Set the Shader Type.
 	virtual void setShaderType(const std::string & newShaderType);
-	//	Add Comments - TO DO
+	//	Get the Shader Type.
 	virtual std::string getShaderType() const;
 
-	//	Add Comments - TO DO
+	//	Get the Transform Matrix.
 	virtual glm::mat4 getTransformMatrix() const;
-	//	Add Comments - TO DO
+	//	Set the Transform Matrix.
 	virtual void setTransformMatrix(const glm::mat4 & newModelMatrix);
 
 

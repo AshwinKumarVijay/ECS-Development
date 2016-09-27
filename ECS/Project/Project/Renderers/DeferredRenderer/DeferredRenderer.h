@@ -7,6 +7,15 @@
 #include "../RNGs/RNGs.h"
 
 
+struct LightShadowMapDescription
+{
+	GLuint mainLightColorMap = -1;
+	GLuint mainLightDepthMap = -1;
+
+	GLuint lightColorCubeMap = -1;
+	GLuint lightDepthCubeMap = -1;
+};
+
 class BackgroundData;
 
 
@@ -154,6 +163,8 @@ private:
 	virtual void uploadSamplingData(const RendererShaderData & rendererShaderData);
 	//	Upload the Noise Textures.
 	virtual void uploadNoiseTextures(const RendererShaderData & rendererShaderData);
+	//	Upload the G Buffer.
+	virtual void uploadGBufferDataTextures(const RendererShaderData & rendererShaderData);
 	//	Upload the Post Process Textures.
 	virtual void uploadPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureOneID, GLuint postProcessTextureTwoID, GLuint postProcessTextureThreeID, GLuint postProcessTextureFourID);
 
@@ -170,9 +181,8 @@ private:
 	std::vector<std::string> activeLightNames;
 	std::vector<std::shared_ptr<const RendererLightData>> activeLights;
 
-	//	
-	std::vector<GLuint> pointLightShadowMaps;
-	std::vector<GLuint> lightShadowMaps;
+	//	Light Shadow Maps.
+	std::vector<LightShadowMapDescription> lightShadowMaps;
 
 	//	The Camera used for Rendering.
 	std::shared_ptr<Camera> activeCamera;

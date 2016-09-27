@@ -20,7 +20,6 @@ layout (location = 0) in vec4 a_vertexPosition;
 layout (location = 1) in vec3 a_vertexNormal;
 layout (location = 2) in vec4 a_vertexColor;
 
-
 //	VERTEX ATTRIBUTES OUT.
 //	VERTEX POSITION, VERTEX NORMAL, VERTEX TANGENT, VERTEX BITANGENT.
 layout (location = 0) out vec4 v_vertexPosition;
@@ -43,5 +42,4 @@ void main(void)
 
 	//	Compute the position.
 	gl_Position = u_cameraPerspectiveMatrix * u_cameraViewMatrix * u_modelMatrix * a_vertexPosition;
-
 }

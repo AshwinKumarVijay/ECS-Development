@@ -334,13 +334,14 @@ void RendererShaderManager::generateShaderUniformLocations(GLuint newShader, Ren
 	{
 		//	G BUFFER - VERTEX POSITION AND DEPTH, VERTEX NORMAL, VERTEX TEXTURE COORDINATES
 		//	DIFFUSE ALBEDO AND METALLICNESS, SPECULAR ALBEDO AND ROUGHNESS, EMISSIVE COLOR AND INTENSITY.
-		newShaderUniforms.gBufferInputUniforms.g_vertexPositionAndDepth = glGetUniformLocation(newShader, "g_vertexPositionAndDepth");
-		newShaderUniforms.gBufferInputUniforms.g_vertexNormal = glGetUniformLocation(newShader, "g_vertexNormal");
-		newShaderUniforms.gBufferInputUniforms.g_vertexTextureCoordinates = glGetUniformLocation(newShader, "g_vertexTextureCoordinates");
+		newShaderUniforms.gBufferInputUniforms.g_worldSpaceVertexPosition = glGetUniformLocation(newShader, "g_worldSpaceVertexPosition");
+		newShaderUniforms.gBufferInputUniforms.g_worldSpaceVertexNormal = glGetUniformLocation(newShader, "g_worldSpaceVertexNormal");
+		newShaderUniforms.gBufferInputUniforms.g_viewSpaceVertexPositionAndDepth = glGetUniformLocation(newShader, "g_viewSpaceVertexPositionAndDepth");
+		newShaderUniforms.gBufferInputUniforms.g_viewSpaceVertexNormal = glGetUniformLocation(newShader, "g_viewSpaceVertexNormal");
 		newShaderUniforms.gBufferInputUniforms.g_diffuseAlbedo = glGetUniformLocation(newShader, "g_diffuseAlbedo");
 		newShaderUniforms.gBufferInputUniforms.g_specularAlbedo = glGetUniformLocation(newShader, "g_specularAlbedo");
-		newShaderUniforms.gBufferInputUniforms.g_metallicnessRoughnessFresnelOpacity = glGetUniformLocation(newShader, "g_metallicnessRoughnessFresnelOpacity");
 		newShaderUniforms.gBufferInputUniforms.g_emissionColorAndIntensity = glGetUniformLocation(newShader, "g_emissionColorAndIntensity");
+		newShaderUniforms.gBufferInputUniforms.g_metallicnessRoughnessFresnelOpacity = glGetUniformLocation(newShader, "g_metallicnessRoughnessFresnelOpacity");
 	}
 
 	{

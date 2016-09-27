@@ -125,7 +125,7 @@ void DemoECS::initializeScene()
 	cubeGeometryComponent1->setGeometryType("CUBE");
 	cubeRenderingComponent1->setMaterialType("DEFAULT MATERIAL 3");
 	cubeRenderingComponent1->setShaderType("BASIC DEFERRED SHADER");
-	cubeTransformComponent1->getTransform()->translateBy(glm::vec3(0.0, 1.0, 0.0));
+	cubeTransformComponent1->getTransform()->translateBy(glm::vec3(0.0, 2.0, 0.0));
 	cubeTransformComponent1->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
 
 
@@ -147,7 +147,7 @@ void DemoECS::initializeScene()
 	cubeGeometryComponent2->setGeometryType("CUBE");
 	cubeRenderingComponent2->setMaterialType("DEFAULT MATERIAL 3");
 	cubeRenderingComponent2->setShaderType("BASIC DEFERRED SHADER");
-	cubeTransformComponent2->getTransform()->translateBy(glm::vec3(2.5, 1.0, 0.0));
+	cubeTransformComponent2->getTransform()->translateBy(glm::vec3(2.5, 4.0, 0.0));
 	cubeTransformComponent2->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
 
 

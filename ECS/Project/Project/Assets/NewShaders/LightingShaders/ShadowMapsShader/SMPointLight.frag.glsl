@@ -28,21 +28,13 @@ layout (location = 0) in vec4 v_vertexPosition;
 layout (location = 1) in vec3 v_vertexNormal;
 layout (location = 2) in vec4 v_vertexColor;
 
-
+//	FRAGMENT OUTPUT COLOR.
+layout (location = 0) out vec4 o_baseOutputColor;
 
 
 //	THE FRAGMENT SHADER MAIN.
 void main(void)
 {
 	//	
-	vec4 position =  u_modelMatrix * v_vertexPosition;
-
-	//	
-	float lightDistance = length((position.xyz - u_worldCameraPosition.xyz));
-
-	//	
-	lightDistance = lightDistance / u_cameraNearFarPlaneDistance[1];
-
-	//	
-	gl_FragDepth = lightDistance;
+	o_baseOutputColor = vec4(0.2, 0.0, 1.0, 1.0);
 }

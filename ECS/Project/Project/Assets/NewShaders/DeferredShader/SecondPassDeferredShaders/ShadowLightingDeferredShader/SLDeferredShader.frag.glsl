@@ -73,11 +73,13 @@ struct Light
 	//	Vector of Options: 
 	vec4 lightSpotCosCutOffAndExponent;
 
-	//	Directional Light Depth Map.
-	sampler2D lightDepthMap;
-	
-	//	Omnidirectional Light Depth Map.
-	samplerCube pointLightDepthMap;
+	//	Light 2D Depth Map.
+	sampler2D mainLightDepthMap;
+	sampler2D mainLightColorMap;
+
+	//	Light Color And Depth Cube Map.
+	samplerCube lightColorCubeMap;
+	samplerCube lightDepthCubeMap;
 };
 
 
@@ -121,7 +123,7 @@ float computeShadowingFactor(in int lightIndex)
 
 	vec3 vertexToLight = worldspace_vertexPosition - worldspace_lightPosition;
 
-	float closestDepth = texture(u_lights[lightIndex].pointLightDepthMap, vertexToLight).r;
+	float closestDepth = texture(u_lights[lightIndex].lightDepthCubeMap, normalize(vertexToLight)).x;
 
 	closestDepth = closestDepth * u_cameraNearFarPlaneDistance[1];
 
@@ -129,7 +131,7 @@ float computeShadowingFactor(in int lightIndex)
 
 	float bias = 0.05;
 
-	float shadowingFactor = currentDepth - (bias > closestDepth ? 1.0 : 0.0);
+	float shadowingFactor = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 	
 	return shadowingFactor;
 }
@@ -141,10 +143,6 @@ void main(void)
 	//	Initialize the Total Light.
 	vec3 totalLightResult = vec3(0.0, 0.0, 0.0);
 	
-	//	Compute the Shadowing Factor.
-	float shadowingFactor = computeShadowingFactor(0);
-
 	//	Output the Fragment Color.
-	o_baseOutputColor = vec4(shadowingFactor, shadowingFactor, shadowingFactor, 1.0);
-
+	o_baseOutputColor = vec4(1.0, 1.0, 1.0, 1.0);
 }
