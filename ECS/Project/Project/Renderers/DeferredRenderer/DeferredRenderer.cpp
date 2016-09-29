@@ -1813,7 +1813,7 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 				glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->spotCosCutOffAndExponent));
 
 
-				glActiveTexture(GL_TEXTURE0 + (40 + lightNumber));
+				glActiveTexture(GL_TEXTURE0 + (40 + (lightNumber * 2)));
 				glBindTexture(GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightColorMap);
 				glBindTexture(GL_TEXTURE_CUBE_MAP, lightShadowMaps[lightNumber].lightColorCubeMap);
 
@@ -1822,7 +1822,7 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
 				if (currentLightAttributeLocation != (GLfloat)-1)
 				{
-					glUniform1i(currentLightAttributeLocation, 40 + lightNumber);
+					glUniform1i(currentLightAttributeLocation, 40 + (lightNumber * 2));
 				}
 
 				currentLightAttribute = "lightColorCubeMap";
@@ -1831,10 +1831,10 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 
 				if (currentLightAttributeLocation != (GLfloat)-1)
 				{
-					glUniform1i(currentLightAttributeLocation, 40 + lightNumber);
+					glUniform1i(currentLightAttributeLocation, 40 + (lightNumber * 2));
 				}
 
-				glActiveTexture(GL_TEXTURE0 + (41 + lightNumber));
+				glActiveTexture(GL_TEXTURE0 + (41 + (lightNumber * 2)));
 				glBindTexture(GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightDepthMap);
 				glBindTexture(GL_TEXTURE_CUBE_MAP, lightShadowMaps[lightNumber].lightDepthCubeMap);
 
@@ -1843,7 +1843,7 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
 				if (currentLightAttributeLocation != (GLfloat)-1)
 				{
-					glUniform1i(currentLightAttributeLocation, 41 + lightNumber);
+					glUniform1i(currentLightAttributeLocation, 41 + (lightNumber * 2));
 				}
 
 				currentLightAttribute = "lightDepthCubeMap";
@@ -1851,7 +1851,7 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
 				if (currentLightAttributeLocation != (GLfloat)-1)
 				{
-					glUniform1i(currentLightAttributeLocation, 41 + lightNumber);
+					glUniform1i(currentLightAttributeLocation, 41 + (lightNumber * 2));
 				}
 			}
 		}

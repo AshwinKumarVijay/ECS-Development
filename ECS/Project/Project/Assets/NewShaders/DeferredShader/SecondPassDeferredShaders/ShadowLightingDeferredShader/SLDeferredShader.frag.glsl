@@ -127,14 +127,14 @@ float computeShadowingFactor(in int lightIndex)
 
 	float closestDepth = texture(u_lights[lightIndex].lightDepthCubeMap, normalize(vertexToLight)).x;
 
-	closestDepth = closestDepth * u_cameraNearFarPlaneDistance[1];
+	closestDepth = closestDepth ;
 
-	float currentDepth = length(vertexToLight);
+	float currentDepth = length(vertexToLight) / u_cameraNearFarPlaneDistance[1];
 
-	float bias = max(0.0, 0.35);
+	float bias = max(0.05 * (1.0 - dot(worldspace_vertexNormal, normalize(vertexToLight))), 0.005);  
 
 	float shadowingFactor = currentDepth - bias > closestDepth ? 1.0 : 0.0;
-	
+		
 	return shadowingFactor;
 }
 
@@ -145,7 +145,7 @@ void main(void)
 	//	Initialize the Total Light.
 	vec3 totalLightResult = vec3(0.0, 0.0, 0.0);
 	
-	float shadowingFactor = 1.0 - computeShadowingFactor(0);
+	float shadowingFactor = 1.0 - computeShadowingFactor(1);
 
 	//	Output the Fragment Color.
 	o_baseOutputColor = vec4(shadowingFactor, shadowingFactor, shadowingFactor, 1.0);
