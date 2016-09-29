@@ -72,6 +72,7 @@
     <ClCompile Include="Renderers\RendererResourceManagers\RendererShaderManager\RendererShaderManager.cpp" />
     <ClCompile Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.cpp" />
     <ClCompile Include="Renderers\Sampler\Sampler.cpp" />
+    <ClCompile Include="Renderers\TestRenderer\TestRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -151,6 +152,8 @@
     <ClInclude Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.h" />
     <ClInclude Include="Renderers\Sampler\Sampler.h" />
     <ClInclude Include="RNGs\RNGs.h" />
+    <ClInclude Include="Renderers\TestRenderer\TestRenderer.h" />
+    <ClInclude Include="Renderers\ShadingType.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />

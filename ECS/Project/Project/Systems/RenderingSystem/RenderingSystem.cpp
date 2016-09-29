@@ -305,7 +305,7 @@ void RenderingSystem::updateRenderableShaderType(const long int & entityID)
 	if (renderingComponent != NULL && renderingComponent->getRenderableID() != -1)
 	{
 		//	Update the Shader Type associated with this Renderable.
-		renderer->updateShaderType(renderingComponent->getRenderableID(), renderingComponent->getShaderType());
+		renderer->updateShadingType(renderingComponent->getRenderableID(), renderingComponent->getShadingType());
 	}
 }
 

@@ -124,11 +124,9 @@ void DemoECS::initializeScene()
 
 	cubeGeometryComponent1->setGeometryType("CUBE");
 	cubeRenderingComponent1->setMaterialType("DEFAULT MATERIAL 3");
-	cubeRenderingComponent1->setShaderType("BASIC DEFERRED SHADER");
-	cubeTransformComponent1->getTransform()->translateBy(glm::vec3(0.0, 2.0, 0.0));
+	cubeRenderingComponent1->setShadingType(ShadingTypes::OPAQUE_BASIC);
+	cubeTransformComponent1->getTransform()->translateBy(glm::vec3(0.0, 1.0, 0.0));
 	cubeTransformComponent1->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
-
-
 
 
 	//	Create the Cube Entity.
@@ -146,7 +144,7 @@ void DemoECS::initializeScene()
 
 	cubeGeometryComponent2->setGeometryType("CUBE");
 	cubeRenderingComponent2->setMaterialType("DEFAULT MATERIAL 3");
-	cubeRenderingComponent2->setShaderType("BASIC DEFERRED SHADER");
+	cubeRenderingComponent2->setShadingType(ShadingTypes::OPAQUE_BASIC);
 	cubeTransformComponent2->getTransform()->translateBy(glm::vec3(2.5, 4.0, 0.0));
 	cubeTransformComponent2->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
 
@@ -166,7 +164,7 @@ void DemoECS::initializeScene()
 
 	std::shared_ptr<RenderingComponent> baseRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
 	baseRenderingComponent->setMaterialType("DEFAULT MATERIAL 3");
-	baseRenderingComponent->setShaderType("BASIC DEFERRED SHADER");
+	baseRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
 
 	std::shared_ptr<TransformComponent> baseTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
 	baseTransformComponent->getTransform()->setScale(glm::vec3(50.0, 0.01, 50.0));

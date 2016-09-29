@@ -8,13 +8,13 @@ CameraComponent::CameraComponent()
 {
 
 	//	Near Clip.
-	nearClip = 0.1f;
+	nearClip = 0.01f;
 
 	//	Far Clip.
 	farClip = 500.0f;
 
 	//	Aspect Ratio.
-	aspectRatio = 1920 / 1080.0f;
+	aspectRatio = 1.0;
 
 	//	Field of View.
 	FOV = glm::pi<float>() / 4.0f;

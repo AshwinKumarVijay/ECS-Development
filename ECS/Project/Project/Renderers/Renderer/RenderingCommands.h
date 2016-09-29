@@ -74,7 +74,7 @@ struct RendererPipelineFramebuffer
 //	Renderer Pipeline Texture.
 struct RendererPipelineTexture
 {
-	GLuint texureID = 0;
+	GLuint textureID = 0;
 };
 
 //	The Noise Textures.

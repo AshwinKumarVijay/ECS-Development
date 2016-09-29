@@ -156,6 +156,7 @@
     <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
     <ClCompile Include="Renderers\Sampler\Sampler.cpp" />
+    <ClCompile Include="Renderers\TestRenderer\TestRenderer.cpp" />
     <ClCompile Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.cpp" />
     <ClCompile Include="Systems\SelectionSystem\SelectionSystem.cpp" />
     <ClCompile Include="Systems\MovementSystem\MovementSystem.cpp" />
@@ -222,6 +223,8 @@
     <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />
     <ClInclude Include="Renderers\Sampler\Sampler.h" />
+    <ClInclude Include="Renderers\ShadingType.h" />
+    <ClInclude Include="Renderers\TestRenderer\TestRenderer.h" />
     <ClInclude Include="RNGs\RNGs.h" />
     <ClInclude Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.h" />
     <ClInclude Include="Systems\SelectionSystem\SelectionSystem.h" />

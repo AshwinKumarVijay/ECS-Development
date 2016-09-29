@@ -1,0 +1,19 @@
+#pragma once
+
+namespace ShadingTypes
+{
+	enum ShadingType
+	{
+		OPAQUE_BASIC,
+		OPAQUE_GOURAUD,
+		OPAQUE_PHONG,
+		OPAQUE_PBR,
+
+		TRANSPARENCY_BASIC,
+		TRANSPARENCY_GOURAUD,
+		TRANSPARENCY_PHONG,
+		TRANSPARENCY_PBR
+	};
+
+
+};

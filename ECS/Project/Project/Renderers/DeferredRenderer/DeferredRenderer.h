@@ -39,7 +39,7 @@ public:
 	virtual std::shared_ptr<const Renderable> viewRenderable(const long int & renderableID) const;
 
 	//	Update the Renderable Shader Type.
-	virtual void updateShaderType(const long int & renderableID, const std::string & newShaderType);
+	virtual void updateShadingType(const long int & renderableID, ShadingTypes::ShadingType newShadingType);
 	//	Update the Renderable Geometry Type.
 	virtual void updateGeometryType(const long int & renderableID, const std::string & newGeometryName);
 	//	Update the Renderable Material Type.
@@ -129,6 +129,9 @@ private:
 	//	Initialize the Lights.
 	virtual void initializeLights();
 
+	//	Render the Shadow Maps.
+	virtual void renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+
 	//	Render the Renderables that have to go through the Deferred Rendering Pipeline.
 	virtual void renderDeferredRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
@@ -142,10 +145,10 @@ private:
 	virtual void renderBackgroundEnvironment(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
 	//	Render the Renderables of the Shader Type.
-	virtual void renderRenderablesOfShaderType(const RendererShaderData & rendererShaderData, const glm::mat4 & currentViewMatrix, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderRenderablesOfShadingType(ShadingTypes::ShadingType shadingType, const RendererShaderData & rendererShaderData, const glm::mat4 & currentViewMatrix, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
-	//	Render the Shadow Maps.
-	virtual void renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	//	Return the RendererShaderData for the Shading Type.
+	virtual std::shared_ptr<const RendererShaderData> getRendererShaderDataForRenderableShadingType(ShadingTypes::ShadingType shadingType);
 
 	//	Bind the Environment Maps.
 	virtual void uploadBackgroundEnviroment(const RendererShaderData & rendererShaderData);
@@ -179,6 +182,8 @@ private:
 
 	//	The Names of the Active Lights.
 	std::vector<std::string> activeLightNames;
+
+	//	The Active Lights.
 	std::vector<std::shared_ptr<const RendererLightData>> activeLights;
 
 	//	Light Shadow Maps.

@@ -36,7 +36,7 @@ public:
 	virtual std::shared_ptr<const Renderable> viewRenderable(const long int & renderableID) const;
 
 	//	Update the Shader Type associated with the specified RenderableID.
-	virtual void updateShaderType(const long int & renderableID, const std::string & newShaderType);
+	virtual void updateShadingType(const long int & renderableID, ShadingTypes::ShadingType newShadingType);
 	//	Update the Geometry Type associated with the specified RenderableID.
 	virtual void updateGeometryType(const long int & renderableID, const std::string & newGeometryType);	
 	//	Update the Material Type associated with the specified RenderableID.

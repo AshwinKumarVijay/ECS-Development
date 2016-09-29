@@ -7,7 +7,7 @@ RenderingComponent::RenderingComponent()
 {
 	renderableID = -1;
 	materialType = "DEFAULT MATERIAL";
-	shaderType = "DEFAULT SHADER";
+	shadingType = ShadingTypes::OPAQUE_BASIC;
 }
 
 //	Default RenderingComponent Destructor
@@ -41,13 +41,13 @@ std::string RenderingComponent::getMaterialType() const
 }
 
 //	Set the Shader Type associated with this Rendering Component.
-void RenderingComponent::setShaderType(const std::string & newShaderType)
+void RenderingComponent::setShadingType(const ShadingTypes::ShadingType newShadingType)
 {
-	shaderType = newShaderType;
+	shadingType = newShadingType;
 }
 
 //	Return the Shader Type associated with this Rendering Component.
-std::string RenderingComponent::getShaderType() const
+ShadingTypes::ShadingType RenderingComponent::getShadingType() const
 {
-	return shaderType;
+	return shadingType;
 }

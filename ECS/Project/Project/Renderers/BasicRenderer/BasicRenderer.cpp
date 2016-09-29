@@ -329,9 +329,9 @@ std::shared_ptr<const Renderable> BasicRenderer::viewRenderable(const long int &
 }
 
 //	Update the Shader Type associated with the specified RenderableID.
-void BasicRenderer::updateShaderType(const long int & renderableID, const std::string & newShaderType)
+void BasicRenderer::updateShadingType(const long int & renderableID, ShadingTypes::ShadingType newShadingType)
 {
-	renderableManager.updateShaderType(renderableID, newShaderType);
+	renderableManager.updateShadingType(renderableID, newShadingType);
 }
 
 //	Update the Geometry Type associated with the specified RenderableID.
@@ -388,56 +388,6 @@ void BasicRenderer::renderScene(const float & deltaFrameTime, const float & curr
 	//	Render the Environment Maps.
 	renderBackgroundEnvironment(deltaFrameTime, currentFrameTime, lastFrameTime);
 
-	//	Get the list of the ShaderTypes and associated GeometryTypes.
-	const std::map<std::string, std::vector<std::string>> shaderAndGeometryTypes = renderableManager.getShaderAndGeometryTypes();
-
-	//	Render all the Renderables of the Shader Type. Opaque pass.
-	for (auto shaderTypeIterator = shaderAndGeometryTypes.begin(); shaderTypeIterator != shaderAndGeometryTypes.end(); shaderTypeIterator++)
-	{
-		//	Check if there are any renderables using this shader.
-		if (renderableManager.getShaderTypeRenderableNumber(shaderTypeIterator->first) != 0)
-		{
-			std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData(shaderTypeIterator->first);
-
-			auto opacityFinder = rendererShaderData->shaderProperties.find("Output Opacity");
-
-			if (opacityFinder != rendererShaderData->shaderProperties.end())
-			{
-				if (opacityFinder->second != "TRUE")
-				{
-					//	Bind the correct shader, get the Active Shader ID and the associated RendererShaderData.
-					getShaderManager()->setActiveShader(shaderTypeIterator->first);
-
-					//	Render the Renderables that use the Shader Data specified by the Renderer.
-					renderRenderablesOfShaderType(*rendererShaderData, deltaFrameTime, currentFrameTime, lastFrameTime);
-				}
-			}
-		}
-	}
-
-	//	Render all the Renderables of the Shader Type. Translucent pass.
-	for (auto shaderTypeIterator = shaderAndGeometryTypes.begin(); shaderTypeIterator != shaderAndGeometryTypes.end(); shaderTypeIterator++)
-	{
-		//	Check if there are any renderables using this shader.
-		if (renderableManager.getShaderTypeRenderableNumber(shaderTypeIterator->first) != 0)
-		{
-			std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData(shaderTypeIterator->first);
-
-			auto opacityFinder = rendererShaderData->shaderProperties.find("Output Opacity");
-
-			if (opacityFinder != rendererShaderData->shaderProperties.end())
-			{
-				if (opacityFinder->second == "TRUE")
-				{
-					//	Bind the correct shader, get the Active Shader ID and the associated RendererShaderData.
-					getShaderManager()->setActiveShader(shaderTypeIterator->first);
-
-					//	Render the Renderables that use the Shader Data specified by the Renderer.
-					renderRenderablesOfShaderType(*rendererShaderData, deltaFrameTime, currentFrameTime, lastFrameTime);
-				}
-			}
-		}
-	}
 }
 
 //	Render the Environment Maps.
@@ -487,116 +437,7 @@ void BasicRenderer::renderBackgroundEnvironment(const float & deltaFrameTime, co
 //	Render all the Renderables using the ShaderType.
 void BasicRenderer::renderRenderablesOfShaderType(const RendererShaderData & rendererShaderData, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
 {
-		GLuint currentShaderProgramID = rendererShaderData.shaderID;
 
-		//	Bind the Background Environment Maps.
-		uploadBackgroundEnviroment(rendererShaderData);
-
-		//	Upload the Camera Data.
-		uploadCameraData(rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
-
-		//	Update the Lights.
-		uploadLightsData(rendererShaderData);
-
-		//	Get the Required Geometry Description for the Shader Type.
-		int currentShaderTypeRequirements = getShaderManager()->getShaderGeometryDescriptionRepresentation(rendererShaderData.shaderType);
-
-		//	Get the Map of VAO Types to their VAOs.
-		const std::map<int, std::shared_ptr<std::vector<VAOStorage>>> & mapVAOTypeToVAOs = vaoManager.viewMapVAOTypeToVAOs();
-
-		//	Iterate over the VAO Types.
-		for (auto vaoTypeIterator = mapVAOTypeToVAOs.begin(); vaoTypeIterator != mapVAOTypeToVAOs.end(); vaoTypeIterator++)
-		{
-			//	Check if the VAO Type fits with the Shader Type. 
-			if ((vaoTypeIterator->first & currentShaderTypeRequirements) == currentShaderTypeRequirements)
-			{
-				//	Get the VAOs that match this type.
-				std::shared_ptr<const std::vector<VAOStorage>> currentVAOStorages = vaoTypeIterator->second;
-
-				//	Check if there are any VAOStorages.
-				if (currentVAOStorages != NULL)
-				{
-					//	Iterate over the available VAOs.
-					for (int currentVAONumber = 0; currentVAONumber < currentVAOStorages->size(); currentVAONumber++)
-					{
-						//	Bind the Vertex Array Object.
-						glBindVertexArray((*currentVAOStorages)[currentVAONumber].getVAOID());
-
-						//	Get the list of Geometry associated with the current VAO.
-						const std::vector<std::string> geometryTypes = (*currentVAOStorages)[currentVAONumber].viewGeometryNames();
-
-						//	Get the list of Geometry Data associated with the current VAO.
-						const std::vector<std::shared_ptr<RendererGeometryData>> rendererGeometryDataList = (*currentVAOStorages)[currentVAONumber].viewGeometryDatas();
-
-						//	Iterate over the Geometry in this VAO.
-						for (int currentGeometryTypeNumber = 0; currentGeometryTypeNumber < geometryTypes.size(); currentGeometryTypeNumber++)
-						{
-							//	Get the Current Geometry Type.
-							std::string currentGeometryType = geometryTypes[currentGeometryTypeNumber];
-
-							//	Check if there are any available Renderables.
-							if (renderableManager.getShaderTypeGeometryTypeRenderableNumber(rendererShaderData.shaderType, currentGeometryType) != 0)
-							{								
-								{
-									//	Bind the correct Element and Array Buffer.
-									glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererGeometryDataList[currentGeometryTypeNumber]->EBO);
-
-									glBindVertexBuffer(0, rendererGeometryDataList[currentGeometryTypeNumber]->vertexVBO, 0, sizeof(Vertex));
-									glBindVertexBuffer(1, rendererGeometryDataList[currentGeometryTypeNumber]->vertexVBO, offsetof(Vertex, normal), sizeof(Vertex));
-									glBindVertexBuffer(2, rendererGeometryDataList[currentGeometryTypeNumber]->vertexVBO, offsetof(Vertex, color), sizeof(Vertex));
-								}
-
-								//	Check if the current shader requires the vertex normal data.
-								if ((currentShaderTypeRequirements & 2) == 2)
-								{
-									glBindVertexBuffer(3, rendererGeometryDataList[currentGeometryTypeNumber]->vertexNormalVBO, 0, sizeof(VertexNormalData));
-									glBindVertexBuffer(4, rendererGeometryDataList[currentGeometryTypeNumber]->vertexNormalVBO, offsetof(VertexNormalData, bitangent), sizeof(VertexNormalData));
-								}
-
-
-								//	Check if the current shader requires the vertex texture data.
-								if ((currentShaderTypeRequirements & 4) == 4)
-								{
-									glBindVertexBuffer(5, rendererGeometryDataList[currentGeometryTypeNumber]->vertexTextureVBO, 0, sizeof(VertexTextureData));
-									glBindVertexBuffer(6, rendererGeometryDataList[currentGeometryTypeNumber]->vertexTextureVBO, offsetof(VertexTextureData, textureCoordinates2), sizeof(VertexTextureData));
-								}
-
-								//	Get the list of the Renderables.
-								std::shared_ptr<const std::vector<std::shared_ptr<Renderable>>> renderableList = renderableManager.viewRenderablesOfShaderTypeAndGeometryType(rendererShaderData.shaderType, currentGeometryType);
-
-								//	Get the list of the Transforms.
-								std::shared_ptr<const std::vector<glm::mat4>> transformMatrixList = renderableManager.viewTransformsOfShaderTypeAndGeometryType(rendererShaderData.shaderType, currentGeometryType);
-
-								//	Get the list of the Materials.
-								std::shared_ptr<const std::vector<std::string>> materialsList = renderableManager.viewMaterialsOfShaderTypeAndGeometryType(rendererShaderData.shaderType, currentGeometryType);
-
-								//	Iterate over the Renderables that use both this Shader and Geometry.
-								for (int i = 0; i < renderableList->size(); i++)
-								{
-									//	Update the Transform Matrix.
-									uploadModelData(rendererShaderData, activeCamera->getViewMatrix(), (*transformMatrixList)[i]);
-
-									//	Get the Current Material Data.
-									std::shared_ptr<const std::pair<RendererMaterialValues, RendererMaterialMaps>> currentMaterialData = getMaterialManager()->viewMaterial((*materialsList)[i]);
-
-									//	Upload the Shader Material Data.
-									uploadMaterialData(rendererShaderData, currentMaterialData->first.diffuseAlbedo, currentMaterialData->first.specularAlbedo, currentMaterialData->first.emissiveColor, currentMaterialData->first.metallicRoughnessFresnelOpacity);
-
-									//	Upload the Shader Material Texture Data.
-									uploadMaterialTextureData(rendererShaderData, currentMaterialData->second.DiffuseAlbedoMap, currentMaterialData->second.SpecularAlbedoMap, currentMaterialData->second.MRFOMap, currentMaterialData->second.NormalMap, currentMaterialData->second.OcclusionMap);
-
-									//	Draw the Elements.
-									glDrawElements(rendererGeometryDataList[currentGeometryTypeNumber]->geometryDrawType, (GLsizei)rendererGeometryDataList[currentGeometryTypeNumber]->indicesArray.size(), GL_UNSIGNED_INT, 0);
-								}
-							}
-						}
-
-						//	Unbind the Vertex Array Object.
-						glBindVertexArray(0);
-					}
-				}
-			}
-		}
 }
 
 //	Remove the Renderable specified by renderable ID.

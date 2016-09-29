@@ -121,6 +121,8 @@ float computeShadowingFactor(in int lightIndex)
 
 	vec3 worldspace_lightPosition = u_lights[lightIndex].lightPosition.xyz / u_lights[lightIndex].lightPosition.w;
 
+	vec3 worldspace_vertexNormal = normalize(texture(g_worldSpaceVertexNormal, v_vertexTextureCoordinates.xy).xyz);
+
 	vec3 vertexToLight = worldspace_vertexPosition - worldspace_lightPosition;
 
 	float closestDepth = texture(u_lights[lightIndex].lightDepthCubeMap, normalize(vertexToLight)).x;
@@ -129,7 +131,7 @@ float computeShadowingFactor(in int lightIndex)
 
 	float currentDepth = length(vertexToLight);
 
-	float bias = 0.05;
+	float bias = max(0.0, 0.35);
 
 	float shadowingFactor = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 	
@@ -143,6 +145,8 @@ void main(void)
 	//	Initialize the Total Light.
 	vec3 totalLightResult = vec3(0.0, 0.0, 0.0);
 	
+	float shadowingFactor = 1.0 - computeShadowingFactor(0);
+
 	//	Output the Fragment Color.
-	o_baseOutputColor = vec4(1.0, 1.0, 1.0, 1.0);
+	o_baseOutputColor = vec4(shadowingFactor, shadowingFactor, shadowingFactor, 1.0);
 }
