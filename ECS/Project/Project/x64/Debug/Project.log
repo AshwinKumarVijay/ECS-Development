@@ -1,2 +1,58 @@
-﻿  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.exe
-  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)
+﻿  DeferredRenderer.cpp
+c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  c:\users\ashwin\documents\github\ecs-development\ecs\project\project\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  tiny_obj_loader.cc
+  Transform.cpp
+  TextureGeneratorSelector.cpp
+  TransformSystem.cpp
+  TimerSystem.cpp
+  SelectionSystem.cpp
+  MovementSystem.cpp
+  InteractionMovementResponseSystem.cpp
+  InputSystem.cpp
+  CameraSystem.cpp
+  TextureResourceManager.cpp
+  ShaderResourceManager.cpp
+  ResourceManager.cpp
+  MaterialResourceManager.cpp
+  LightResourceManager.cpp
+  GeometryResourceManager.cpp
+  TextureData.cpp
+  TextureBufferData.cpp
+  ShaderData.cpp
+  ResourceData.cpp
+  PhysicsData.cpp
+  MaterialData.cpp
+  LightData.cpp
+  GeometryData.cpp
+  VAOStorage.cpp
+  VAOManager.cpp
+  Sampler.cpp
+  RendererTextureManager.cpp
+  RendererMaterialManager.cpp
+  RendererLightManager.cpp
+  RendererGeometryManager.cpp
+  GeometryGeneratorSelector.cpp
+  ResourceEvent.cpp
+  InteractionEvent.cpp
+  InputEvent.cpp
+  System.cpp
+  EventQueue.cpp
+  Entity.cpp
+  ECSEvent.cpp
+  ECS.cpp
+  EventReceiver.cpp
+  EventDispatcher.cpp
+  Component.cpp
+  Configuration.cpp
+  TransformComponent.cpp
+  SpeedComponent.cpp
+  SelectionComponent.cpp
+  PhysicsComponent.cpp
+  MovementResponseComponent.cpp
+  HierarchyComponent.cpp
+  GeometryComponent.cpp
+  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.exe
+  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)

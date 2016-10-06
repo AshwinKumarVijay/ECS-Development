@@ -352,6 +352,8 @@
   <ItemGroup>
     <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.frag.glsl" />
     <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.vert.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.frag.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.vert.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\ShadowLightingShader\SVShader.frag.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\ShadowLightingShader\SVShader.vert.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.frag.glsl" />

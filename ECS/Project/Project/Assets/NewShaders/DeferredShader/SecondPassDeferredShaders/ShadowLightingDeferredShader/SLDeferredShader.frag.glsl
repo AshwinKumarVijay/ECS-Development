@@ -20,6 +20,7 @@ layout (location = 15) uniform vec4 u_cameraNearFarPlaneDistance;
 //	VERTEX ATTRIBUTES - VERTEX TEXTURE COORDINATES.
 layout (location = 0) in vec4 v_vertexTextureCoordinates;
 
+
 //	FRAGMENT OUTPUT COLOR.
 layout (location = 0) out vec4 o_baseOutputColor;
 
@@ -43,11 +44,12 @@ layout (binding = 25) uniform sampler2D g_specularAlbedo;
 layout (binding = 26) uniform sampler2D g_emissionColorAndIntensity;
 layout (binding = 27) uniform sampler2D g_metallicnessRoughnessFresnelOpacity;
 
-
+//	Light Color And Depth Cube Map.
+layout (binding = 30) uniform samplerCube lightColorCubeMap;
+layout (binding = 31) uniform samplerCube lightDepthCubeMap;
 
 //	Environment Map Intensities.
 uniform vec4 u_backgroundEnvironmentIntensities;
-
 
 //	AMBIENT LIGHT.
 uniform vec4 u_ambientLight;
@@ -76,16 +78,12 @@ struct Light
 	//	Light 2D Depth Map.
 	sampler2D mainLightDepthMap;
 	sampler2D mainLightColorMap;
-
-	//	Light Color And Depth Cube Map.
-	samplerCube lightColorCubeMap;
-	samplerCube lightDepthCubeMap;
 };
+
 
 
 //	THE ARRAY OF LIGHTS.
 uniform Light u_lights[MAX_LIGHTS];
-
 
 
 

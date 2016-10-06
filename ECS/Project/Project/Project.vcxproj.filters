@@ -217,5 +217,7 @@
     <None Include="Assets\NewShaders\DeferredShader\FirstPassDeferredShaders\BasicDeferredShader\BasicDeferred.vert.glsl" />
     <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.frag.glsl" />
     <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.vert.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.vert.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.frag.glsl" />
   </ItemGroup>
 </Project>

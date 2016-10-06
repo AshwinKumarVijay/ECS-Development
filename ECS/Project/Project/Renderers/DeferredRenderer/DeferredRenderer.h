@@ -16,6 +16,12 @@ struct LightShadowMapDescription
 	GLuint lightDepthCubeMap = -1;
 };
 
+struct PointLightDepthCubeMapDescription
+{
+	GLuint lightColorCubeMap = -1;
+	GLuint lightDepthCubeMap = -1;
+};
+
 class BackgroundData;
 
 
@@ -162,6 +168,9 @@ private:
 	virtual void uploadMaterialTextureData(const RendererShaderData & rendererShaderData, const std::string & diffuseAlbedoMap, const std::string & specularAlbedoMap, const std::string & MRFOMap, const std::string & NormalMap, const std::string & OcclusionMap);
 	//	Upload the Shader Lights Data to the Shader Pipeline.
 	virtual void uploadLightsData(const RendererShaderData & rendererShaderData);
+	//	Upload the Single Lights Data to the Shader Pipeline.
+	virtual void uploadSingleLightsData(const RendererShaderData & rendererShaderData, const int & lightNumber);
+
 	//	Upload the Sampling Data.
 	virtual void uploadSamplingData(const RendererShaderData & rendererShaderData);
 	//	Upload the Noise Textures.
@@ -186,8 +195,11 @@ private:
 	//	The Active Lights.
 	std::vector<std::shared_ptr<const RendererLightData>> activeLights;
 
-	//	Light Shadow Maps.
+	//	The Rendered Light Shadow Maps.
 	std::vector<LightShadowMapDescription> lightShadowMaps;
+
+	//	Point Light Depth CubeMaps.
+	PointLightDepthCubeMapDescription pointLightDepthCubeMaps;
 
 	//	The Camera used for Rendering.
 	std::shared_ptr<Camera> activeCamera;

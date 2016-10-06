@@ -194,3 +194,26 @@ Vertex Shader Source = Assets/NewShaders/DeferredShader/SecondPassDeferredShader
 Geometry Shader Source = NONE
 Fragment Shader Source = Assets/NewShaders/DeferredShader/SecondPassDeferredShaders/ShadowLightingDeferredShader/SLDeferredShader.frag.glsl
 #end Shader
+
+
+
+#define Shader
+Shader Type = VIEW SHADOW MAP SHADER
+Shader Rendering Type = SHADOW PROCESS
+Require Camera Data = TRUE
+Require Model Data = FALSE
+Require Material Data = FALSE
+Require Vertex Basic Data = FALSE
+Require Vertex Tangent Bitangent Data = FALSE
+Require Vertex Texture Coordinates Data = FALSE
+Require Lights Data = TRUE
+Require Environment Data = TRUE
+Require Material Texture Data = FALSE
+Require G Buffer Data = TRUE
+Output Base Color = TRUE
+Output Opacity = FALSE
+Output G Buffer = FALSE
+Vertex Shader Source = Assets/NewShaders/LightingShaders/CurrentViewLightingShader/CVSShader.vert.glsl
+Geometry Shader Source = NONE
+Fragment Shader Source = Assets/NewShaders/LightingShaders/CurrentViewLightingShader/CVSShader.frag.glsl
+#end Shader

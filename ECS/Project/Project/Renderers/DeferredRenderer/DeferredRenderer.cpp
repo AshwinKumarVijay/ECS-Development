@@ -525,7 +525,7 @@ void DeferredRenderer::initializeDeferredRenderingFramebuffers()
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
 
 
-
+	//	---------------------------------------------------------------------------------------------------------------------------------------------------------------------	//
 
 	//	Create an Entry for the Light Depth Framebuffer.
 	std::string lightdepthFramebufferName = "LIGHT_DEPTH_MAP_FRAMEBUFFER";
@@ -539,10 +539,27 @@ void DeferredRenderer::initializeDeferredRenderingFramebuffers()
 	glDrawBuffers(1, LightDepthMapBuffers);
 	rendererPipelineFramebuffers[lightdepthFramebufferName] = newLightDepthMapFramebuffer;
 
-
 	//	Bind the Default Framebuffer.
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
 
+	//	---------------------------------------------------------------------------------------------------------------------------------------------------------------------	//
+
+
+	//	Create the Entry for the Current View Shadow Map Pass Framebuffer.
+	std::string newCurrentViewShadowMapPassFramebufferName = "CURRENT_VIEW_SHADOW_MAP_PASS_FRAMEBUFFER";
+	std::shared_ptr<RendererPipelineFramebuffer> newCurrentViewShadowMapPassFramebuffer = std::make_shared<RendererPipelineFramebuffer>();
+
+	//	Generate the Framebuffer for the Current View Shadow Pass Framebuffer.
+	glGenFramebuffers(1, &newCurrentViewShadowMapPassFramebuffer->framebufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, newCurrentViewShadowMapPassFramebuffer->framebufferID);
+
+	GLenum CurentViewShadowMapPass[] = {GL_COLOR_ATTACHMENT0 + 0};
+	glDrawBuffers(1, CurentViewShadowMapPass);
+
+	//	Add the Current View Shadow Map Pass Framebuffer.
+	rendererPipelineFramebuffers[newCurrentViewShadowMapPassFramebufferName] = newCurrentViewShadowMapPassFramebuffer;
+
+	//	---------------------------------------------------------------------------------------------------------------------------------------------------------------------	//
 
 
 	//	Create the Entries for the  Deferred Rendering G Buffer Framebuffer.
@@ -583,27 +600,6 @@ void DeferredRenderer::initializeDeferredRenderingGBufferFramebuffer()
 	//	Add the G Buffer Framebuffer.
 	rendererPipelineFramebuffers[newGBufferFramebufferName] = newGBufferRendererFramebuffer;
 
-
-	//	Create the Entry for the Deferred Lighting Pass Framebuffer.
-	std::string newDeferredLightingPassFramebufferName = "DEFERRED_LIGHTING_PASS_FRAMEBUFFER";
-	std::shared_ptr<RendererPipelineFramebuffer> newDeferredLightingPassFramebuffer = std::make_shared<RendererPipelineFramebuffer>();
-
-	//	Geneate the Framebuiffer for the Deferred Lighting Pass.
-	glGenFramebuffers(1, &newDeferredLightingPassFramebuffer->framebufferID);
-	glBindFramebuffer(GL_FRAMEBUFFER, newDeferredLightingPassFramebuffer->framebufferID);
-
-	//	Attach the Deferred Lighting Texture, and the Depth Stencil Texture.
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["DEFERRED_LIGHTING_PASS_TEXTURE"]->textureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["DEFERRED_LIGHTING_DEPTH_STENCIL_TEXTURE"]->textureID, 0);
-
-	//	Check if the Framebuffer is complete.
-	checkFramebufferStatus();
-
-	GLenum DeferredLightingPass[] = { GL_COLOR_ATTACHMENT0 + 0 };
-	glDrawBuffers(1, DeferredLightingPass);
-
-	//	Add the Deferred Lighting Pass Framebuffer.
-	rendererPipelineFramebuffers[newDeferredLightingPassFramebufferName] = newDeferredLightingPassFramebuffer;
 
 	//	Bind the Default Framebuffer.
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
@@ -762,6 +758,52 @@ void DeferredRenderer::initializeNoiseTextures()
 //	Initialize the Lights.
 void DeferredRenderer::initializeLights()
 {
+	{
+		pointLightDepthCubeMaps.lightColorCubeMap = 0;
+		pointLightDepthCubeMaps.lightDepthCubeMap = 0;
+
+		//	Set the Active Texture 0.
+		glActiveTexture(GL_TEXTURE0);
+
+		//	Generate the CubeMap Color Map Texture.
+		glGenTextures(1, &pointLightDepthCubeMaps.lightColorCubeMap);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, pointLightDepthCubeMaps.lightColorCubeMap);
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
+
+		//	Iterate over the sides of the Cube textures. 
+		for (int j = 0; j < 6; j++)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, 0, GL_RGBA32F, 1024, 1024, 0, GL_RGBA, GL_FLOAT, NULL);
+		}
+
+		//	Unbind the CubeMap.
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+		//	Generate the CubeMap Depth Map Texture.
+		glGenTextures(1, &pointLightDepthCubeMaps.lightDepthCubeMap);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, pointLightDepthCubeMaps.lightDepthCubeMap);
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
+
+		//	Iterate over the sides of the Cube textures.
+		for (int j = 0; j < 6; j++)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, 0, GL_DEPTH24_STENCIL8, 1024, 1024, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+		}
+
+		//	Unbind the CubeMap.
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	}
+
 	//	Set the default texture light names.
 	for (int i = 0; i < 16; i++)
 	{
@@ -908,12 +950,12 @@ void DeferredRenderer::render(const float & deltaFrameTime, const float & curren
 		std::cout << "ERROR : " << err << " ! " << std::endl;
 	}
 
-	//	Render the Shadow Maps.
-	renderShadowMaps(deltaFrameTime, currentFrameTime, lastFrameTime);
-
 
 	//	Render the Deferred Rendering Pipeline.
 	renderDeferredRenderingPipeline(deltaFrameTime, currentFrameTime, lastFrameTime);
+
+	//	Render the Shadow Maps.
+	renderShadowMaps(deltaFrameTime, currentFrameTime, lastFrameTime);
 
 	//	Render the Foward Rendering Pipeline.
 	//	renderForwardRenderingPipeline(deltaFrameTime, currentFrameTime, lastFrameTime);
@@ -925,78 +967,33 @@ void DeferredRenderer::render(const float & deltaFrameTime, const float & curren
 //	Render the Shadow Maps.
 void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
 {
-	//	Set the Viewport.
-	glViewport(0, 0, 1024, 1024);
-	glCullFace(GL_FRONT);
-
-	//	Set the shader for the Point Light Shadow Map Rendering.
-	getShaderManager()->setActiveShader("POINT LIGHT SHADOW MAP SHADER");
-	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("POINT LIGHT SHADOW MAP SHADER");
-
-	//	Bind the Light Depth Map Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["LIGHT_DEPTH_MAP_FRAMEBUFFER"]->framebufferID);
-
 	//	Iterate over the Lights.
 	for (int lightNumber = 0; lightNumber < activeLightNames.size(); lightNumber++)
 	{
 		//	Check if we are at an active light.
-		if (activeLightNames[lightNumber] != "NONE" ) // && lightNumber == 0)
+		if (activeLightNames[lightNumber] != "NONE")
 		{
 			//	---------------------------------------------------------------------------------------------------------------	//
 
-			//	Attach the appropriate textures.
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightColorMap, 0);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightDepthMap, 0);
+			//	Set the Blending, the Viewport and the Culling. 
+			glEnable(GL_BLEND);
+			glViewport(0, 0, 1024, 1024);
+			glCullFace(GL_FRONT);
 
-			//	Clear the Color and the Depth Buffer.
-			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+			//	Set the shader for the Point Light Shadow Map Rendering.
+			getShaderManager()->setActiveShader("POINT LIGHT SHADOW MAP SHADER");
+			std::shared_ptr<const RendererShaderData> pointLightShadowMapRendererShaderData = getShaderManager()->viewShaderData("POINT LIGHT SHADOW MAP SHADER");
 
+			//	Bind the Light Depth Map Framebuffer.
+			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["LIGHT_DEPTH_MAP_FRAMEBUFFER"]->framebufferID);
+
+			//	Create the Shadow Projection Matrix.
 			GLfloat aspectRatio = 1.0f;
 			GLfloat nearClip = 0.01f;
 			GLfloat farClip = 500.0f;
-
 			glm::mat4 shadowProjectionMatrix = glm::perspective(glm::pi<float>() / 2.0f, aspectRatio, nearClip, farClip);
-			glm::mat4 lightViewMatrix = glm::lookAt(glm::vec3(activeLights[lightNumber]->lightPosition), glm::vec3(activeLights[lightNumber]->lightPosition) + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0));
 
-			//	Upload the Camera Data.
-			uploadCameraData(*rendererShaderData, activeLights[lightNumber]->lightPosition, shadowProjectionMatrix, lightViewMatrix, glm::vec4(nearClip, farClip, 0.0, 0.0));
-
-			//	Get the Shading Types and the Geometry Types.
-			const std::map<ShadingTypes::ShadingType, std::vector<std::string>> shadingTypesAndGeometryTypes = renderableManager.getShadingTypesAndGeometryTypes();
-
-			//	Iterate over the Shading Types.
-			for (auto currentShadingType = shadingTypesAndGeometryTypes.begin(); currentShadingType != shadingTypesAndGeometryTypes.end(); currentShadingType++)
-			{
-				//	Check if there are any renderables with the current 
-				if (renderableManager.getShadingTypeRenderableNumber(currentShadingType->first) != 0)
-				{
-					//	Get the Current Renderer Shader Data.
-					std::shared_ptr<const RendererShaderData> currentRendererShaderData = getRendererShaderDataForRenderableShadingType(currentShadingType->first);
-
-					//	Check if the Renderer Shader Data is NULL.
-					if (currentRendererShaderData != NULL)
-					{
-						//	Check whether this outputs opacity.
-						auto opacityFinder = rendererShaderData->shaderProperties.find("Output Opacity");
-
-						//	Check if we have the property.
-						if (opacityFinder != rendererShaderData->shaderProperties.end())
-						{
-							//	Check if are outputing opacity.
-							if (opacityFinder->second != "TRUE")
-							{
-								//	Render Renderables of the Shading Type, using the Shader provided in the current Renderer Shader.
-								renderRenderablesOfShadingType(currentShadingType->first, *currentRendererShaderData, lightViewMatrix, deltaFrameTime, currentFrameTime, lastFrameTime);
-							}
-						}
-					}
-				}
-			}
-
-
-			//	---------------------------------------------------------------------------------------------------------------	//
-
+			//	Generate the Light View Matrices.
 			glm::mat4 lightViewMatrices[6];
 
 			lightViewMatrices[0] = glm::lookAt(glm::vec3(activeLights[lightNumber]->lightPosition), glm::vec3(activeLights[lightNumber]->lightPosition) + glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0));
@@ -1006,23 +1003,21 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 			lightViewMatrices[4] = glm::lookAt(glm::vec3(activeLights[lightNumber]->lightPosition), glm::vec3(activeLights[lightNumber]->lightPosition) + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0));
 			lightViewMatrices[5] = glm::lookAt(glm::vec3(activeLights[lightNumber]->lightPosition), glm::vec3(activeLights[lightNumber]->lightPosition) + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0));
 
+			//	Iterate over the sides of the Cube.
 			for (int i = 0; i < 6; i++)
 			{
-
 				//	Attach the appropriate textures.
- 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, lightShadowMaps[lightNumber].lightColorCubeMap, 0);
-				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, lightShadowMaps[lightNumber].lightDepthCubeMap, 0);
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, pointLightDepthCubeMaps.lightColorCubeMap, 0);
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, pointLightDepthCubeMaps.lightDepthCubeMap, 0);
 
 				//	Clear the Color and the Depth Buffer.
 				glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-				GLfloat aspectRatio = 1.0f;
-				GLfloat nearClip = 0.01f;
-				GLfloat farClip = 500.0f;
+				checkFramebufferStatus();
 
 				//	Upload the Camera Data.
-				uploadCameraData(*rendererShaderData, activeLights[lightNumber]->lightPosition, shadowProjectionMatrix, lightViewMatrices[i], glm::vec4(nearClip, farClip, 0.0, 0.0));
+				uploadCameraData(*pointLightShadowMapRendererShaderData, activeLights[lightNumber]->lightPosition, shadowProjectionMatrix, lightViewMatrices[i], glm::vec4(nearClip, farClip, 0.0, 0.0));
 
 				//	Get the Shading Types and the Geometry Types.
 				const std::map<ShadingTypes::ShadingType, std::vector<std::string>> shadingTypesAndGeometryTypes = renderableManager.getShadingTypesAndGeometryTypes();
@@ -1040,10 +1035,10 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 						if (currentRendererShaderData != NULL)
 						{
 							//	Check whether this outputs opacity.
-							auto opacityFinder = rendererShaderData->shaderProperties.find("Output Opacity");
+							auto opacityFinder = pointLightShadowMapRendererShaderData->shaderProperties.find("Output Opacity");
 
 							//	Check if we have the property.
-							if (opacityFinder != rendererShaderData->shaderProperties.end())
+							if (opacityFinder != pointLightShadowMapRendererShaderData->shaderProperties.end())
 							{
 								//	Check if are outputing opacity.
 								if (opacityFinder->second != "TRUE")
@@ -1057,14 +1052,28 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 				}
 			}
 
+
+			//	Bind the Default Framebuffer.
+			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+
 			//	---------------------------------------------------------------------------------------------------------------	//
 
-		}
-		else
-		{
-			//	---------------------------------------------------------------------------------------------------------------	//
+			//	Set the Blending, the Viewport and the Culling. 
+			glDisable(GL_BLEND);
+			glViewport(0, 0, windowScreenWidth, windowScreenHeight);
+			glCullFace(GL_BACK);
 
-			//	Clear the Textures.
+			//	Set the shader for the Deferred Lighting Shadowing Rendering.
+			getShaderManager()->setActiveShader("VIEW SHADOW MAP SHADER");
+			std::shared_ptr<const RendererShaderData> currentViewShadowMapRendererShaderData = getShaderManager()->viewShaderData("VIEW SHADOW MAP SHADER");
+
+			//	Upload the Camera, the G Buffer and the Light Number Data.
+			uploadCameraData(*currentViewShadowMapRendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
+			uploadGBufferDataTextures(*currentViewShadowMapRendererShaderData);
+			uploadSingleLightsData(*currentViewShadowMapRendererShaderData, lightNumber);
+
+			//	Deferred Renderer - Second Pass - Render the Lighting Pass.
+			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["CURRENT_VIEW_SHADOW_MAP_PASS_FRAMEBUFFER"]->framebufferID);
 
 			//	Attach the appropriate textures.
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightColorMap, 0);
@@ -1074,15 +1083,40 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+			checkFramebufferStatus();
+
+			//	Draw the Arrays.
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+			//	Bind the Default Framebuffer.
+			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+
+			//	Renable Blending.
+			glEnable(GL_BLEND);
 
 			//	---------------------------------------------------------------------------------------------------------------	//
+		}
+		else
+		{
+			//	---------------------------------------------------------------------------------------------------------------	//
 
+			//	Set the Culling, the Viewport and the Blending.
+			glCullFace(GL_FRONT);
+			glViewport(0, 0, 1024, 1024);
+			glEnable(GL_BLEND);
+
+			//	Bind the Light Depth Map Framebuffer.
+			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["LIGHT_DEPTH_MAP_FRAMEBUFFER"]->framebufferID);
+
+			//	Iterate over the sides of the Cubes.
 			for (int i = 0; i < 6; i++)
 			{
-
 				//	Attach the appropriate textures.
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, lightShadowMaps[lightNumber].lightColorCubeMap, 0);
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, lightShadowMaps[lightNumber].lightDepthCubeMap, 0);
+
+				//	Check the Current Framebuffer Status.
+				checkFramebufferStatus();
 
 				//	Clear the Color and the Depth Buffer.
 				glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1091,9 +1125,31 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 			}
 
 			//	---------------------------------------------------------------------------------------------------------------	//
+			//	Set the Culling, the Viewport and the Blending.
+			glCullFace(GL_BACK);
+			glViewport(0, 0, windowScreenWidth, windowScreenHeight);
+			glDisable(GL_BLEND);
+
+			//	Deferred Renderer - Second Pass - Render the Lighting Pass.
+			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["CURRENT_VIEW_SHADOW_MAP_PASS_FRAMEBUFFER"]->framebufferID);
+
+			//	Attach the appropriate textures.
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightColorMap, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightDepthMap, 0);
+
+			//	Check the Current Framebuffer Status.
+			checkFramebufferStatus();
+
+			//	Clear the Color and the Depth Buffer.
+			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+			//	Bind the Default Framebuffer.
+			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+			//	---------------------------------------------------------------------------------------------------------------	//
+
 		}
 	}
-
 
 	//	
 	GLenum err = GL_NO_ERROR;
@@ -1103,11 +1159,6 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 	}
 
 
-	//	Bind the Default Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
-
-	glCullFace(GL_BACK);
-	glViewport(0, 0, windowScreenWidth, windowScreenHeight);
 }
 
 //	Render the Background.
@@ -1156,6 +1207,7 @@ void DeferredRenderer::renderBackgroundEnvironment(const float & deltaFrameTime,
 //	Render the Renderables that have to go through the Deferred Rendering Pipeline.
 void DeferredRenderer::renderDeferredRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
 {
+	//	Disable Blending.
 	glEnable(GL_BLEND);
 
 	//	Deferred Renderer - First Pass - Render to the G Buffer.
@@ -1174,7 +1226,7 @@ void DeferredRenderer::renderDeferredRenderingPipeline(const float & deltaFrameT
 	glClearColor(0.0, 0.0, 0.0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	//	
+	//	Check the Framebuffer Status.
 	checkFramebufferStatus();
 
 	//	Get the Shading Types and the Geometry Types.
@@ -1213,37 +1265,8 @@ void DeferredRenderer::renderDeferredRenderingPipeline(const float & deltaFrameT
 	//	Bind the Default Framebuffer.
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
 
-	glDisable(GL_BLEND);
-
-	//	Set the shader for the Deferred Lighting Shadowing Rendering.
-	getShaderManager()->setActiveShader("DEFERRED LIGHTING SHADOWING SHADER");
-	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("DEFERRED LIGHTING SHADOWING SHADER");
-
-	uploadCameraData(*rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
-	uploadGBufferDataTextures(*rendererShaderData);
-	uploadLightsData(*rendererShaderData);
-
-	//	Deferred Renderer - Second Pass - Render the Lighting Pass.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFERRED_LIGHTING_PASS_FRAMEBUFFER"]->framebufferID);
-	
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-
-	//	Draw the Arrays.
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	//	Bind the Default Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
-
-
-	//	
-	GLenum err2 = GL_NO_ERROR;
-	while ((err2 = glGetError()) != GL_NO_ERROR)
-	{
-		std::cout << "OpenGL Deferred Render First Pass Error -> " << err2 << std::endl;
-	}
-
+	//	Enable Blending.
+	glEnable(GL_BLEND);
 }
 
 //	Render the Renderables that have to go through the Forward Rendering pipeline.
@@ -1812,10 +1835,9 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
 				glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->spotCosCutOffAndExponent));
 
-
+				//	Bind the appropriate Texture Unit. Upload the Light Color Map.
 				glActiveTexture(GL_TEXTURE0 + (40 + (lightNumber * 2)));
 				glBindTexture(GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightColorMap);
-				glBindTexture(GL_TEXTURE_CUBE_MAP, lightShadowMaps[lightNumber].lightColorCubeMap);
 
 				currentLightAttribute = "mainLightColorMap";
 				currentLightAttributeLocation = -1;
@@ -1825,18 +1847,9 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 					glUniform1i(currentLightAttributeLocation, 40 + (lightNumber * 2));
 				}
 
-				currentLightAttribute = "lightColorCubeMap";
-				currentLightAttributeLocation = -1;
-				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
-
-				if (currentLightAttributeLocation != (GLfloat)-1)
-				{
-					glUniform1i(currentLightAttributeLocation, 40 + (lightNumber * 2));
-				}
-
+				//	Bind the appropriate Texture Unit. Upload the Light Depth Map.
 				glActiveTexture(GL_TEXTURE0 + (41 + (lightNumber * 2)));
 				glBindTexture(GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightDepthMap);
-				glBindTexture(GL_TEXTURE_CUBE_MAP, lightShadowMaps[lightNumber].lightDepthCubeMap);
 
 				currentLightAttribute = "mainLightDepthMap";
 				currentLightAttributeLocation = -1;
@@ -1846,18 +1859,10 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 					glUniform1i(currentLightAttributeLocation, 41 + (lightNumber * 2));
 				}
 
-				currentLightAttribute = "lightDepthCubeMap";
-				currentLightAttributeLocation = -1;
-				currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
-				if (currentLightAttributeLocation != (GLfloat)-1)
-				{
-					glUniform1i(currentLightAttributeLocation, 41 + (lightNumber * 2));
-				}
 			}
 		}
 		else
 		{
-
 			//	
 			std::string lightPrefix = "u_lights";
 			std::string currentLightAttribute = "";
@@ -1869,6 +1874,95 @@ void DeferredRenderer::uploadLightsData(const RendererShaderData & rendererShade
 			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (lightPrefix + "[" + std::to_string(lightNumber) + "]" + "." + currentLightAttribute).c_str());
 			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(glm::vec4(0.0)));
 		}
+	}
+}
+
+//	Upload the Data of a Single Light to the RendererShaderData.
+void DeferredRenderer::uploadSingleLightsData(const RendererShaderData & rendererShaderData, const int & lightNumber)
+{
+	//	Renderer Shader Data.
+	GLuint currentShaderProgramID = rendererShaderData.shaderID;
+	GLuint currentLightAttributeLocation = -1;
+	glUniform4fv(rendererShaderData.shaderUniforms.lightDataUniforms.u_ambientLight, 1, glm::value_ptr(glm::vec4(0.0, 0.0, 0.0, 0.0)));
+	
+	if (activeLightNames[lightNumber] != "NONE")
+	{
+		//	Get the current Renderer Light Data of the specified Light.
+		std::shared_ptr<const RendererLightData> lightData = activeLights[lightNumber];
+
+		//	Current Light Attribute.
+		std::string currentLightAttribute = "";
+		GLuint currentLightAttributeLocation = -1;
+
+		//	
+		currentLightAttribute = "lightEnabledShadowLightType";
+		currentLightAttributeLocation = -1;
+		currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (currentLightAttribute).c_str());
+		glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->lightEnabledShadowLightType));
+
+		//	If the Current Light is not enabled, do not bother uploading all the other stuff.
+		if (lightData->lightEnabledShadowLightType[0] == 1.0)
+		{
+			//	CurrentLight - Color
+			currentLightAttribute = "lightColorAndLightIntensity";
+			currentLightAttributeLocation = -1;
+			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (currentLightAttribute).c_str());
+			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->lightColorAndLightIntensity));
+
+			//	CurrentLight - Position
+			currentLightAttribute = "lightPosition";
+			currentLightAttributeLocation = -1;
+			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (currentLightAttribute).c_str());
+			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->lightPosition));
+
+			//	CurrentLight -	Attenuation
+			currentLightAttribute = "lightConeDirection";
+			currentLightAttributeLocation = -1;
+			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (currentLightAttribute).c_str());
+			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->lightConeDirection));
+
+			//	CurrentLight -	spotCosCutOffAndExponent
+			currentLightAttribute = "lightSpotCosCutOffAndExponent";
+			currentLightAttributeLocation = -1;
+			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (currentLightAttribute).c_str());
+			glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(lightData->spotCosCutOffAndExponent));
+
+			//	Bind the appropriate Texture Unit. Upload the Light Color Map.
+			glActiveTexture(GL_TEXTURE0 + (40 + (lightNumber * 2)));
+			glBindTexture(GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightColorMap);
+
+			currentLightAttribute = "mainLightColorMap";
+			currentLightAttributeLocation = -1;
+			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (currentLightAttribute).c_str());
+			if (currentLightAttributeLocation != (GLfloat)-1)
+			{
+				glUniform1i(currentLightAttributeLocation, 40 + (lightNumber * 2));
+			}
+
+			//	Bind the appropriate Texture Unit. Upload the Light Depth Map.
+			glActiveTexture(GL_TEXTURE0 + (41 + (lightNumber * 2)));
+			glBindTexture(GL_TEXTURE_2D, lightShadowMaps[lightNumber].mainLightDepthMap);
+
+			currentLightAttribute = "mainLightDepthMap";
+			currentLightAttributeLocation = -1;
+			currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (currentLightAttribute).c_str());
+			if (currentLightAttributeLocation != (GLfloat)-1)
+			{
+				glUniform1i(currentLightAttributeLocation, 41 + (lightNumber * 2));
+			}
+		}
+	}
+	else
+	{
+		//	
+		std::string currentLightAttribute = "";
+		GLuint currentLightAttributeLocation = -1;
+
+		//	Upload whether the Light has been Enabled, the Shadow type and the Light Type.
+		currentLightAttribute = "lightEnabledShadowLightType";
+		currentLightAttributeLocation = -1;
+		currentLightAttributeLocation = glGetUniformLocation(currentShaderProgramID, (currentLightAttribute).c_str());
+		glUniform4fv(currentLightAttributeLocation, 1, glm::value_ptr(glm::vec4(0.0)));
 	}
 }
 
