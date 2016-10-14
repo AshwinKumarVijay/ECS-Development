@@ -315,6 +315,7 @@
     <Text Include="Assets\Resource Description Files\GDF.txt" />
     <Text Include="Assets\Resource Description Files\LDF.txt" />
     <Text Include="Assets\Resource Description Files\MDF.txt" />
+    <Text Include="Assets\Resource Description Files\SDF.txt" />
     <Text Include="Assets\Resource Description Files\TDF.txt" />
     <Text Include="Assets\Shaders\AdditiveBlend\AdditiveBlendFS.txt" />
     <Text Include="Assets\Shaders\AdditiveBlend\AdditiveBlendVS.txt" />
@@ -352,13 +353,15 @@
   <ItemGroup>
     <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.frag.glsl" />
     <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.vert.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\AmbientColorShader\AmbientColor.frag.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\AmbientColorShader\AmbientColor.vert.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.frag.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.vert.glsl" />
-    <None Include="Assets\NewShaders\LightingShaders\ShadowLightingShader\SVShader.frag.glsl" />
-    <None Include="Assets\NewShaders\LightingShaders\ShadowLightingShader\SVShader.vert.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.frag.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.vert.glsl" />
     <None Include="Assets\NewShaders\DeferredShader\FirstPassDeferredShaders\BasicDeferredShader\BasicDeferred.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\Gaussian Blur\GaussianBlur.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\Gaussian Blur\GaussianBlur.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

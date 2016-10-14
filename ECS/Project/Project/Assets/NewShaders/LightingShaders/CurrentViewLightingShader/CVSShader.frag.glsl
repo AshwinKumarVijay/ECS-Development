@@ -70,8 +70,7 @@ uniform vec4 lightAttenuationAndDistance;
 uniform vec4 lightSpotCosCutOffAndExponent;
 
 
-
-float computeShadowingFactor(in int lightIndex)
+float computeShadowingFactor()
 {
 	vec3 worldspace_vertexPosition = texture(g_worldSpaceVertexPosition, v_vertexTextureCoordinates.xy).xyz;
 
@@ -101,7 +100,7 @@ void main(void)
 	//	Initialize the Total Light.
 	vec3 totalLightResult = vec3(0.0, 0.0, 0.0);
 	
-	float shadowingFactor = 1.0 - computeShadowingFactor(1);
+	float shadowingFactor = 1.0 - computeShadowingFactor();
 
 	//	Output the Fragment Color.
 	o_baseOutputColor = vec4(shadowingFactor, shadowingFactor, shadowingFactor, 1.0);

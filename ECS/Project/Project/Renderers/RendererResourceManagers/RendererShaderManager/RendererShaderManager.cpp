@@ -355,11 +355,15 @@ void RendererShaderManager::generateShaderUniformLocations(GLuint newShader, Ren
 
 	{
 		//	POST PROCESS INPUT TEXTURES.
-		newShaderUniforms.postProcessInputUniforms.pp_inputTextureOne = glGetUniformLocation(newShader, "pp_inputTextureOne");
-		newShaderUniforms.postProcessInputUniforms.pp_inputTextureTwo = glGetUniformLocation(newShader, "pp_inputTextureTwo");
-		newShaderUniforms.postProcessInputUniforms.pp_inputTextureThree = glGetUniformLocation(newShader, "pp_inputTextureThree");
-		newShaderUniforms.postProcessInputUniforms.pp_inputTextureFour = glGetUniformLocation(newShader, "pp_inputTextureFour");
+		newShaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureOne = glGetUniformLocation(newShader, "pp_inputTextureOne");
+		newShaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureTwo = glGetUniformLocation(newShader, "pp_inputTextureTwo");
+		newShaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureThree = glGetUniformLocation(newShader, "pp_inputTextureThree");
+		newShaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureFour = glGetUniformLocation(newShader, "pp_inputTextureFour");
 
+		newShaderUniforms.secondaryPostProcessInputUniforms.pp_inputTextureFive = glGetUniformLocation(newShader, "pp_inputTextureFive");
+		newShaderUniforms.secondaryPostProcessInputUniforms.pp_inputTextureSix = glGetUniformLocation(newShader, "pp_inputTextureSix");
+		newShaderUniforms.secondaryPostProcessInputUniforms.pp_inputTextureSeven = glGetUniformLocation(newShader, "pp_inputTextureSeven");
+		newShaderUniforms.secondaryPostProcessInputUniforms.pp_inputTextureEight = glGetUniformLocation(newShader, "pp_inputTextureEight");
 	}
 
 	{

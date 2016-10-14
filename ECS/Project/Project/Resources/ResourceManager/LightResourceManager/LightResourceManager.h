@@ -12,27 +12,11 @@ class LightResourceManager : public ResourceManager
 public:
 
 
-	/**
-
-	Name: LightResourceManager
-	Parameters: -
-	Purpose: Default LightResourceManager Constructor
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Default LightResourceManager Constructor
 	LightResourceManager(std::shared_ptr<EventQueue> newEventQueue);
 
 
-	/**
-
-	Name: ~LightResourceManager
-	Parameters: -
-	Purpose: Default LightResourceManager Destructor
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Default LightResourceManager Destructor
 	virtual ~LightResourceManager();
 
 

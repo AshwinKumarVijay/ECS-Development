@@ -11,9 +11,6 @@ struct LightShadowMapDescription
 {
 	GLuint mainLightColorMap = -1;
 	GLuint mainLightDepthMap = -1;
-
-	GLuint lightColorCubeMap = -1;
-	GLuint lightDepthCubeMap = -1;
 };
 
 struct PointLightDepthCubeMapDescription
@@ -126,6 +123,12 @@ private:
 	//	Initialize the Deferred Rendering G Buffer Framebuffer.
 	virtual void initializeDeferredRenderingGBufferFramebuffer();
 
+	//	Initialize the Post Process Textures.
+	virtual void initializePostProcessTextures();
+
+	//	Initialize the Post Prcesss Framebuffers.
+	virtual void initializePostProcessFramebuffers();
+
 	//	Initialize the Sampling Values.
 	virtual void initializeSamplingValues();
 
@@ -137,6 +140,9 @@ private:
 
 	//	Render the Shadow Maps.
 	virtual void renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderPointLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderDirectionalLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderSpotLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
 	//	Render the Renderables that have to go through the Deferred Rendering Pipeline.
 	virtual void renderDeferredRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
@@ -147,6 +153,9 @@ private:
 	//	Render the Post Process Pipeline.
 	virtual void renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
+	//	Render the Ambient Occlusion Pass.
+	virtual void renderAmbientOcclusionPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+		
 	//	Render the Background.
 	virtual void renderBackgroundEnvironment(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
@@ -166,10 +175,14 @@ private:
 	virtual void uploadMaterialData(const RendererShaderData & rendererShaderData, const glm::vec4 & diffuseAlbedo, const glm::vec4 & specularAlbedo, const glm::vec4 & emissiveColor, const glm::vec4 & metallicnessRoughnessFresnelOpacity);
 	//	Upload the Material Texture Data to the Shading Pipeline.
 	virtual void uploadMaterialTextureData(const RendererShaderData & rendererShaderData, const std::string & diffuseAlbedoMap, const std::string & specularAlbedoMap, const std::string & MRFOMap, const std::string & NormalMap, const std::string & OcclusionMap);
+	//	Upload the Ambient Light Data.
+	virtual void uploadAmbientLightData(const RendererShaderData & rendererShaderData);
 	//	Upload the Shader Lights Data to the Shader Pipeline.
 	virtual void uploadLightsData(const RendererShaderData & rendererShaderData);
 	//	Upload the Single Lights Data to the Shader Pipeline.
 	virtual void uploadSingleLightsData(const RendererShaderData & rendererShaderData, const int & lightNumber);
+	//	Upload the Point Light Shadow Cube Map Data.
+	virtual void uploadPointLightShadowCubeMapData(const RendererShaderData & rendererShaderData);
 
 	//	Upload the Sampling Data.
 	virtual void uploadSamplingData(const RendererShaderData & rendererShaderData);
@@ -177,8 +190,11 @@ private:
 	virtual void uploadNoiseTextures(const RendererShaderData & rendererShaderData);
 	//	Upload the G Buffer.
 	virtual void uploadGBufferDataTextures(const RendererShaderData & rendererShaderData);
+
 	//	Upload the Post Process Textures.
-	virtual void uploadPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureOneID, GLuint postProcessTextureTwoID, GLuint postProcessTextureThreeID, GLuint postProcessTextureFourID);
+	virtual void uploadPrimaryPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureOneID, GLuint postProcessTextureTwoID, GLuint postProcessTextureThreeID, GLuint postProcessTextureFourID);
+	virtual void uploadSecondaryPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureFiveID, GLuint postProcessTextureSixID, GLuint postProcessTextureSevenID, GLuint postProcessTextureEightID);
+
 
 	//	Check the Framebuffer Status.
 	virtual void checkFramebufferStatus();
@@ -195,8 +211,9 @@ private:
 	//	The Active Lights.
 	std::vector<std::shared_ptr<const RendererLightData>> activeLights;
 
-	//	The Rendered Light Shadow Maps.
-	std::vector<LightShadowMapDescription> lightShadowMaps;
+	//	The Light Depth and Color Maps.
+	std::vector<GLuint> mainLightColorMaps;
+	std::vector<GLuint> mainLightDepthMaps;
 
 	//	Point Light Depth CubeMaps.
 	PointLightDepthCubeMapDescription pointLightDepthCubeMaps;
@@ -231,5 +248,7 @@ private:
 	//	The Hieght of the Window we are Rendering to.
 	int windowScreenHeight;
 
+	//	The Resolution of the Shadow Map.
+	int shadowMapResolution;
 };
 

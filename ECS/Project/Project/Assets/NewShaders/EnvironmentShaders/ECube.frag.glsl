@@ -36,8 +36,6 @@ layout (binding = 1) uniform samplerCube u_backgroundEnvironmentCubeMapTwo;
 layout (binding = 2) uniform samplerCube u_backgroundEnvironmentCubeMapThree;
 layout (binding = 3) uniform samplerCube u_backgroundEnvironmentCubeMapFour;
 
-
-
 //	Environment Map Intensities.
 uniform vec4 u_environmentMapIntensities;
 

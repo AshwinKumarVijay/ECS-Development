@@ -26,6 +26,12 @@ layout (binding = 36) uniform sampler2D pp_inputTextureTwo;			//	World Space Ver
 layout (binding = 37) uniform sampler2D pp_inputTextureThree;		//	View Space Vertex Position and Depth.
 layout (binding = 38) uniform sampler2D pp_inputTextureFour;		//	View Space Vertex Normal.
 
+layout (binding = 39) uniform sampler2D pp_inputTextureFive;		//	Ambient Color Pass Texture.
+layout (binding = 40) uniform sampler2D pp_inputTextureSix;			//	Ambient Depth Pass Texture.
+layout (binding = 41) uniform sampler2D pp_inputTextureSeven;		//	Unused Texture.
+layout (binding = 42) uniform sampler2D pp_inputTextureEight;		//	Unused Texture.
+
+
 //	Input the Noise Textures.
 layout (binding = 45) uniform sampler2D t_noiseTextureOne;
 layout (binding = 46) uniform sampler2D t_noiseTextureTwo;
@@ -90,13 +96,13 @@ void main(void)
 		float sampleDepth = -texture(pp_inputTextureThree, offset.xy).w;
 
 		float rangeCheck = smoothstep(0.0, 1.0, u_hemisphereRadius / abs(samplePoint.z - sampleDepth));
-		occlusion += (sampleDepth >= samplePoint.z ? 1.0 : 0.0) * rangeCheck;
+		occlusion += (sampleDepth  >= samplePoint.z + 0.5 ? 1.0 : 0.0) * rangeCheck;
 
 	}
 
 	occlusion =	1.0 - (occlusion / (float(SAMPLES)));
 	
-	//	OUTPUT COLOR
-	o_baseOutputColor = vec4(occlusion, occlusion, occlusion, 1.0);
+	//	OUTPUT COLOR 
+	o_baseOutputColor = vec4(texture(pp_inputTextureFive, v_vertexPosition.xy).xyz * occlusion, 1.0);
 	
 }

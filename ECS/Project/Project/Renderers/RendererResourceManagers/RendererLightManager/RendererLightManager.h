@@ -14,6 +14,7 @@ class LightData;
 struct RendererLightData
 {
 	//	Light Enabled and Shadow Light Type.
+	//	Point Light = 1.0, Directional Light = 2.0, Spot Light = 3.0.
 	glm::vec4 lightEnabledShadowLightType = glm::vec4(0.0, 1.0, 1.0, 0.0);
 
 	//	Light Color and Light Intensity.

@@ -47,13 +47,22 @@ struct NoiseTexturesUniforms
 };
 
 //	
-struct PostProcessInputUniforms
+struct PrimaryPostProcessInputUniforms
 {
 	//	Post Process Texture Input Uniforms.
 	GLuint pp_inputTextureOne = -1;
 	GLuint pp_inputTextureTwo = -1;
 	GLuint pp_inputTextureThree = -1;
 	GLuint pp_inputTextureFour = -1;
+};
+
+struct SecondaryPostProcessInputUniforms
+{
+	//	Post Process Texture Input Uniforms.
+	GLuint pp_inputTextureFive = -1;
+	GLuint pp_inputTextureSix = -1;
+	GLuint pp_inputTextureSeven = -1;
+	GLuint pp_inputTextureEight = -1;
 };
 
 //	
@@ -152,7 +161,8 @@ struct RendererShaderUniforms
 	LightDataUniforms lightDataUniforms;
 	TextureDataUniforms textureDataUniforms;
 	GBufferInputUniforms gBufferInputUniforms;
-	PostProcessInputUniforms postProcessInputUniforms;
+	PrimaryPostProcessInputUniforms primaryPostProcessInputUniforms;
+	SecondaryPostProcessInputUniforms secondaryPostProcessInputUniforms;
 	NoiseTexturesUniforms noiseTexturesUniforms;
 };
 

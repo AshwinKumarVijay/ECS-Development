@@ -1590,35 +1590,35 @@ void TestRenderer::uploadGBufferDataTextures(const RendererShaderData & renderer
 //	Upload the Post Process Textures.
 void TestRenderer::uploadPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureOneID, GLuint postProcessTextureTwoID, GLuint postProcessTextureThreeID, GLuint postProcessTextureFourID)
 {
-	if (rendererShaderData.shaderUniforms.postProcessInputUniforms.pp_inputTextureOne != (GLuint)-1)
+	if (rendererShaderData.shaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureOne != (GLuint)-1)
 	{
 		glActiveTexture(GL_TEXTURE0 + 35);
 		glBindTexture(GL_TEXTURE_2D, postProcessTextureOneID);
-		glUniform1i(rendererShaderData.shaderUniforms.postProcessInputUniforms.pp_inputTextureOne, 35);
+		glUniform1i(rendererShaderData.shaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureOne, 35);
 		glActiveTexture(GL_TEXTURE0);
 	}
 
-	if (rendererShaderData.shaderUniforms.postProcessInputUniforms.pp_inputTextureTwo != (GLuint)-1)
+	if (rendererShaderData.shaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureTwo != (GLuint)-1)
 	{
 		glActiveTexture(GL_TEXTURE0 + 36);
 		glBindTexture(GL_TEXTURE_2D, postProcessTextureTwoID);
-		glUniform1i(rendererShaderData.shaderUniforms.postProcessInputUniforms.pp_inputTextureTwo, 36);
+		glUniform1i(rendererShaderData.shaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureTwo, 36);
 		glActiveTexture(GL_TEXTURE0);
 	}
 
-	if (rendererShaderData.shaderUniforms.postProcessInputUniforms.pp_inputTextureThree != (GLuint)-1)
+	if (rendererShaderData.shaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureThree != (GLuint)-1)
 	{
 		glActiveTexture(GL_TEXTURE0 + 37);
 		glBindTexture(GL_TEXTURE_2D, postProcessTextureThreeID);
-		glUniform1i(rendererShaderData.shaderUniforms.postProcessInputUniforms.pp_inputTextureThree, 37);
+		glUniform1i(rendererShaderData.shaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureThree, 37);
 		glActiveTexture(GL_TEXTURE0);
 	}
 
-	if (rendererShaderData.shaderUniforms.postProcessInputUniforms.pp_inputTextureFour != (GLuint)-1)
+	if (rendererShaderData.shaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureFour != (GLuint)-1)
 	{
 		glActiveTexture(GL_TEXTURE0 + 38);
 		glBindTexture(GL_TEXTURE_2D, postProcessTextureFourID);
-		glUniform1i(rendererShaderData.shaderUniforms.postProcessInputUniforms.pp_inputTextureFour, 38);
+		glUniform1i(rendererShaderData.shaderUniforms.primaryPostProcessInputUniforms.pp_inputTextureFour, 38);
 		glActiveTexture(GL_TEXTURE0);
 	}
 }

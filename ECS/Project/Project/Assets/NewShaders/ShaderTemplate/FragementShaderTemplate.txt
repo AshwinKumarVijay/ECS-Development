@@ -86,6 +86,10 @@ layout (binding = 35) uniform sampler2D pp_inputTextureOne;
 layout (binding = 36) uniform sampler2D pp_inputTextureTwo;
 layout (binding = 37) uniform sampler2D pp_inputTextureThree;
 layout (binding = 38) uniform sampler2D pp_inputTextureFour;
+layout (binding = 39) uniform sampler2D pp_inputTextureFive;
+layout (binding = 39) uniform sampler2D pp_inputTextureSix;
+layout (binding = 39) uniform sampler2D pp_inputTextureSeven;
+layout (binding = 39) uniform sampler2D pp_inputTextureEight;
 
 //	
 layout (binding = 45) uniform sampler2D t_noiseTextureOne;
