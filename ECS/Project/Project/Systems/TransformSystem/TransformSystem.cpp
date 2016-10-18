@@ -62,7 +62,8 @@ void TransformSystem::update(const float & deltaTime, const float & currentFrame
 				//	Compute the transform.
 				transformComponent->getTransform()->computeTransformMatrix();
 
-				//	Here, compute the transform matrix recursively down the tree. TO DO
+				//	TO DO
+				//	Here, compute the transform matrix recursively down the tree. 
 			}
 		}
 

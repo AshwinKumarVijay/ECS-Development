@@ -125,29 +125,17 @@ void DemoECS::initializeScene()
 	cubeGeometryComponent1->setGeometryType("CUBE");
 	cubeRenderingComponent1->setMaterialType("DEFAULT MATERIAL 3");
 	cubeRenderingComponent1->setShadingType(ShadingTypes::OPAQUE_BASIC);
-	cubeTransformComponent1->getTransform()->translateBy(glm::vec3(0.0, 1.0, 0.0));
-	cubeTransformComponent1->getTransform()->setScale(glm::vec3(0.5, 0.5, 0.5));
+	cubeTransformComponent1->getTransform()->translateBy(glm::vec3(0.0, 1.25, 0.0));
+	cubeTransformComponent1->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
 
 
-	//	Create the Cube Entity.
-	cubeEntity2 = getEntityManager()->createEntity();
+	//	Create the Camera Entity.
+	cameraEntity1 = getEntityManager()->createEntity();
+	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::CAMERA_COMPONENT);
 
-	//	Add the Hierarcy, Transform, Speed, Geometry and Rendering Component.
-	getEntityManager()->addComponentToEntity(cubeEntity2, ComponentType::HIERARCHY_COMPONENT);
-	getEntityManager()->addComponentToEntity(cubeEntity2, ComponentType::TRANSFORM_COMPONENT);
-	getEntityManager()->addComponentToEntity(cubeEntity2, ComponentType::GEOMETRY_COMPONENT);
-	getEntityManager()->addComponentToEntity(cubeEntity2, ComponentType::RENDERING_COMPONENT);
-
-	std::shared_ptr<GeometryComponent> cubeGeometryComponent2 = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(cubeEntity2, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
-	std::shared_ptr<RenderingComponent> cubeRenderingComponent2 = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(cubeEntity2, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
-	std::shared_ptr<TransformComponent> cubeTransformComponent2 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cubeEntity2, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-
-	cubeGeometryComponent2->setGeometryType("CUBE");
-	cubeRenderingComponent2->setMaterialType("DEFAULT MATERIAL 3");
-	cubeRenderingComponent2->setShadingType(ShadingTypes::OPAQUE_BASIC);
-	cubeTransformComponent2->getTransform()->translateBy(glm::vec3(2.5, 4.0, 0.0));
-	cubeTransformComponent2->getTransform()->setScale(glm::vec3(0.5, 0.5, 0.5));
-
+	std::shared_ptr<TransformComponent> cameraTransformComponent1 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity1, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
 
 
 	//	Create the Sphere Entity.
@@ -764,6 +752,14 @@ void DemoECS::loadShadersFromFile(const std::string & shaderResourceFile)
 void DemoECS::processInput(const InputType & ecsKey, const InputEventType & inputEventType, const EventType & eventType)
 {
 	inputSystem->processInput(ecsKey, inputEventType, eventType);
+}
+
+void DemoECS::update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
+{
+	
+	std::shared_ptr<TransformComponent> cubeTransformComponent1 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cubeEntity1, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	cubeTransformComponent1->getTransform()->rotateBy((glm::pi<float>() / 2.0) * deltaTime, glm::vec3(0.0, 1.0, 0.0));
+	ECS::update(deltaTime, currentFrameTime, lastFrameTime);
 }
 
 //	Shut down the Demo ECS

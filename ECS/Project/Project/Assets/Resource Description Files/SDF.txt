@@ -87,8 +87,8 @@ Fragment Shader Source = Assets/NewShaders/LightingShaders/MaterialLightingShade
 #end Shader
 
 #define Shader
-Shader Type = BASIC DEFERRED SHADER
-Shader Rendering Type = DEFERRED RENDERING - FIRST PASS
+Shader Type = BASIC DEFERRED G BUFFER SHADER
+Shader Rendering Type = DEFERRED RENDERING
 Require Camera Data = TRUE
 Require Model Data = TRUE
 Require Material Data = FALSE
@@ -102,9 +102,31 @@ Require G Buffer Data = FALSE
 Output Base Color = FALSE
 Output Opacity = FALSE
 Output G Buffer = TRUE
-Vertex Shader Source = Assets/NewShaders/DeferredShader/FirstPassDeferredShaders/BasicDeferredShader/BasicDeferred.vert.glsl
+Vertex Shader Source = Assets/NewShaders/DeferredRenderingShaders/GBufferPassShaders/BasicGBufferShader/BasicGBufferShader.vert.glsl
 Geometry Shader Source = NONE
-Fragment Shader Source = Assets/NewShaders/DeferredShader/FirstPassDeferredShaders/BasicDeferredShader/BasicDeferred.frag.glsl
+Fragment Shader Source = Assets/NewShaders/DeferredRenderingShaders/GBufferPassShaders/BasicGBufferShader/BasicGBufferShader.frag.glsl
+#end Shader
+
+
+#define Shader
+Shader Type = BASIC DEFERRED LIGHTING PASS SHADER
+Shadder Rendering Type = DEFERRED RENDERING
+Require Camera Data = TRUE
+Require Model Data = FALSE
+Require Material Data = FALSE
+Require Vertex Basic Data = FALSE
+Require Vertex Tangent Bitangent Data = FALSE
+Require Vertex Texture Coordinates Data = FALSE
+Require Lights Data = TRUE
+Require Environment Data = TRUE
+Require Material Texture Data = FALSE
+Require G Buffer Data = TRUE
+Output Base Color = TRUE
+Output Opacit = TRUE
+Output G Buffer = FALSE
+Vertex Shader Source = Assets/NewShaders/DeferredRenderingShaders/LightingPassShaders/BasicLightingShader/BasicLightingShader.vert.glsl
+Geometry Shader Source = NONE
+Fragment Shader Source = Assets/NewShaders/DeferredRenderingShaders/LightingPassShaders/BasicLightingShader/BasicLightingShader.frag.glsl
 #end Shader
 
 
@@ -197,7 +219,7 @@ Fragment Shader Source = Assets/NewShaders/LightingShaders/AmbientColorShader/Am
 
 
 #define Shader
-Shader Type = VIEW SHADOW MAP SHADER
+Shader Type = CURRENT VIEW SHADOW MAP SHADER
 Shader Rendering Type = SHADOW PROCESS
 Require Camera Data = TRUE
 Require Model Data = FALSE
@@ -215,4 +237,27 @@ Output G Buffer = FALSE
 Vertex Shader Source = Assets/NewShaders/LightingShaders/CurrentViewLightingShader/CVSShader.vert.glsl
 Geometry Shader Source = NONE
 Fragment Shader Source = Assets/NewShaders/LightingShaders/CurrentViewLightingShader/CVSShader.frag.glsl
+#end Shader
+
+
+
+#define Shader
+Shader Type = HDR SHADER
+Shader Rendering Type = POST PROCESS
+Require Camera Data = FALSE
+Require Model Data = FALSE
+Require Material Data = FALSE
+Require Vertex Basic Data = FALSE
+Require Vertex Tangent Bitangent Data = FALSE
+Require Vertex Texture Coordinates Data = FALSE
+Require Lights Data = FALSE
+Require Environment Data = FALSE
+Require Material Texture Data = FALSE
+Require G Buffer Data = FALSE
+Output Base Color = TRUE
+Output Opacity = FALSE
+Output G Buffer = FALSE
+Vertex Shader Source = Assets/NewShaders/PostProcessShader/HDR/HDR.vert.glsl
+Geometry Shader Source = NONE
+Fragment Shader Source = Assets/NewShaders/PostProcessShader/HDR/HDR.frag.glsl
 #end Shader

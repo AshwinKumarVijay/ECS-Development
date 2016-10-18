@@ -21,8 +21,10 @@ ECS::~ECS()
 	//	Set the associated Event Queue to NULL.
 	eventQueue = NULL;
 
-	//	Set the Dispatcher Receiver to NULL.
+	//	Set the Event Dispatcher to NULL.
 	eventDispatcher = NULL;
+
+	//	Set the Event Receiver to NULL.
 	eventReceiver = NULL;
 
 	//	Set the EntityManager to NULL.
@@ -100,8 +102,10 @@ void ECS::initializeECS()
 	//	Create the EventQueue.
 	eventQueue = std::make_shared<EventQueue>();
 
-	//	Create the DispatcherReceiver associated with the overall EntityComponentSystem.
+	//	Create the EventDispatcher.
 	eventDispatcher = std::make_shared<EventDispatcher>(eventQueue);
+	
+	//	Create the EventReceiver.
 	eventReceiver = std::make_shared<EventReceiver>();
 
 	//	Add the ECS DispatchReceiver to the EventQueue.

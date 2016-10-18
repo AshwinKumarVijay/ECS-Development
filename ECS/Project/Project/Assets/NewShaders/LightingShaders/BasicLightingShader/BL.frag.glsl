@@ -64,10 +64,10 @@ struct Light
 	vec4 lightEnabledShadowLightType;
 
 	//	Vector of Options: 
-	vec4 lightColorAndLightIntensity;
+	vec4 lightPosition;
 
 	//	Vector of Options: 
-	vec4 lightPosition;
+	vec4 lightColorAndLightIntensity;
 
 	//	Vector of Options: 
 	vec4 lightConeDirection;

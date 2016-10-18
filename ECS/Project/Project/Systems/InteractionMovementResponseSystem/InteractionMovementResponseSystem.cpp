@@ -21,7 +21,6 @@ InteractionMovementResponseSystem::InteractionMovementResponseSystem(std::shared
 
 }
 
-
 //	Default Interaction Movement Response System Destructor
 InteractionMovementResponseSystem::~InteractionMovementResponseSystem()
 {
@@ -34,14 +33,12 @@ void InteractionMovementResponseSystem::initializeSystem()
 
 }
 
-
 //	Update the Interaction Movement Response System.
 void InteractionMovementResponseSystem::update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
 {
 	//	Process Events.
 	processEvents(deltaTime, currentFrameTime, lastFrameTime);
 }
-
 
 //	Process the Events.
 void InteractionMovementResponseSystem::processEvents(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
@@ -236,7 +233,6 @@ void InteractionMovementResponseSystem::processInteractionEvents(std::shared_ptr
 		}
 	}
 }
-
 
 //	Shut down the Interaction Movement Response System.
 void InteractionMovementResponseSystem::shutDownSystem()

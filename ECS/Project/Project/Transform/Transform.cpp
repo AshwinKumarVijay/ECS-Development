@@ -97,7 +97,6 @@ glm::vec3 Transform::getFowardDirection() const
 	return glm::normalize(glm::vec3(glm::mat4_cast(transformRotation) * glm::vec4(0.0, 0.0, -1.0, 0.0))); // bug fixed: should NOT be (0,0,1,0)
 }
 
-
 //	Return the vector representing the right of the transform.
 glm::vec3 Transform::getRightVector() const
 {

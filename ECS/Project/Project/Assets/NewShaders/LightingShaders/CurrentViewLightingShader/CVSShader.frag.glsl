@@ -54,11 +54,11 @@ uniform vec4 u_ambientLight;
 //	Vector of Options: Light Enabled, Locality, Light Type.
 uniform vec4 lightEnabledShadowLightType;
 
-//	Vector of Light Color and Intensity. 
-uniform vec4 lightColorAndLightIntensity;
-
 //	Vector of Light Position.
 uniform vec4 lightPosition;
+
+//	Vector of Light Color and Intensity. 
+uniform vec4 lightColorAndLightIntensity;
 
 //	Vector of Light Cone Direction.
 uniform vec4 lightConeDirection;
@@ -82,13 +82,13 @@ float computeShadowingFactor()
 
 	float closestDepth = texture(lightDepthCubeMap, normalize(vertexToLight)).x;
 
-	closestDepth = closestDepth ;
+	closestDepth = closestDepth;
 
 	float currentDepth = length(vertexToLight) / u_cameraNearFarPlaneDistance[1];
 
-	float bias = max(0.05 * (1.0 - dot(worldspace_vertexNormal, normalize(vertexToLight))), 0.005);  
+	float bias = max(0.00075 * (1.0 - dot(worldspace_vertexNormal, normalize(-vertexToLight))), 0.0005);  
 
-	float shadowingFactor = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+	float shadowingFactor = currentDepth  > closestDepth ? 1.0 : 0.0;
 		
 	return shadowingFactor;
 }
@@ -99,6 +99,7 @@ void main(void)
 {
 	//	Initialize the Total Light.
 	vec3 totalLightResult = vec3(0.0, 0.0, 0.0);
+
 	
 	float shadowingFactor = 1.0 - computeShadowingFactor();
 

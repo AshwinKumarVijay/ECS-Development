@@ -76,6 +76,9 @@ public:
 	//	Process the provided input.
 	virtual void processInput(const InputType & ecsKey, const InputEventType & inputEventType, const EventType & eventType);
 
+	//	
+	virtual void update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime);
+
 	//	Shut Down the Demo ECS.
 	void shutDownDemoECS();
 
@@ -125,11 +128,15 @@ private:
 	//	Texture Generator Selector
 	std::shared_ptr<TextureGeneratorSelector> textureGeneratorSelector;
 
-	//	The Cube of the Entity.
+	//	The Cube Entity.
 	long int cubeEntity1;
 	long int cubeEntity2;
 
-	//	The Base of the Entity.
+	//	The Camera View Entity.
+	long int cameraEntity1;
+	long int cameraEntity2;
+
+	//	The Base Entity.
 	long int baseEntity;
 
 };

@@ -207,20 +207,24 @@
     <Text Include="Assets\NewShaders\EnvironmentShaders\ECube.vert.glsl" />
     <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.frag.glsl" />
     <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.vert.glsl" />
-    <Text Include="Assets\NewShaders\DeferredShader\FirstPassDeferredShaders\BasicDeferredShader\BasicDeferred.frag.glsl" />
     <Text Include="Assets\Resource Description Files\SDF.txt" />
+    <Text Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\BasicGBufferShader\BasicGBufferShader.frag.glsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.frag.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.vert.glsl" />
-    <None Include="Assets\NewShaders\DeferredShader\FirstPassDeferredShaders\BasicDeferredShader\BasicDeferred.vert.glsl" />
-    <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.frag.glsl" />
-    <None Include="Assets\NewShaders\DeferredShader\SecondPassDeferredShaders\ShadowLightingDeferredShader\SLDeferredShader.vert.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.vert.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.frag.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\AmbientColorShader\AmbientColor.vert.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\AmbientColorShader\AmbientColor.frag.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\Gaussian Blur\GaussianBlur.vert.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\Gaussian Blur\GaussianBlur.frag.glsl" />
+    <None Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\BasicGBufferShader\BasicGBufferShader.vert.glsl" />
+    <None Include="Assets\NewShaders\DeferredRenderingShaders\LightingPassShaders\BasicLightingShader\BasicLightingShader.frag.glsl" />
+    <None Include="Assets\NewShaders\DeferredRenderingShaders\LightingPassShaders\BasicLightingShader\BasicLightingShader.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\HDR\HDR.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\HDR\HDR.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\AlphaBlendTextures\AlphaBlendTextures.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\AlphaBlendTextures\AlphaBlendTextures.vert.glsl" />
   </ItemGroup>
 </Project>

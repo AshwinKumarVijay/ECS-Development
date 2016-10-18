@@ -93,6 +93,7 @@ void initializeECS()
 
 void enterRenderCycle()
 {
+
 	//	Last Frame Time.
 	lastFrameTime = (float)glfwGetTime();
 
@@ -113,6 +114,8 @@ void enterRenderCycle()
 
 		//	Poll the EVents.
 		glfwPollEvents();
+
+		std::cout << " FPS -> " << 1.0 / deltaFrameTime << std::endl;;
 
 		//	Update the Last Frame Time.
 		lastFrameTime = currentFrameTime;
@@ -304,3 +307,5 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
 		ecs->processInput(ecsKey, inputEventType, eventType);
 	}
 }
+
+

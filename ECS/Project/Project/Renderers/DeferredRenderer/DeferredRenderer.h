@@ -140,12 +140,15 @@ private:
 
 	//	Render the Shadow Maps.
 	virtual void renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+
+	//	Render the Point Light Shadow Maps, Directional Light Shadow Maps, Spot Light Shadow Maps.
 	virtual void renderPointLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 	virtual void renderDirectionalLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 	virtual void renderSpotLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
 	//	Render the Renderables that have to go through the Deferred Rendering Pipeline.
-	virtual void renderDeferredRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderDeferredRenderingGBufferPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderDeferredRenderingLightingPass(const float & deltaFrameTime, const float & currnetFrameTime, const float & lastFrameTime);
 
 	//	Render the Renderables that have to go through the Forward Rendering pipeline.
 	virtual void renderForwardRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);

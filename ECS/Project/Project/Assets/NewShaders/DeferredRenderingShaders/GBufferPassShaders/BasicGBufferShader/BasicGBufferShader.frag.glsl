@@ -23,6 +23,12 @@ layout (location = 21) uniform mat3 u_inverseTransposeModelMatrix;
 layout (location = 22) uniform mat4 u_modelViewMatrix;
 layout (location = 23) uniform mat3 u_inverseTransposeModelViewMatrix;
 
+//	MATERIAL DATA. DIFFUSE ALBEDO, METALLICNESS, ROUGHNESS, FRESNEL, OPACITY.
+layout (location = 25) uniform vec4 u_diffuseAlbedo;
+layout (location = 26) uniform vec4 u_specularAlbedo;
+layout (location = 27) uniform vec4 u_emssionColorAndIntensity;
+layout (location = 28) uniform vec4 u_metallicnessRoughnessFresnelOpacity;
+
 //	VERTEX ATTRIBUTES
 //	VERTEX POSITION, VERTEX NORMAL, VERTEX TANGENT, VERTEX BITANGENT.
 layout (location = 0) in vec4 v_vertexPosition;
@@ -74,9 +80,8 @@ void main(void)
 	o_viewSpaceVertexNormal = vec4(normalize(u_inverseTransposeModelViewMatrix * v_vertexNormal), 0.0);
 
 	//	OUTPUT MATERIAL DATA.
-	o_diffuseAlbedo = vec4(0.0, 0.0, 0.0, 0.0);
-	o_specularAlbedo = vec4(0.0, 0.0, 0.0, 0.0);
-	o_emissionColorAndIntensity = vec4(0.0, 0.0, 0.0, 0.0);
-	o_metallicnessRoughnessFresnelOpacity = vec4(1.0, 1.0, 1.0, 1.0);
-
+	o_diffuseAlbedo = u_diffuseAlbedo;
+	o_specularAlbedo = u_specularAlbedo;
+	o_emissionColorAndIntensity = u_emssionColorAndIntensity;
+	o_metallicnessRoughnessFresnelOpacity = u_metallicnessRoughnessFresnelOpacity;
 }

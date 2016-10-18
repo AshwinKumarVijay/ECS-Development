@@ -33,8 +33,6 @@ void InputSystem::initializeSystem()
 
 }
 
-
-
 //	Update the InteractionGenerationSystem
 void InputSystem::update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
 {
@@ -177,8 +175,6 @@ void InputSystem::processEvents(const float & deltaTime, const float & currentFr
 		}
 	}
 }
-
-
 
 //	Shut Down the InteractionGenerationSystem.
 void InputSystem::shutDownSystem()
