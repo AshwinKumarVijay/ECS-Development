@@ -2,7 +2,7 @@
 
 //	MAX LIGHTS
 #define MAX_LIGHTS 16
-#define SAMPLES 256
+#define SAMPLES 16
 
 //	CAMERA DATA. UNIFORM CAMERA POSITION, CAMERA PERSPECTIVE MATRIX, CAMERA VIEW MATRIX.
 layout (location = 10) uniform vec4 u_worldCameraPosition;

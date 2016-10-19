@@ -736,7 +736,7 @@ void DeferredRenderer::initializePostProcessFramebuffers()
 //	Initialize Sampling Values.
 void DeferredRenderer::initializeSamplingValues()
 {
-	sampler = std::make_shared<Sampler>(256);
+	sampler = std::make_shared<Sampler>(16);
 
 }
 

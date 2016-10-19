@@ -148,6 +148,8 @@ private:
 
 	//	Render the Renderables that have to go through the Deferred Rendering Pipeline.
 	virtual void renderDeferredRenderingGBufferPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+
+	//	Render the Lighting Pass.
 	virtual void renderDeferredRenderingLightingPass(const float & deltaFrameTime, const float & currnetFrameTime, const float & lastFrameTime);
 
 	//	Render the Renderables that have to go through the Forward Rendering pipeline.
@@ -194,7 +196,7 @@ private:
 	//	Upload the G Buffer.
 	virtual void uploadGBufferDataTextures(const RendererShaderData & rendererShaderData);
 
-	//	Upload the Post Process Textures.
+	//	Upload the Post Process Textures, the primary and the secondary textures.
 	virtual void uploadPrimaryPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureOneID, GLuint postProcessTextureTwoID, GLuint postProcessTextureThreeID, GLuint postProcessTextureFourID);
 	virtual void uploadSecondaryPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureFiveID, GLuint postProcessTextureSixID, GLuint postProcessTextureSevenID, GLuint postProcessTextureEightID);
 

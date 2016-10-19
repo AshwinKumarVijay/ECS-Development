@@ -52,7 +52,12 @@ int initializeGLFW()
 	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
+	glfwWindowHint(GLFW_RESIZABLE, 0);
+	glfwWindowHint(GLFW_DECORATED, 0);
+
 	window = glfwCreateWindow(1280, 720, "System Of Planets", NULL, NULL);
+	glfwSetWindowPos(window, 320, 180);
+
 	glfwSetKeyCallback(window, key_callback);
 
 
