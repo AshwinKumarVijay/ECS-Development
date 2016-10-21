@@ -39,139 +39,39 @@ class Renderer
 {
 public:
 
-	/**
-
-	Name: Renderer
-	Parameters: -
-	Purpose: Default Renderer Constructor
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Default Renderer Constructor
 	Renderer();
 
-
-	/**
-
-	Name: Renderer
-	Parameters: -
-	Purpose: Default Renderer Destructor
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Default Renderer Destructor
 	virtual ~Renderer();
 
-
-	/**
-
-	Name: initializeRenderer
-	Parameters: -
-	Purpose: Miscellaneous set up of the Renderer.
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Miscellaneous set up of the Renderer.
 	virtual void initializeRenderer() = 0;
 
 
-	/**
-
-	Name: createRenderable
-	Parameters: -
-	Purpose: -
-	Return Value: 
-	- (long int) - The ID of the associated Renderable.
-	Other Output: -
-
-	*/
+	//	Return the ID of the newly created Renderable.
 	virtual long int createRenderable() = 0;
 
 
-	/**
-
-	Name: viewRenderable
-	Parameters:
-	- "renderableID" - (long int) (const) (&) - The ID specifying the renderable to view.
-	Purpose: -
-	Return Value:
-	- (shared_ptr<const Renderable>) - Return the associated Renderable
-	Other Output: -
-
-	*/
+	//	The ID specifying the renderable to view.
 	virtual std::shared_ptr<const Renderable> viewRenderable(const long int & renderableID) const = 0;
 
 
+	//	Add Comments - TO Do
 	virtual void updateShadingType(const long int & renderableID, ShadingTypes::ShadingType newShadingType) = 0;
 	virtual void updateGeometryType(const long int & renderableID, const std::string & newGeometryType) = 0;
 	virtual void updateMaterialType(const long int & renderableID, const std::string & newMaterialType) = 0;
 	virtual void updateTransformMatrix(const long int & renderableID, const glm::mat4 & newModelMatrix) = 0;
 
 
-	/**
+	//	Render!
+	virtual void render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> camera) = 0;
 
-	Name: render
-	Parameters:
-	- "deltaTime" - (float) (const) (&) - The time between frames.
-	- "currentFrameTime" - (float) (const) (&) - The currentFrameTime.
-	- "lastFrameTime" - (float) (const) (&) - The lastFrameTime.
-	Purpose: Render!
-	Return Value: -
-	Other Output: -
-
-	*/
-	virtual void render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime) = 0;
-
-
-	/**
-
-	Name: removeRenderable
-	Parameters:
-	- "renderableID" - (int) (const) (&) - The ID specifying the renderable to remove.
-	Purpose: Removes the renderable from the renderer, meaning that it will not be rendered any more.
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Remove the Renderable specified by ID.
 	virtual void removeRenderable(const long int & renderableID) = 0;
 
-
-	/**
-
-	Name: cleanUpRenderer
-	Parameters: -
-	Purpose: Miscellaneous clean up of the Renderer.
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Miscellaneous clean up of the Renderer.
 	virtual void cleanUpRenderer() = 0;
-
-
-	/**
-
-	Name: setActiveCamera
-	Parameters:
-	- "activeCamera" - (shared_ptr<Camera>) - The pointer to the new activeCamera.
-	Purpose: Check whether the Framebuffer currently attached is correctly.
-	Return Value: -
-	Other Output: -
-
-	*/
-	virtual void setActiveCamera(std::shared_ptr<const Camera> activeCamera) = 0;
-
-
-	/**
-
-	Name: getActiveCamera
-	Parameters: -
-	Purpose: Return a pointer to the Camera currently being used by the renderer.
-	Return Value:
-	- (shared_ptr<Camera>) - Pointer to the active camera.
-	Other Output: -
-
-	*/
-	virtual std::shared_ptr<Camera> getActiveCamera() = 0;
 
 	//	Add Comments - TO DO
 	virtual void addMaterial(std::string newMaterialName, std::shared_ptr<const MaterialData> newMaterialData);
@@ -195,130 +95,36 @@ public:
 
 protected:
 
-
-	/**
-
-	Name: setShaderManager
-	Parameters:
-	- (shared_ptr<ShaderManager>) - The new ShaderManager.
-	Purpose: Set the ShaderManager of the Renderer
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Set the ShaderManager of the Renderer
 	void setShaderManager(std::shared_ptr<RendererShaderManager> newShaderManager);
 
-	/**
-
-	Name: getShaderManager
-	Parameters: -
-	Purpose: -
-	Return Value:
-	- (shared_ptr<ShaderManager>) - Return the associated ShaderManager.
-	Other Output: -
-
-	*/
+	//	Return the associated ShaderManager.
 	std::shared_ptr<RendererShaderManager> getShaderManager();
 
-	
-
-	/**
-
-	Name: setTextureManager
-	Parameters:
-	- (shared_ptr<TextureManager>) - The new TextureManager.
-	Purpose: Set the TextureManager of the Renderer
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Set the TextureManager of the Renderer
 	void setTextureManager(std::shared_ptr<RendererTextureManager> newTextureManager);
 
-	/**
-
-	Name: getTextureManager
-	Parameters: -
-	Purpose: -
-	Return Value:
-	- (shared_ptr<TextureManager>) - Return the associated TextureManager.
-	Other Output: -
-
-	*/
+	//	Return the associated TextureManager.
 	std::shared_ptr<RendererTextureManager> getTextureManager();
 
-	/**
-
-	Name: setGeometryManager
-	Parameters:
-	- (shared_ptr<GeometryManager>) - The new GeometryManager.
-	Purpose: Set the GeometryManager of the Renderer
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Set the GeometryManager of the Renderer
 	void setGeometryManager(std::shared_ptr<RendererGeometryManager> newGeometryManager);
 
-	/**
-
-	Name: getGeometryManager
-	Parameters: -
-	Purpose: -
-	Return Value:
-	- (shared_ptr<GeometryManager>) - Return the associated GeometryManager.
-	Other Output: -
-
-	*/
+	//	Return the associated GeometryManager.
 	std::shared_ptr<RendererGeometryManager> getGeometryManager();
 
 
-
-	/**
-
-	Name: setLightManager
-	Parameters:
-	- (shared_ptr<LightManager>) - The new LightManager.
-	Purpose: Set the LightManager of the Renderer
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Set the LightManager of the Renderer
 	void setLightManager(std::shared_ptr<RendererLightManager> newLightManager);
 
-	/**
-
-	Name: getLightManager
-	Parameters: -
-	Purpose: -
-	Return Value:
-	- (shared_ptr<LightManager>) - Return the associated LightManager.
-	Other Output: -
-
-	*/
+	//	Return the associated LightManager.
 	std::shared_ptr<RendererLightManager> getLightManager();
 
 
-	/**
-
-	Name: setMaterialManager
-	Parameters:
-	- (shared_ptr<MaterialManager>) - The new MaterialManager.
-	Purpose: Set the MaterialManager of the Renderer
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Set the MaterialManager of the Renderer
 	void setMaterialManager(std::shared_ptr<RendererMaterialManager> newMaterialManager);
 
-	/**
-
-	Name: getMaterialManager
-	Parameters: -
-	Purpose: -
-	Return Value:
-	- (shared_ptr<MaterialManager>) - Return the associated MaterialManager.
-	Other Output: -
-
-	*/
+	//	Return the associated MaterialManager.
 	std::shared_ptr<RendererMaterialManager> getMaterialManager();
 
 

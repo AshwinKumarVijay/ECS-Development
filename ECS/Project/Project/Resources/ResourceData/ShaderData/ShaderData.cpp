@@ -5,35 +5,7 @@
 ShaderData::ShaderData(const std::map<std::string, std::string> & newMapShaderPropertyToValue)
 {
 	//	Construct the Map from the given Map.
-	mapShaderPropertyToValue = std::map<std::string, std::string>(newMapShaderPropertyToValue);
-
-	//	Find the Shader Type.
-	auto shaderPropertiesIterator = mapShaderPropertyToValue.find("Shader Type");
-	if (shaderPropertiesIterator != mapShaderPropertyToValue.end()) 
-		shaderProgramName = shaderPropertiesIterator->second;
-	else
-		shaderProgramName = "ERROR";
-
-	//	Find the Vertex Shader Source.
-	shaderPropertiesIterator = mapShaderPropertyToValue.find("Vertex Shader Source");
-	if (shaderPropertiesIterator != mapShaderPropertyToValue.end()) 
-		vertexShaderSourceName = shaderPropertiesIterator->second;
-	else
-		vertexShaderSourceName = "ERROR";
-
-	shaderPropertiesIterator = mapShaderPropertyToValue.find("Geometry Shader Source");
-	if (shaderPropertiesIterator != mapShaderPropertyToValue.end())
-		geometryShaderSourceName = shaderPropertiesIterator->second;
-	else
-		geometryShaderSourceName = "ERROR";
-
-	//	Find the Fragment Shader Source.
-	shaderPropertiesIterator = mapShaderPropertyToValue.find("Fragment Shader Source");
-	if (shaderPropertiesIterator != mapShaderPropertyToValue.end())
-		fragmentShaderSourceName = shaderPropertiesIterator->second;
-	else
-		fragmentShaderSourceName = "ERROR";
-
+	properties = std::map<std::string, std::string>(newMapShaderPropertyToValue);
 }
 
 //	Default ShaderData Destructor
@@ -42,32 +14,29 @@ ShaderData::~ShaderData()
 
 }
 
-//	Return the Vertex Shader File Name associated with this Shader.
-std::string ShaderData::getVertexShaderFileName() const
+std::map<std::string, std::string>& ShaderData::getProperties()
 {
-	return vertexShaderSourceName;
+	return properties;
 }
 
-//	Return the Geometry Shader File Name associated with this Shader.
-std::string ShaderData::getGeometryShaderFileName() const
+const std::map<std::string, std::string>& ShaderData::viewProperties() const
 {
-	return geometryShaderSourceName;
+	return properties;
 }
 
-//	Return the Fragment Shader File Name associated with this Shader.
-std::string ShaderData::getFragmentShaderFileName() const
+bool ShaderData::findProperty(const std::string & propertyName, std::string & propertyValue) const
 {
-	return fragmentShaderSourceName;
-}
+	//	Look for the property.
+	auto itr = properties.find(propertyName);
 
-//	Return the Program Name.
-std::string ShaderData::getShaderProgramName() const
-{
-	return shaderProgramName;
-}
-
-//	Return the map of the Shader Property to the Value.
-const std::map<std::string, std::string>& ShaderData::getMapShaderPropertyToValue() const
-{
-	return mapShaderPropertyToValue;
+	//	Return false if the property was not found.
+	if (itr == properties.end())
+	{
+		return false;
+	}
+	else
+	{
+		propertyValue = itr->second;
+		return true;
+	}
 }

@@ -10,28 +10,35 @@ class LightData : public ResourceData
 {
 public:
 	
-	//	Add Comments - TO DO
-	LightData(
-		bool setEnabled,
-		bool setLocal,
-		int newLightType,
-		glm::vec3 newLightColor,
-		float newLightIntensity,
-		glm::vec4 newLightPosition,
-		glm::vec4 newDistanceAttenuation,
-		glm::vec4 newSpotCosCutOffAndExponent);
-	
-	//	Add Comments - TO DO
+	//	Default LightData Constructor.
+	LightData();
+
+	//	Default LightData Destructor.
 	virtual ~LightData();
 
-
+	//	
+	void setEnabled(bool newIsEnabled);
 	bool getEnabled() const;
+
+	void setLocal(bool newIsLocal);
 	bool getLocal() const;
+
 	int getLightType() const;
+	void setLightType(int newLightType);
+
 	glm::vec3 getLightColor() const;
+	void setLightColor(glm::vec3 newLightColor);
+
 	float getLightIntensity() const;
+	void setLightIntensity(float newLightIntensity);
+
 	glm::vec4 getLightPosition() const;
+	void setLightPosition(glm::vec4 newLightPosition);
+
 	glm::vec4 getDistanceAttenuation() const;
+	void setDistanceAttenuation(glm::vec4 newDistanceAttenuation);
+
+	void setSpotCosCutOffAndExponent(glm::vec4 newSpotCosCutOffAndExponent);
 	glm::vec4 getSpotCosCutOffAndExponent() const;
 
 private:

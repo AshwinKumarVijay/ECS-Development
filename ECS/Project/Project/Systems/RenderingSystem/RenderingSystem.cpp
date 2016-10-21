@@ -48,9 +48,7 @@ void RenderingSystem::initializeSystem()
 
 	//	Create the new camera.
 	defaultCamera = std::make_shared<Camera>();
-
-	//	Set the default Camera.
-	renderer->setActiveCamera(defaultCamera);
+	activeCamera = std::make_shared<Camera>();
 }
 
 //	Update the Rendering System this frame.
@@ -60,7 +58,8 @@ void RenderingSystem::update(const float & deltaTime, const float & currentFrame
 	processEvents(deltaTime, currentFrameTime, lastFrameTime);
 
 	//	Render the Renderer
-	renderer->render(deltaTime, currentFrameTime, lastFrameTime);
+	activeCamera->updateCamera();
+	renderer->render(deltaTime, currentFrameTime, lastFrameTime, activeCamera);
 }
 
 //	Process the Events that have occurred.
@@ -387,29 +386,23 @@ void RenderingSystem::updateCamera()
 			//	Check if this is the Actice Camera.
 			if (cameraComponent->getIsActive())
 			{
-				//	Set the Near Clip of the Camera.
-				renderer->getActiveCamera()->setNearClip(cameraComponent->getNearClip());
-
-				//	Set the Far Clip of the Camera.
-				renderer->getActiveCamera()->setFarClip(cameraComponent->getFarClip());
-
-				//	Set the FOV of the Camera.
-				renderer->getActiveCamera()->setFOV(cameraComponent->getFOV());
-
-				//	Set the Aspect Ratio of the Camera.
-				renderer->getActiveCamera()->setAspectRatio(cameraComponent->getAspectRatio());
-
-				//	Set the Up Vector to correspond with the Up Vector.
-				renderer->getActiveCamera()->setUpVector(transformComponent->viewTransform()->getUpVector());
-
-				//	Set the Position of the Camera. 
-				renderer->getActiveCamera()->setCameraPosition(transformComponent->viewTransform()->getPosition());
-
-				//	Set the LookAt Direction of the Camera.
-				renderer->getActiveCamera()->setLookAtDirection(transformComponent->viewTransform()->getFowardDirection());
 
 				//	Active Camera.
 				activeCameraAvailable = true;
+
+				//	Set the Transform Related Camera Properties.
+				activeCamera->setCameraPosition(transformComponent->viewTransform()->getPosition());
+				activeCamera->setUpVector(transformComponent->viewTransform()->getUpVector());
+				activeCamera->setLookAtDirection(transformComponent->viewTransform()->getFowardDirection());
+
+				//	Set the Aspect Ratio and Field of View.
+				activeCamera->setAspectRatio(cameraComponent->getAspectRatio());
+				activeCamera->setFOV(cameraComponent->getFOV());
+
+				//	Set the Near and Far Clip.
+				activeCamera->setFarClip(cameraComponent->getFarClip());
+				activeCamera->setNearClip(cameraComponent->getNearClip());
+					
 			}
 		}
 	}
@@ -417,31 +410,18 @@ void RenderingSystem::updateCamera()
 	//	If an Active Camera Component was not found, use the default camera properties.
 	if (activeCameraAvailable == false)
 	{
-		std::shared_ptr<Camera> currentCamera = renderer->getActiveCamera();
-		
-		if (currentCamera)
-		{
-			//	Set the Near Clip of the Camera.
-			currentCamera->setNearClip(defaultCamera->getNearClip());
+		//	Set the Transform Related Camera Properties.
+		activeCamera->setCameraPosition(defaultCamera->getCameraPosition());
+		activeCamera->setUpVector(defaultCamera->getUpVector());
+		activeCamera->setLookAtDirection(defaultCamera->getLookAtDirection());
 
-			//	Set the Far Clip of the Camera.
-			currentCamera->setFarClip(defaultCamera->getFarClip());
+		//	Set the Aspect Ratio and Field of View.
+		activeCamera->setAspectRatio(defaultCamera->getAspectRatio());
+		activeCamera->setFOV(defaultCamera->getFOV());
 
-			//	Set the FOV of the Camera.
-			currentCamera->setFOV(defaultCamera->getFOV());
-
-			//	Set the Aspect Ratio of the Camera.
-			currentCamera->setUpVector(defaultCamera->getUpVector());
-
-			//	Set the Up Vector to correspond with the Up Vector.
-			currentCamera->setAspectRatio(defaultCamera->getAspectRatio());
-
-			//	Set the Position of the Camera. 
-			currentCamera->setCameraPosition(defaultCamera->getCameraPosition());
-
-			//	Set the LookAt Direction of the Camera.
-			currentCamera->setLookAtDirection(defaultCamera->getLookAtDirection());
-		}
+		//	Set the Near and Far Clip.
+		activeCamera->setFarClip(defaultCamera->getFarClip());
+		activeCamera->setNearClip(defaultCamera->getNearClip());
 	}
 }
 

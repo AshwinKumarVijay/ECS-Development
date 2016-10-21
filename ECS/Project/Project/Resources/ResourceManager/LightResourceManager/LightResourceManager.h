@@ -15,10 +15,11 @@ public:
 	//	Default LightResourceManager Constructor
 	LightResourceManager(std::shared_ptr<EventQueue> newEventQueue);
 
-
 	//	Default LightResourceManager Destructor
 	virtual ~LightResourceManager();
 
+	//	Resource Management Functions.
+	virtual void processResource(const ResourceDescription & newResourceDescription);
 
 	//	Add Comments - TO DO
 	virtual void addLight(std::string newLightName, std::shared_ptr<LightData> newLightData);

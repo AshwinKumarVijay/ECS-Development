@@ -17,6 +17,8 @@
 #include "../TypesList/ComponentTypes.h"
 #include "../TypesList/ResourceTypes.h"
 
+#include "../RDFP/RDFP.h"
+
 class System;
 class TransformSystem;
 class RenderingSystem;
@@ -58,25 +60,16 @@ public:
 	//	Initialize the Scene.
 	void initializeScene();
 
-	//	Load Geometry from File.
-	virtual void loadGeometryFromFile(const std::string & geometryResourceFile);
+	//	Load the Resources From a given file.
+	virtual void loadResourcesFromFile(const std::string & resourceFile);
 
-	//	Load Materials from File.
-	virtual void loadMaterialsFromFile(const std::string & materialResourceFile);
-
-	//	Load Lights from File.
-	virtual void loadLightsFromFile(const std::string & lightResourceFile);
-
-	//	Load Textures from File.
-	virtual void loadTexturesFromFile(const std::string & textureResourceFile);
-
-	//	Load Shaders from File.
-	virtual void loadShadersFromFile(const std::string & shaderResourceFile);
+	//	Process the Resource.
+	virtual void processResource(const ResourceDescription & currentResourceDescription);
 
 	//	Process the provided input.
 	virtual void processInput(const InputType & ecsKey, const InputEventType & inputEventType, const EventType & eventType);
 
-	//	
+	//	Update the ECS.
 	virtual void update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime);
 
 	//	Shut Down the Demo ECS.
@@ -87,7 +80,6 @@ public:
 
 
 private:
-
 
 	//	The Interaction Generation System associated with the DemoECS.
 	std::shared_ptr<InputSystem> inputSystem;
@@ -107,7 +99,10 @@ private:
 	//	The Rendering System associated with the DemoECS.
 	std::shared_ptr<RenderingSystem> renderingSystem;
 
-	//	Geometry Resource Manager
+	//	The Resources and the Resource Description.
+	std::map<std::string, ResourceDescription> resources;
+
+		//	Geometry Resource Manager
 	std::shared_ptr<GeometryResourceManager> geometryResourceManager;
 
 	//	Material Resource Manager
@@ -122,22 +117,19 @@ private:
 	//	Shader Resource Manager
 	std::shared_ptr<ShaderResourceManager> shaderResourceManager;
 
-	//	Geometry Generator Selector
-	std::shared_ptr<GeometryGeneratorSelector> geometryGeneratorSelector;
-
-	//	Texture Generator Selector
-	std::shared_ptr<TextureGeneratorSelector> textureGeneratorSelector;
-
 	//	The Cube Entity.
 	long int cubeEntity1;
 	long int cubeEntity2;
 
-	//	The Camera View Entity.
+	//	The Camera Views Entities.
 	long int cameraEntity1;
 	long int cameraEntity2;
+	long int cameraEntity3;
+	long int cameraEntity4;
 
 	//	The Base Entity.
 	long int baseEntity;
 
+	RDFP rdfp;
 };
 

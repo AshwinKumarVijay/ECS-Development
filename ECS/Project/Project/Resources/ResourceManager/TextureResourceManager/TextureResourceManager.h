@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "../ResourceManager.h"
+#include "../TextureGeneratorSelector/TextureGeneratorSelector.h"
 
 class TextureData;
 
@@ -17,6 +18,9 @@ public:
 
 	//	Default TextureResourceManager Destructor.
 	~TextureResourceManager();
+
+	//	Resource Management Functions.
+	virtual void processResource(const ResourceDescription & newResourceDescription);
 
 	//	Add a New Texture Data, under the provided Texture Name.
 	virtual void addTexture(std::string newTextureName, std::shared_ptr<TextureData> newTextureData);
@@ -36,9 +40,11 @@ public:
 
 private:
 
-
 	//	Map the Name to the Texture Data.
 	std::map<std::string, std::shared_ptr<TextureData>> mapNameToTextureData;
+
+	//	Texture Generator Selector
+	std::shared_ptr<TextureGeneratorSelector> textureGeneratorSelector;
 
 };
 

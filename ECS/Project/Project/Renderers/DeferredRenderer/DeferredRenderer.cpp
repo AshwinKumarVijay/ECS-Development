@@ -21,9 +21,6 @@ DeferredRenderer::~DeferredRenderer()
 //	Initialize the Deferred Renderer.
 void DeferredRenderer::initializeRenderer()
 {
-	//	Create the Active Camera to use.
-	activeCamera = std::make_shared<Camera>();
-
 	//	Initialize the Rendering Hints.
 	initializeRenderingHints();
 
@@ -1019,47 +1016,53 @@ void DeferredRenderer::updateTransformMatrix(const long int & renderableID, cons
 	renderableManager.updateTransformMatrix(renderableID, newModelMatrix);
 }
 
-//	Update the Camera.
-void DeferredRenderer::updateCamera(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
-{
-	activeCamera->updateCamera();
-}
-
 //	Render!
-void DeferredRenderer::render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 	//	Initialize to NO ERRORs.
-	GLenum err = GL_NO_ERROR;
+	GLenum preerr = GL_NO_ERROR;
 
 	//	Check for any errors.
-	while ((err = glGetError()) != GL_NO_ERROR)
+	while ((preerr = glGetError()) != GL_NO_ERROR)
 	{
 		//Process/log the error.
-		std::cout << "ERROR : " << err << " ! " << std::endl;
+		std::cout << "OpenGL Pre - Rendering Error : " << preerr << " ! " << std::endl;
 	}
 
-
 	//	Render the Deferred Rendering Pipeline.
-	renderDeferredRenderingGBufferPass(deltaFrameTime, currentFrameTime, lastFrameTime);
+	renderDeferredRenderingGBufferPass(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
 
 	//	Render the Shadow Maps.
-	renderShadowMaps(deltaFrameTime, currentFrameTime, lastFrameTime);
+	renderShadowMaps(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
 
 	//	Render the Ambient Occlusion Pass.
-	renderAmbientOcclusionPass(deltaFrameTime, currentFrameTime, lastFrameTime);
+	renderAmbientOcclusionPass(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
 
 	//	Render the Deferred Rendering Lighting Pipelien.
-	renderDeferredRenderingLightingPass(deltaFrameTime, currentFrameTime, lastFrameTime);
+	renderDeferredRenderingLightingPass(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
 
 	//	Render the Foward Rendering Pipeline.
 	//	renderForwardRenderingPipeline(deltaFrameTime, currentFrameTime, lastFrameTime);
 
 	//	Render the Post Process Pipeline.
-	renderPostProcessPipeline(deltaFrameTime, currentFrameTime, lastFrameTime);
+	renderPostProcessPipeline(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
+
+
+	//	Initialize to NO ERRORs.
+	GLenum posterror = GL_NO_ERROR;
+
+	//	Check for any errors.
+	while ((posterror = glGetError()) != GL_NO_ERROR)
+	{
+		//Process/log the error.
+		std::cout << "OpenGL Post - Rendering Error : " << posterror << " ! " << std::endl;
+	}
+
+
 }
 
 //	Render the Background.
-void DeferredRenderer::renderBackgroundEnvironment(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderBackgroundEnvironment(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 	//	-----------------------------------------------------------------------------------------------------------------------------------------------------------	//
 
@@ -1102,7 +1105,7 @@ void DeferredRenderer::renderBackgroundEnvironment(const float & deltaFrameTime,
 }
 
 //	Render the Renderables that have to go through the Deferred Rendering Pipeline in to the G Buffer.
-void DeferredRenderer::renderDeferredRenderingGBufferPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderDeferredRenderingGBufferPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 	//	Deferred Renderer - First Pass - Render to the G Buffer.
 
@@ -1112,7 +1115,6 @@ void DeferredRenderer::renderDeferredRenderingGBufferPass(const float & deltaFra
 	{
 		std::cout << "OpenGL Pre - Deferred Rendering G Buffer Pass Error -> " << err1 << std::endl;
 	}
-
 
 	//	Disable Blending.
 	glDisable(GL_BLEND);
@@ -1143,13 +1145,13 @@ void DeferredRenderer::renderDeferredRenderingGBufferPass(const float & deltaFra
 			uploadBackgroundEnviroment(*currentRendererShaderData);
 			uploadCameraData(*currentRendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
 			
-			auto opacityFinder = currentRendererShaderData->shaderProperties.find("Output Opacity");
+			auto opacityFinder = currentRendererShaderData->shaderProperties.find("Shader Output Opacity");
 
 			//	Check if we have the property.
 			if (opacityFinder != currentRendererShaderData->shaderProperties.end())
 			{
 				//	Check if are outputing opacity.
-				if (opacityFinder->second != "TRUE")
+				if (opacityFinder->second != "True")
 				{
 					//	Render the Renderables that use the Shader Data specified by the Renderer.
 					renderRenderablesOfShadingType(currentShadingType->first, *currentRendererShaderData, activeCamera->getViewMatrix(), deltaFrameTime, currentFrameTime, lastFrameTime);
@@ -1174,7 +1176,7 @@ void DeferredRenderer::renderDeferredRenderingGBufferPass(const float & deltaFra
 }
 
 //	Render the Shadow Maps.
-void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 	//	
 	GLenum err = GL_NO_ERROR;
@@ -1205,8 +1207,8 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 			glCullFace(GL_FRONT);
 
 			//	Set the shader for the Point Light Shadow Map Rendering.
-			getShaderManager()->setActiveShader("POINT LIGHT SHADOW MAP SHADER");
-			std::shared_ptr<const RendererShaderData> pointLightShadowMapRendererShaderData = getShaderManager()->viewShaderData("POINT LIGHT SHADOW MAP SHADER");
+			getShaderManager()->setActiveShader("Point Light Shadow Map Shader");
+			std::shared_ptr<const RendererShaderData> pointLightShadowMapRendererShaderData = getShaderManager()->viewShaderData("Point Light Shadow Map Shader");
 
 			//	Bind the Light Depth Map Framebuffer.
 			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["LIGHT_DEPTH_MAP_FRAMEBUFFER"]->framebufferID);
@@ -1261,13 +1263,13 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 						if (currentRendererShaderData != NULL)
 						{
 							//	Check whether this outputs opacity.
-							auto opacityFinder = pointLightShadowMapRendererShaderData->shaderProperties.find("Output Opacity");
+							auto opacityFinder = pointLightShadowMapRendererShaderData->shaderProperties.find("Shader Output Opacity");
 
 							//	Check if we have the property.
 							if (opacityFinder != pointLightShadowMapRendererShaderData->shaderProperties.end())
 							{
 								//	Check if are outputing opacity.
-								if (opacityFinder->second != "TRUE")
+								if (opacityFinder->second != "True")
 								{
 									//	Render Renderables of the Shading Type, using the Shader provided in the current Renderer Shader.
 									renderRenderablesOfShadingType(currentShadingType->first, *pointLightShadowMapRendererShaderData, lightViewMatrices[i], deltaFrameTime, currentFrameTime, lastFrameTime);
@@ -1290,8 +1292,8 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 			glCullFace(GL_BACK);
 
 			//	Set the shader for the Deferred Lighting Shadowing Rendering.
-			getShaderManager()->setActiveShader("CURRENT VIEW SHADOW MAP SHADER");
-			std::shared_ptr<const RendererShaderData> currentViewShadowMapRendererShaderData = getShaderManager()->viewShaderData("CURRENT VIEW SHADOW MAP SHADER");
+			getShaderManager()->setActiveShader("Current View Shadow Map Shader");
+			std::shared_ptr<const RendererShaderData> currentViewShadowMapRendererShaderData = getShaderManager()->viewShaderData("Current View Shadow Map Shader");
 
 			//	Upload the Camera, the G Buffer and the Light Number Data.
 			uploadCameraData(*currentViewShadowMapRendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
@@ -1397,7 +1399,7 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 }
 
 //	Render the Lighting Pass for the G Buffer.
-void DeferredRenderer::renderDeferredRenderingLightingPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTIme) 
+void DeferredRenderer::renderDeferredRenderingLightingPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTIme, std::shared_ptr<const Camera> activeCamera)
 {
 	//	Disable Blending.
 	glDisable(GL_BLEND);
@@ -1409,8 +1411,8 @@ void DeferredRenderer::renderDeferredRenderingLightingPass(const float & deltaFr
 		std::cout << "OpenGL Deferred Rendering Lighting Pass Error -> " << err << std::endl;
 	}
 
-	getShaderManager()->setActiveShader("BASIC DEFERRED LIGHTING PASS SHADER");
-	std::shared_ptr<const RendererShaderData> currentRendererShaderData = getShaderManager()->viewShaderData("BASIC DEFERRED LIGHTING PASS SHADER");
+	getShaderManager()->setActiveShader("Basic Deferred Lighting Pass Shader");
+	std::shared_ptr<const RendererShaderData> currentRendererShaderData = getShaderManager()->viewShaderData("Basic Deferred Lighting Pass Shader");
 
 
 	//	Upload the Background, Camera, Lights and G Buffer Texture Data.
@@ -1442,34 +1444,34 @@ void DeferredRenderer::renderDeferredRenderingLightingPass(const float & deltaFr
 }
 
 //	Render the Point Light Shadow Maps.
-void DeferredRenderer::renderPointLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderPointLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 
 }
 
 //	Render the Directional Light Shadow Maps.
-void DeferredRenderer::renderDirectionalLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderDirectionalLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 
 
 }
 
 //	Render the Spot Light Shadow Maps.
-void DeferredRenderer::renderSpotLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderSpotLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 
 
 }
 
 //	Render the Renderables that have to go through the Forward Rendering pipeline.
-void DeferredRenderer::renderForwardRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderForwardRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 	//	Clear the Forward Rendering Buffer.
 
 }
 
 //	Render the Post Process Pipeline.
-void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 
 	//	blendTextures(rendererPipelineTextures["DEFERRED_RENDERING_LIGHTING_PASS_COLOR_TEXTURE"]->textureID, rendererPipelineTextures["AMBIENT_COLOR_PASS_TEXTURE"]->textureID);
@@ -1482,8 +1484,8 @@ void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, c
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	//	
-	getShaderManager()->setActiveShader("COPY TEXTURE SHADER");
-	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("HDR SHADER");
+	getShaderManager()->setActiveShader("HDR Shader");
+	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("HDR Shader");
 
 	//	Upload the Camera Data, the Noise Textures, the Sampling Data, and the Post Process Textures.
 	uploadCameraData(*rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
@@ -1504,7 +1506,7 @@ void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, c
 }
 
 //	Render the Ambient Occlusion Pass.
-void DeferredRenderer::renderAmbientOcclusionPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime)
+void DeferredRenderer::renderAmbientOcclusionPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 	//	Bind the G Buffer Framebuffer.
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["SINGLE_TEXTURE_OUTPUT_POST_PROCESS_FRAMEBUFFER"]->framebufferID);
@@ -1516,8 +1518,8 @@ void DeferredRenderer::renderAmbientOcclusionPass(const float & deltaFrameTime, 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	//	Set the shader for the Point Light Shadow Map Rendering.
-	getShaderManager()->setActiveShader("AMBIENT COLOR SHADER");
-	std::shared_ptr<const RendererShaderData> currentRendererShaderData = getShaderManager()->viewShaderData("AMBIENT COLOR SHADER");
+	getShaderManager()->setActiveShader("Ambient Color Shader");
+	std::shared_ptr<const RendererShaderData> currentRendererShaderData = getShaderManager()->viewShaderData("Ambient Color Shader");
 
 	//	Check the Framebuffer Status.
 	checkFramebufferStatus();
@@ -1536,13 +1538,13 @@ void DeferredRenderer::renderAmbientOcclusionPass(const float & deltaFrameTime, 
 		//	Check if there are any renderables with the current shading type. 
 		if (renderableManager.getShadingTypeRenderableNumber(currentShadingType->first) != 0)
 		{
-			auto opacityFinder = currentRendererShaderData->shaderProperties.find("Output Opacity");
+			auto opacityFinder = currentRendererShaderData->shaderProperties.find("Shader Output Opacity");
 
 			//	Check if we have the property.
 			if (opacityFinder != currentRendererShaderData->shaderProperties.end())
 			{
 				//	Check if are outputing opacity.
-				if (opacityFinder->second != "TRUE")
+				if (opacityFinder->second != "True")
 				{
 					//	Render the Renderables that use the Shader Data specified by the Renderer.
 					renderRenderablesOfShadingType(currentShadingType->first, *currentRendererShaderData, activeCamera->getViewMatrix(), deltaFrameTime, currentFrameTime, lastFrameTime);
@@ -1562,8 +1564,8 @@ void DeferredRenderer::renderAmbientOcclusionPass(const float & deltaFrameTime, 
 
 
 	//	
-	getShaderManager()->setActiveShader("SSAO SHADER");
-	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("SSAO SHADER");
+	getShaderManager()->setActiveShader("SSAO Shader");
+	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("SSAO Shader");
 
 	//	Upload the Camera Data, the Noise Textures, the Sampling Data, and the Post Process Textures.
 	uploadCameraData(*rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
@@ -1692,17 +1694,17 @@ std::shared_ptr<const RendererShaderData> DeferredRenderer::getRendererShaderDat
 	//	RETURN THE OPAQUE SHADER DATA. 
 	if (shadingType == ShadingTypes::OPAQUE_BASIC)
 	{
-		return getShaderManager()->viewShaderData("BASIC DEFERRED G BUFFER SHADER");
+		return getShaderManager()->viewShaderData("Basic Deferred G Buffer Shader");
 	}
 
 	if (shadingType == ShadingTypes::OPAQUE_GOURAUD)
 	{
-		return getShaderManager()->viewShaderData("BASIC DEFERRED G BUFFER SHADER");
+		return getShaderManager()->viewShaderData("Basic Deferred G Buffer Shader");
 	}
 
 	if (shadingType == ShadingTypes::OPAQUE_PHONG)
 	{
-		return getShaderManager()->viewShaderData("BASIC DEFERRED G BUFFER SHADER");
+		return getShaderManager()->viewShaderData("Basic Deferred G Buffer Shader");
 	}
 
 	if (shadingType == ShadingTypes::OPAQUE_PBR)
@@ -1713,22 +1715,22 @@ std::shared_ptr<const RendererShaderData> DeferredRenderer::getRendererShaderDat
 	//	RETURN THE TRANSPARENCY SHADER DATA.
 	if (shadingType == ShadingTypes::TRANSPARENCY_BASIC)
 	{
-		return getShaderManager()->viewShaderData("BASIC DEFERRED G BUFFER SHADER");
+		return getShaderManager()->viewShaderData("Basic Deferred G Buffer Shader");
 	}
 
 	if (shadingType == ShadingTypes::TRANSPARENCY_GOURAUD)
 	{
-		return getShaderManager()->viewShaderData("BASIC DEFERRED G BUFFER SHADER");
+		return getShaderManager()->viewShaderData("Basic Deferred G Buffer Shader");
 	}
 
 	if (shadingType == ShadingTypes::TRANSPARENCY_PHONG)
 	{
-		return getShaderManager()->viewShaderData("BASIC DEFERRED G BUFFER SHADER");
+		return getShaderManager()->viewShaderData("Basic Deferred G Buffer Shader");
 	}
 
 	if (shadingType == ShadingTypes::TRANSPARENCY_PBR)
 	{
-		return getShaderManager()->viewShaderData("BASIC DEFERRED G BUFFER SHADER");
+		return getShaderManager()->viewShaderData("Basic Deferred G Buffer Shader");
 	}
 
 	return NULL;
@@ -1775,18 +1777,6 @@ void DeferredRenderer::cleanUpRenderer()
 		glDeleteTextures(1, &mainLightDepthMaps[currentLightNumber]);
 	}
 
-}
-
-//	Set the Active Camera.
-void DeferredRenderer::setActiveCamera(std::shared_ptr<const Camera> newActiveCamera)
-{
-	*activeCamera = *newActiveCamera;
-}
-
-//	Return the Active Camera.
-std::shared_ptr<Camera> DeferredRenderer::getActiveCamera()
-{
-	return activeCamera;
 }
 
 //	Add the Material to the Renderer for use, under the Material Name.
@@ -1967,7 +1957,7 @@ void DeferredRenderer::uploadCameraData(const RendererShaderData & rendererShade
 	glUniformMatrix4fv(rendererShaderData.shaderUniforms.cameraDataUniforms.u_cameraViewMatrix, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 
 	//	Upload the Camera View Matrix without Translation.
-	glUniformMatrix4fv(rendererShaderData.shaderUniforms.cameraDataUniforms.u_screenSpaceViewMatrix, 1, GL_FALSE, glm::value_ptr(glm::mat4(glm::mat3(activeCamera->getViewMatrix()))));
+	glUniformMatrix4fv(rendererShaderData.shaderUniforms.cameraDataUniforms.u_screenSpaceViewMatrix, 1, GL_FALSE, glm::value_ptr(glm::mat4(glm::mat3(viewMatrix))));
 
 	//	Upload the Camera Near and Far Distance.
 	glUniform4fv(rendererShaderData.shaderUniforms.cameraDataUniforms.u_cameraNearFarPlaneDistance, 1, glm::value_ptr(cameraNearFarPlaneDistance));

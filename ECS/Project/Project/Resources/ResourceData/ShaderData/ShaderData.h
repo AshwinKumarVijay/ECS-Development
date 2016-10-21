@@ -18,36 +18,18 @@ public:
 	//	Default ShaderData Destructor.
 	virtual ~ShaderData();
 
-	//	Return the Vertex Shader FileName.
-	std::string getVertexShaderFileName() const;
+	//	Return the Properties, in an editiable form.
+	virtual std::map<std::string, std::string> & getProperties();
 
-	//	Return the Geometry Shader FileName.
-	std::string getGeometryShaderFileName() const;
+	//	Return the Properties, in an non-editable form.
+	virtual const std::map<std::string, std::string> & viewProperties() const;
 
-	//	Return the Fragment Shader FileName.
-	std::string getFragmentShaderFileName() const;
-
-	//	Return the Name of the Linked Program.
-	std::string getShaderProgramName() const;
-
-	//	Return the map of the Shader Property to the Value.
-	const std::map<std::string, std::string> & getMapShaderPropertyToValue() const;
+	//	Return whether the property is available, and write it into the provided string.
+	virtual bool findProperty(const std::string & propertyName, std::string & propertyValue) const;
 
 private:
 
-	//	The Name of the Vertex Shader Filename.
-	std::string vertexShaderSourceName;
-
-	//	The Name of the Geometry Shader Filename.
-	std::string geometryShaderSourceName;
-
-	//	The Name of the Fragment Shader Filename.
-	std::string fragmentShaderSourceName;
-
-	//	The name to assign to the linked Program.
-	std::string shaderProgramName;
-
 	//	Map the Shader Property to the Shader Value;
-	std::map<std::string, std::string> mapShaderPropertyToValue;
+	std::map<std::string, std::string> properties;
 };
 

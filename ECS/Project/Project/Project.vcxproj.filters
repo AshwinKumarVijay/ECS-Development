@@ -47,7 +47,6 @@
     <ClCompile Include="Events\InteractionEvent\InteractionEvent.cpp" />
     <ClCompile Include="Components\SpeedComponent\SpeedComponent.cpp" />
     <ClCompile Include="Systems\MovementSystem\MovementSystem.cpp" />
-    <ClCompile Include="Systems\SelectionSystem\SelectionSystem.cpp" />
     <ClCompile Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.cpp" />
     <ClCompile Include="Components\MovementResponseComponent\MovementResponseComponent.cpp" />
     <ClCompile Include="Components\SelectionComponent\SelectionComponent.cpp" />
@@ -60,7 +59,6 @@
     <ClCompile Include="Renderers\VAOManager\VAOStorage\VAOStorage.cpp" />
     <ClCompile Include="Renderers\VAOManager\VAOManager.cpp" />
     <ClCompile Include="Systems\InputSystem\InputSystem.cpp" />
-    <ClCompile Include="Systems\TimerSystem\TimerSystem.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
     <ClCompile Include="Transform\Transform.cpp" />
@@ -73,6 +71,8 @@
     <ClCompile Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.cpp" />
     <ClCompile Include="Renderers\Sampler\Sampler.cpp" />
     <ClCompile Include="Renderers\TestRenderer\TestRenderer.cpp" />
+    <ClCompile Include="RDFP\RDFP.cpp" />
+    <ClCompile Include="RDFP\ResourceDescription.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -125,7 +125,6 @@
     <ClInclude Include="TypesList\InteractionTypes.h" />
     <ClInclude Include="Components\SpeedComponent\SpeedComponent.h" />
     <ClInclude Include="Systems\MovementSystem\MovementSystem.h" />
-    <ClInclude Include="Systems\SelectionSystem\SelectionSystem.h" />
     <ClInclude Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.h" />
     <ClInclude Include="Components\MovementResponseComponent\MovementResponseComponent.h" />
     <ClInclude Include="Components\SelectionComponent\SelectionComponent.h" />
@@ -139,7 +138,6 @@
     <ClInclude Include="Renderers\VAOManager\VAOStorage\VAOStorage.h" />
     <ClInclude Include="Renderers\VAOManager\VAOManager.h" />
     <ClInclude Include="Systems\InputSystem\InputSystem.h" />
-    <ClInclude Include="Systems\TimerSystem\TimerSystem.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />
     <ClInclude Include="Transform\Transform.h" />
@@ -154,6 +152,8 @@
     <ClInclude Include="RNGs\RNGs.h" />
     <ClInclude Include="Renderers\TestRenderer\TestRenderer.h" />
     <ClInclude Include="Renderers\ShadingType.h" />
+    <ClInclude Include="RDFP\RDFP.h" />
+    <ClInclude Include="RDFP\ResourceDescription.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />
@@ -209,6 +209,7 @@
     <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.vert.glsl" />
     <Text Include="Assets\Resource Description Files\SDF.txt" />
     <Text Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\BasicGBufferShader\BasicGBufferShader.frag.glsl" />
+    <Text Include="Assets\Resource Description Files\RDF.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.frag.glsl" />

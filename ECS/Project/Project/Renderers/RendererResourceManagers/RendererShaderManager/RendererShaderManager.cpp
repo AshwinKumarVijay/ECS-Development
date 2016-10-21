@@ -16,62 +16,67 @@ RendererShaderManager::~RendererShaderManager()
 //	Add a new Shader to the RendererShaderManager.
 void RendererShaderManager::addShader(std::shared_ptr<const ShaderData> newShader)
 {
-	//	Find the Shader.
-	auto shaderIterator = mapNameToShaderData.find(newShader->getShaderProgramName());
 
-	//	Check if it already 
-	if (shaderIterator != mapNameToShaderData.end())
+	//
+	std::string shaderName = "None";
+	if (newShader->findProperty("Shader Name", shaderName))
 	{
-		//	TO DO
-		//	Throw Shader Already Exists Error.
+			//	Find the Shader.
+		auto shaderIterator = mapNameToShaderData.find(shaderName);
+
+		//	Check if it already 
+		if (shaderIterator != mapNameToShaderData.end())
+		{
+			//	TO DO
+			//	Throw Shader Already Exists Error.
+		}
+		else
+		{
+
+			//	Construct Renderer Shader Data.
+			std::shared_ptr<RendererShaderData> newRendererShaderData = std::make_shared<RendererShaderData>();
+
+			//	Create the ShaderProgram ID.
+			GLuint shaderID = glCreateProgram();
+			newRendererShaderData->shaderID = shaderID;
+			newRendererShaderData->shaderType = shaderName;
+
+			std::string vertexShaderFilename = "None";
+			std::string fragmentShaderFilename = "None";
+
+			if (newShader->findProperty("Shader Vertex Shader Source", vertexShaderFilename))
+			{
+				GLuint vertexShaderID = readShaderStageFromFile(GL_VERTEX_SHADER, vertexShaderFilename);
+				glAttachShader(shaderID, vertexShaderID);
+				newRendererShaderData->vertexShaderID = vertexShaderID;
+			}
+
+
+			if (newShader->findProperty("Shader Fragment Shader Source", fragmentShaderFilename))
+			{
+				GLuint fragmentShaderID = readShaderStageFromFile(GL_FRAGMENT_SHADER, fragmentShaderFilename);
+				glAttachShader(shaderID, fragmentShaderID);
+				newRendererShaderData->fragmentShaderID = fragmentShaderID;
+			}
+
+
+			//	Link the Shader.
+			glLinkProgram(shaderID);
+
+			newRendererShaderData->shaderProperties = std::map<std::string, std::string>(newShader->viewProperties());
+
+			//	Set the Shader Uniform Locations.
+			generateShaderUniformLocations(shaderID, newRendererShaderData->shaderUniforms);
+
+			//	Insert the Shader into the Map in the appropriate location.
+			mapNameToShaderData.insert(std::make_pair(shaderName, newRendererShaderData));
+		}
+
 	}
 	else
 	{
 
-		//	Construct Renderer Shader Data.
-		std::shared_ptr<RendererShaderData> newRendererShaderData = std::make_shared<RendererShaderData>();
-
-		//	Create the ShaderProgram ID.
-		GLuint shaderID = glCreateProgram();
-		newRendererShaderData->shaderID = shaderID;
-		newRendererShaderData->shaderType = newShader->getShaderProgramName();
-
-		//	Get the Vertex Shader ID. Geometry Shader ID, Fragment Shader ID.
-		
-		if (newShader->getVertexShaderFileName() != "NONE")
-		{
-			GLuint vertexShaderID = readShaderStageFromFile(GL_VERTEX_SHADER, newShader->getVertexShaderFileName());
-			glAttachShader(shaderID, vertexShaderID);
-			newRendererShaderData->vertexShaderID = vertexShaderID;
-		}
-
-		if (newShader->getGeometryShaderFileName() != "NONE")
-		{
-			GLuint geometryShaderID = readShaderStageFromFile(GL_GEOMETRY_SHADER, newShader->getGeometryShaderFileName());
-			glAttachShader(shaderID, geometryShaderID);
-			newRendererShaderData->geometryShaderID = geometryShaderID;
-		}
-		
-		if (newShader->getFragmentShaderFileName() != "NONE")
-		{
-
-			GLuint fragmentShaderID = readShaderStageFromFile(GL_FRAGMENT_SHADER, newShader->getFragmentShaderFileName());
-			glAttachShader(shaderID, fragmentShaderID);
-			newRendererShaderData->fragmentShaderID = fragmentShaderID;
-		}
-
-		//	Link the Shader.
-		glLinkProgram(shaderID);
-
-		newRendererShaderData->shaderProperties = std::map<std::string, std::string>(newShader->getMapShaderPropertyToValue());
-
-		//	Set the Shader Uniform Locations.
-		generateShaderUniformLocations(shaderID, newRendererShaderData->shaderUniforms);
-
-		//	Insert the Shader into the Map in the appropriate location.
-		mapNameToShaderData.insert(std::make_pair(newShader->getShaderProgramName(), newRendererShaderData));
 	}
-
 }
 
 //	Set the active shader.
@@ -133,7 +138,7 @@ int RendererShaderManager::getShaderGeometryDescriptionRepresentation(const std:
 		auto shaderPropertiesIterator = shaderIterator->second->shaderProperties.find("Require Vertex Basic Data");
 		if (shaderPropertiesIterator != shaderIterator->second->shaderProperties.end())
 		{
-			if (shaderPropertiesIterator->second == "TRUE")
+			if (shaderPropertiesIterator->second == "True")
 			{
 				shaderGeometryDescriptionRepresentation = shaderGeometryDescriptionRepresentation | 1;
 			}
@@ -143,7 +148,7 @@ int RendererShaderManager::getShaderGeometryDescriptionRepresentation(const std:
 		shaderPropertiesIterator = shaderIterator->second->shaderProperties.find("Require Vertex Tangent Bitangent Data");
 		if (shaderPropertiesIterator != shaderIterator->second->shaderProperties.end())
 		{
-			if (shaderPropertiesIterator->second == "TRUE")
+			if (shaderPropertiesIterator->second == "True")
 			{
 				shaderGeometryDescriptionRepresentation = shaderGeometryDescriptionRepresentation | 2;
 			}
@@ -153,7 +158,7 @@ int RendererShaderManager::getShaderGeometryDescriptionRepresentation(const std:
 		shaderPropertiesIterator = shaderIterator->second->shaderProperties.find("Require Vertex Texture Coordinates Data");
 		if (shaderPropertiesIterator != shaderIterator->second->shaderProperties.end())
 		{
-			if (shaderPropertiesIterator->second == "TRUE")
+			if (shaderPropertiesIterator->second == "True")
 			{
 				shaderGeometryDescriptionRepresentation = shaderGeometryDescriptionRepresentation | 4;
 			}

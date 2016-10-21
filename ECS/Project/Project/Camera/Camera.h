@@ -73,7 +73,7 @@ private:
 	//	Add Comments- TO DO.
 	glm::vec3 cameraPosition;
 	//	Add Comments- TO DO.
-	glm::vec3 lookAtDirection;
+	glm::vec3 lookAtPoint;
 
 	//	Add Comments- TO DO.
 	glm::vec3 upVector;

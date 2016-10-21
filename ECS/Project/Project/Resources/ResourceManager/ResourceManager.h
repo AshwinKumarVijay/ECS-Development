@@ -15,6 +15,8 @@
 #include "../Events/InputEvent/InputEvent.h"
 #include "../Events/ResourceEvent/ResourceEvent.h"
 
+#include "../RDFP/ResourceDescription.h"
+
 class EventQueue;
 class EventDispatcher;
 
@@ -24,41 +26,18 @@ class ResourceManager
 public:
 
 
-	/**
-
-	Name: ResourceManager
-	Parameters: -
-	Purpose: Default ResourceManager Constructor
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Default ResourceManager Constructor
 	ResourceManager(std::shared_ptr<EventQueue> newEventQueue, const ModuleType & newSystemTypeSignature);
 
-
-	/**
-
-	Name: ~ResourceManager
-	Parameters: -
-	Purpose: Default ResourceManager Destructor
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Default ResourceManager Destructor
 	virtual ~ResourceManager();
 
+	//	Resource Management Functions.
+	virtual void processResource(const ResourceDescription & newResourceDescription) = 0;
 
-	/**
-
-	Name: getDispatcherReceiver
-	Parameters: -
-	Purpose: Returns the DispatcherReceiver that this system is using.
-	Return Value:
-	- (shared_ptr<DispatcherReceiver>) - A pointer to the DispatcherReceiver.
-	Other Output: -
-
-	*/
+	//	Returns the DispatcherReceiver that this Resource Manager is using.
 	std::shared_ptr<EventDispatcher> getDispatcher() const;
+
 
 
 private:

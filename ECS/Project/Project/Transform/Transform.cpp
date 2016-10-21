@@ -115,3 +115,25 @@ std::shared_ptr<glm::mat4x4> Transform::getTransform() const
 {
 	return transformMatrix;
 }
+
+//	Set the Foward Direction of the Transform to be toward a particular point.
+void Transform::setLookAtPoint(const glm::vec3 & newLookAtPoint)
+{
+	//	Construct the new lookAt Direction.
+	glm::vec3 lookAtDirection = glm::normalize(newLookAtPoint - getPosition());
+
+	//	Construct the new Right Direction.
+	glm::vec3 newRightDirection = glm::normalize(glm::cross(lookAtDirection, glm::vec3(0.0, 1.0, 0.0)));
+
+	//	Construct the new Up Direction.
+	glm::vec3 newUp = glm::normalize(glm::cross(newRightDirection, lookAtDirection));
+
+	//	Generate the new Look At Rotation.
+	glm::quat lookAtRotation = glm::rotation(getFowardDirection(), lookAtDirection);
+
+	//	Generate the compensating Up Rotatx	ion.
+	glm::quat upRotation = glm::rotation(lookAtRotation * getUpVector(), newUp);
+
+	//	Construct the new rotation.
+	setRotation(normalize(normalize(upRotation) * normalize(lookAtRotation) * transformRotation));
+}

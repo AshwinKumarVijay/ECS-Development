@@ -57,7 +57,7 @@ int initializeGLFW()
 
 	window = glfwCreateWindow(1280, 720, "System Of Planets", NULL, NULL);
 	glfwSetWindowPos(window, 320, 180);
-
+	glfwSwapInterval(2);
 	glfwSetKeyCallback(window, key_callback);
 
 
@@ -85,15 +85,7 @@ void initializeECS()
 
 	//	Initialize the Demo ECS.
 	ecs->initializeDemoECS();
-
-	//	Load the Geometry, Materials, Shaders. Lights and Textures from File.
-	ecs->loadGeometryFromFile(Configuration::getConfiguration().getProperty("GEOMETRY FILE"));
-	ecs->loadMaterialsFromFile(Configuration::getConfiguration().getProperty("MATERIAL FILE"));
-	ecs->loadShadersFromFile(Configuration::getConfiguration().getProperty("SHADER FILE"));
-	ecs->loadLightsFromFile(Configuration::getConfiguration().getProperty("LIGHT FILE"));
-	ecs->loadTexturesFromFile(Configuration::getConfiguration().getProperty("TEXTURE FILE"));
-
-
+	ecs->loadResourcesFromFile(Configuration::getConfiguration().getProperty("RESOURCES FILE"));
 }
 
 void enterRenderCycle()
@@ -119,8 +111,6 @@ void enterRenderCycle()
 
 		//	Poll the EVents.
 		glfwPollEvents();
-
-		std::cout << " FPS -> " << 1.0 / deltaFrameTime << std::endl;;
 
 		//	Update the Last Frame Time.
 		lastFrameTime = currentFrameTime;

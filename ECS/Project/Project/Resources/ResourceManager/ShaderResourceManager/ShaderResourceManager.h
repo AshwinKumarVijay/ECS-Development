@@ -11,29 +11,14 @@ class ShaderResourceManager : public ResourceManager
 {
 public:
 
-	/**
-
-	Name: ShaderResourceManager
-	Parameters: -
-	Purpose: Default ShaderResourceManager Constructor
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Default ShaderResourceManager Constructor
 	ShaderResourceManager(std::shared_ptr<EventQueue> newEventQueue);
 
-
-	/**
-
-	Name: ~ShaderResourceManager
-	Parameters: -
-	Purpose: Default ShaderResourceManager Destructor
-	Return Value: -
-	Other Output: -
-
-	*/
+	//	Default ShaderResourceManager Destructor
 	~ShaderResourceManager();
 
+	//	Resource Management Functions.
+	virtual void processResource(const ResourceDescription & newResourceDescription);
 
 	//	Add Comments - TO DO
 	virtual void addShader(std::string newShaderName, std::shared_ptr<ShaderData> newShaderData);

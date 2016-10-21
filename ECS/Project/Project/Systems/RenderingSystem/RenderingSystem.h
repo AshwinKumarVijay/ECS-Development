@@ -89,5 +89,8 @@ private:
 
 	//	A pointer to the default camera.
 	std::shared_ptr<Camera> defaultCamera;
+
+	//	A pointer to the active camera.
+	std::shared_ptr<Camera> activeCamera;
 };
 

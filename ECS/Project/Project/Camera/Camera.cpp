@@ -4,7 +4,7 @@ Camera::Camera()
 {
 	cameraPosition = glm::vec3(40.0f, 20.0f, 40.0f);
 
-	lookAtDirection = glm::vec3(-1.0f, -1.0, -1.0);
+	lookAtPoint = glm::vec3(0.0, 0.0, 0.0);
 
 	upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -18,7 +18,7 @@ Camera::Camera()
 
 	perspectiveMatrix = glm::perspective(FOV, aspectRatio, nearClip, farClip);
 
-	viewMatrix = glm::lookAt(cameraPosition, lookAtDirection, upVector);
+	viewMatrix = glm::lookAt(cameraPosition, lookAtPoint, upVector);
 }
 
 //	
@@ -38,7 +38,7 @@ void Camera::updatePerspectiveMatrix()
 //	
 void Camera::updateViewMatrix()
 {
-	viewMatrix = glm::lookAt(cameraPosition, cameraPosition + lookAtDirection, upVector);
+	viewMatrix = glm::lookAt(cameraPosition, lookAtPoint, upVector);
 }
 
 float Camera::getNearClip() const
@@ -66,12 +66,12 @@ void Camera::setFarClip(float newFarClip)
 //	
 void Camera::setLookAtDirection(glm::vec3 newLookAtDirection)
 {
-	lookAtDirection = newLookAtDirection;
+	lookAtPoint = cameraPosition + glm::normalize(newLookAtDirection);
 }
 //	
 glm::vec3 Camera::getLookAtDirection()
 {
-	return lookAtDirection;
+	return glm::normalize(lookAtPoint - cameraPosition);
 }
 
 //	

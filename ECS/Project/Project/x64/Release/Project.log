@@ -1,2 +1,8 @@
-﻿  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Release\Project.exe
-  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Release\Project.pdb (Full PDB)
+﻿  DemoECS.cpp
+  Generating code
+  74 of 9031 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    22 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Release\Project.exe
+  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Release\Project.pdb (Full PDB)

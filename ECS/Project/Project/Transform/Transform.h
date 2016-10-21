@@ -6,6 +6,7 @@
 #include "glm\matrix.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 #include "glm\gtc\quaternion.hpp"
+#include "glm\gtx\quaternion.hpp"
 
 
 class Transform
@@ -111,6 +112,9 @@ public:
 	*/
 	void setRotation(const glm::quat & newTransformRotation);
 
+	//	Add Comments - TO DO
+	void setLookAtPoint(const glm::vec3 & newLookAtPoint);
+
 	/**
 
 	Name: computeTransformMatrix
@@ -187,8 +191,6 @@ public:
 	*/
 	glm::vec3 getRightVector() const;
 
-
-
 	/**
 
 	Name: getUpVector
@@ -214,7 +216,6 @@ public:
 	*/
 
 	std::shared_ptr<glm::mat4x4> getTransform() const;
-
 
 
 

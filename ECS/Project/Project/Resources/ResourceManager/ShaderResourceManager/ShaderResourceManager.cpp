@@ -11,11 +11,36 @@ ShaderResourceManager::ShaderResourceManager(std::shared_ptr<EventQueue> newEven
 
 }
 
-
 //	Default ShaderResourceManager Destructor
 ShaderResourceManager::~ShaderResourceManager()
 {
 
+}
+
+//	Process the provided resource.
+void ShaderResourceManager::processResource(const ResourceDescription & newResourceDescription)
+{
+
+	std::string resourceName = "None";
+	std::string resourceType = "None";
+
+	//	
+	if (newResourceDescription.findProperty("Resource Type", resourceType))
+	{
+		if (resourceType == "OpenGL Shader")
+		{
+			std::shared_ptr<ShaderData> newShaderData = std::make_shared<ShaderData>(newResourceDescription.viewProperties());
+
+			//	Get the Resource Name. Used as the Geometry Name.
+			newResourceDescription.findProperty("Resource Name", resourceName);
+
+			addShader(resourceName, newShaderData);
+		}
+	}
+	else
+	{
+
+	}
 }
 
 //	Add the ShaderData, specified by name.

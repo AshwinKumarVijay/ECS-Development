@@ -10,21 +10,6 @@
 #include "TextureBufferData\TextureBufferData.h"
 
 
-struct Texture2D
-{
-	std::shared_ptr<TextureBufferData> texture;
-};
-
-struct TextureCube
-{
-	std::shared_ptr<TextureBufferData> textureCubeUp;
-	std::shared_ptr<TextureBufferData> textureCubeDown;
-	std::shared_ptr<TextureBufferData> textureCubeForward;
-	std::shared_ptr<TextureBufferData> textureCubeBackward;
-	std::shared_ptr<TextureBufferData> textureCubeRight;
-	std::shared_ptr<TextureBufferData> textureCubeLeft;
-};
-
 class TextureData : public ResourceData
 {
 
@@ -56,9 +41,6 @@ private:
 
 	//	The Texture Type.
 	GLenum textureType;
-
-	Texture2D texture2D;
-	TextureCube textureCube;
 
 	//	The Texture Buffer Data.
 	std::shared_ptr<TextureBufferData> textureBuffers[6];

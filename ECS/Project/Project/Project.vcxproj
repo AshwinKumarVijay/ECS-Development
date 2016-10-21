@@ -155,10 +155,11 @@
     <ClCompile Include="Components\MovementResponseComponent\MovementResponseComponent.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
+    <ClCompile Include="RDFP\RDFP.cpp" />
+    <ClCompile Include="RDFP\ResourceDescription.cpp" />
     <ClCompile Include="Renderers\Sampler\Sampler.cpp" />
     <ClCompile Include="Renderers\TestRenderer\TestRenderer.cpp" />
     <ClCompile Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.cpp" />
-    <ClCompile Include="Systems\SelectionSystem\SelectionSystem.cpp" />
     <ClCompile Include="Systems\MovementSystem\MovementSystem.cpp" />
     <ClCompile Include="Systems\InputSystem\InputSystem.cpp" />
     <ClCompile Include="Renderers\DeferredRenderer\DeferredRenderer.cpp" />
@@ -187,7 +188,6 @@
     <ClCompile Include="Systems\TransformSystem\TransformSystem.cpp" />
     <ClCompile Include="Resources\ResourceData\TextureData\TextureBufferData\TextureBufferData.cpp" />
     <ClCompile Include="TextureGeneratorSelector\TextureGeneratorSelector.cpp" />
-    <ClCompile Include="Systems\TimerSystem\TimerSystem.cpp" />
     <ClCompile Include="Transform\Transform.cpp" />
     <ClCompile Include="Resources\ResourceManager\GeometryResourceManager\GeometryResourceManager.cpp" />
     <ClCompile Include="GeometryGeneratorSelector\GeometryGeneratorSelector.cpp" />
@@ -222,12 +222,13 @@
     <ClInclude Include="Components\MovementResponseComponent\MovementResponseComponent.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />
+    <ClInclude Include="RDFP\RDFP.h" />
+    <ClInclude Include="RDFP\ResourceDescription.h" />
     <ClInclude Include="Renderers\Sampler\Sampler.h" />
     <ClInclude Include="Renderers\ShadingType.h" />
     <ClInclude Include="Renderers\TestRenderer\TestRenderer.h" />
     <ClInclude Include="RNGs\RNGs.h" />
     <ClInclude Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.h" />
-    <ClInclude Include="Systems\SelectionSystem\SelectionSystem.h" />
     <ClInclude Include="Systems\MovementSystem\MovementSystem.h" />
     <ClInclude Include="Systems\InputSystem\InputSystem.h" />
     <ClInclude Include="Renderers\DeferredRenderer\DeferredRenderer.h" />
@@ -258,7 +259,6 @@
     <ClInclude Include="Systems\TransformSystem\TransformSystem.h" />
     <ClInclude Include="Resources\ResourceData\TextureData\TextureBufferData\TextureBufferData.h" />
     <ClInclude Include="TextureGeneratorSelector\TextureGeneratorSelector.h" />
-    <ClInclude Include="Systems\TimerSystem\TimerSystem.h" />
     <ClInclude Include="Transform\Transform.h" />
     <ClInclude Include="TypesList\ComponentTypes.h" />
     <ClInclude Include="TypesList\EntityState.h" />
@@ -315,6 +315,7 @@
     <Text Include="Assets\Resource Description Files\GDF.txt" />
     <Text Include="Assets\Resource Description Files\LDF.txt" />
     <Text Include="Assets\Resource Description Files\MDF.txt" />
+    <Text Include="Assets\Resource Description Files\RDF.txt" />
     <Text Include="Assets\Resource Description Files\SDF.txt" />
     <Text Include="Assets\Resource Description Files\TDF.txt" />
     <Text Include="Assets\Shaders\AdditiveBlend\AdditiveBlendFS.txt" />

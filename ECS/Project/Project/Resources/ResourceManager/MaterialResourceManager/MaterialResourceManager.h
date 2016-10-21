@@ -19,6 +19,9 @@ public:
 	//	Default MaterialResourceManager Destructor.
 	virtual ~MaterialResourceManager();
 
+	//	Resource Management Functions.
+	virtual void processResource(const ResourceDescription & newResourceDescription);
+
 	//	Add a Material to the MaterialResourceManager.
 	virtual void addMaterial(std::string newMaterialName, std::shared_ptr<MaterialData> newMaterialData);
 

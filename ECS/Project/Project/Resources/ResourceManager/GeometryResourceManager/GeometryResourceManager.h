@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "../ResourceManager.h"
+#include "../GeometryGeneratorSelector/GeometryGeneratorSelector.h"
 
 class GeometryData;
 
@@ -16,6 +17,9 @@ public:
 	
 	//	Default GeometryResourceManager Destructor.
 	virtual ~GeometryResourceManager();
+
+	//	Resource Management Functions.
+	virtual void processResource(const ResourceDescription & newResourceDescription);
 
 	//	Add Comments - TO DO
 	virtual void addGeometry(std::string newGeometryName, std::shared_ptr<GeometryData> newGeometryData);
@@ -34,6 +38,10 @@ public:
 
 
 private:
+
+	//	Geometry Generator Selector
+	std::shared_ptr<GeometryGeneratorSelector> geometryGeneratorSelector;
+
 	//	Map the Name to the Texture Data.
 	std::map<std::string, std::shared_ptr<GeometryData>> mapNameToGeometryData;
 

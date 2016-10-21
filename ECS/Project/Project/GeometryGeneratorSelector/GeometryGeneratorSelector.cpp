@@ -15,7 +15,7 @@ std::shared_ptr<std::vector<std::shared_ptr<GeometryData>>> GeometryGeneratorSel
 	std::shared_ptr<std::vector<std::shared_ptr<GeometryData>>> newGeometryData = std::make_shared<std::vector<std::shared_ptr<GeometryData>>>();
 
 	//	If the Geometry Type is that of an OBJ
-	if (geometryType == "OBJ")
+	if (geometryType == "obj")
 	{
 		//	Load the Object From File, and write it into the new Geommetry Data.
 		loadObjectFromFile(geometryFilename, newGeometryData);

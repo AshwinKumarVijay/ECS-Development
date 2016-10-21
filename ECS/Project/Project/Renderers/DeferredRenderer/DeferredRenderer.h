@@ -50,24 +50,15 @@ public:
 	//	Update the Renderable Transform Matrix.
 	virtual void updateTransformMatrix(const long int & renderableID, const glm::mat4 & newModelMatrix);
 
-	//	Update the Camera.
-	void updateCamera(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
 	//	Render.
-	virtual void render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Remove the Renderable.
 	virtual void removeRenderable(const long int & renderableID);
 
 	//	Clean Up the Renderer.
 	virtual void cleanUpRenderer();
-
-
-	//	Set the Active Camera.
-	virtual void setActiveCamera(std::shared_ptr<const Camera> activeCamera);
-
-	//	Return the Active Camera.
-	virtual std::shared_ptr<Camera> getActiveCamera();
 
 	//	Add the Material to the Renderer for use, under the Material Name.
 	virtual void addMaterial(std::string newMaterialName, std::shared_ptr<const MaterialData> newMaterialData);
@@ -139,30 +130,30 @@ private:
 	virtual void initializeLights();
 
 	//	Render the Shadow Maps.
-	virtual void renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Render the Point Light Shadow Maps, Directional Light Shadow Maps, Spot Light Shadow Maps.
-	virtual void renderPointLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
-	virtual void renderDirectionalLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
-	virtual void renderSpotLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderPointLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
+	virtual void renderDirectionalLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
+	virtual void renderSpotLightShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Render the Renderables that have to go through the Deferred Rendering Pipeline.
-	virtual void renderDeferredRenderingGBufferPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderDeferredRenderingGBufferPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Render the Lighting Pass.
-	virtual void renderDeferredRenderingLightingPass(const float & deltaFrameTime, const float & currnetFrameTime, const float & lastFrameTime);
+	virtual void renderDeferredRenderingLightingPass(const float & deltaFrameTime, const float & currnetFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Render the Renderables that have to go through the Forward Rendering pipeline.
-	virtual void renderForwardRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderForwardRenderingPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Render the Post Process Pipeline.
-	virtual void renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Render the Ambient Occlusion Pass.
-	virtual void renderAmbientOcclusionPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderAmbientOcclusionPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 		
 	//	Render the Background.
-	virtual void renderBackgroundEnvironment(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderBackgroundEnvironment(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Render the Renderables of the Shader Type.
 	virtual void renderRenderablesOfShadingType(ShadingTypes::ShadingType shadingType, const RendererShaderData & rendererShaderData, const glm::mat4 & currentViewMatrix, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
@@ -222,9 +213,6 @@ private:
 
 	//	Point Light Depth CubeMaps.
 	PointLightDepthCubeMapDescription pointLightDepthCubeMaps;
-
-	//	The Camera used for Rendering.
-	std::shared_ptr<Camera> activeCamera;
 
 	//	The Renderable Storage associated with the Renderer.
 	RenderableManager renderableManager;

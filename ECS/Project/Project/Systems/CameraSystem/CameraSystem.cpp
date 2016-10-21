@@ -184,8 +184,13 @@ void CameraSystem::setNextCamera()
 				}
 				else
 				{
+					//	Increment the Entity Location.
+					entityLocation = entityLocation + 1;
+
 					//	Get the Next Active Camera Component.
 					std::shared_ptr<CameraComponent> nextActiveCameraComponent = std::dynamic_pointer_cast<CameraComponent>(entityManager->getComponentOfEntity((*entities)[entityLocation], ComponentType::CAMERA_COMPONENT, ModuleType::CAMERA_SYSTEM));
+
+					activeCameraEntity = (*entities)[entityLocation];
 
 					//	Set it to be the Active Camera Component.
 					nextActiveCameraComponent->setActive();
@@ -212,7 +217,7 @@ void CameraSystem::setPreviousCamera()
 	if (activeCameraEntity == -1 && entities != NULL)
 	{
 		//	Get the Camera Component.
-		std::shared_ptr<CameraComponent> cameraComponent = std::dynamic_pointer_cast<CameraComponent>(entityManager->getComponentOfEntity((*entities)[0], ComponentType::CAMERA_COMPONENT, ModuleType::CAMERA_SYSTEM));
+		std::shared_ptr<CameraComponent> cameraComponent = std::dynamic_pointer_cast<CameraComponent>(entityManager->getComponentOfEntity((*entities)[entities->size() - 1], ComponentType::CAMERA_COMPONENT, ModuleType::CAMERA_SYSTEM));
 
 		//	Set this to be the Active Camera Component.
 		cameraComponent->setActive();
@@ -264,8 +269,14 @@ void CameraSystem::setPreviousCamera()
 				}
 				else
 				{
+					entityLocation = entityLocation - 1;
+
 					//	Get the Next Active Camera Component.
 					std::shared_ptr<CameraComponent> nextActiveCameraComponent = std::dynamic_pointer_cast<CameraComponent>(entityManager->getComponentOfEntity((*entities)[entityLocation], ComponentType::CAMERA_COMPONENT, ModuleType::CAMERA_SYSTEM));
+
+					
+					activeCameraEntity = (*entities)[entityLocation];
+
 
 					//	Set it to be the Active Camera Component.
 					nextActiveCameraComponent->setActive();
