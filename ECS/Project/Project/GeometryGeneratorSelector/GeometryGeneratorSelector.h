@@ -9,8 +9,12 @@
 
 #include "glm\glm.hpp"
 
-#include "TinyObjLoader\tiny_obj_loader.h"
+
 #include "../Vertex/Vertex.h"
+#include "../RDFP/ResourceDescription.h"
+
+#include "TinyObjLoader\tiny_obj_loader.h"
+#include "../TBM/TBM.h"
 
 class GeometryData;
 
@@ -24,11 +28,14 @@ public:
 	//	Default GeometryGeneratorSelector Destructor.
 	virtual ~GeometryGeneratorSelector();
 
-	//	Generate the Geometry of the GeometryType, the Object Filename and the Parameters.
-	std::shared_ptr<std::vector<std::shared_ptr<GeometryData>>> generateGeometry(std::string geometryType, std::string objFileName, std::string parameters);
+	//	Add Comments - TO DO
+	virtual void generateGeometry(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, const ResourceDescription & newResouceDescription);
 
-	//	Load the Object From the provided Filen, as specified by filename.
-	virtual void loadObjectFromFile(std::string objFileName, std::shared_ptr<std::vector<std::shared_ptr<GeometryData>>> newGeometryData);
+	//	Add Comments - TO DO
+	virtual void loadGeometryFromObj(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName, std::string filename);
+
+	//	Add Comments - TO DO
+	virtual void loadGeometryFromTBM(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName);
 
 };
 

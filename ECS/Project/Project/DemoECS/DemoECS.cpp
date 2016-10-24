@@ -105,68 +105,6 @@ void DemoECS::initializeDemoECS()
 //	Initialize the VR Scene.
 void DemoECS::initializeScene()
 {
-	//	Create the Cube Entity.
-	cubeEntity1 = getEntityManager()->createEntity();
-
-	//	Add the Hierarcy, Transform, Speed, Geometry and Rendering Component.
-	getEntityManager()->addComponentToEntity(cubeEntity1, ComponentType::HIERARCHY_COMPONENT);
-	getEntityManager()->addComponentToEntity(cubeEntity1, ComponentType::TRANSFORM_COMPONENT);
-	getEntityManager()->addComponentToEntity(cubeEntity1, ComponentType::GEOMETRY_COMPONENT);
-	getEntityManager()->addComponentToEntity(cubeEntity1, ComponentType::RENDERING_COMPONENT);
-
-	std::shared_ptr<GeometryComponent> cubeGeometryComponent1 = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(cubeEntity1, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
-	std::shared_ptr<RenderingComponent> cubeRenderingComponent1 = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(cubeEntity1, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
-	std::shared_ptr<TransformComponent> cubeTransformComponent1 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cubeEntity1, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-
-	cubeGeometryComponent1->setGeometryType("Cube");
-	cubeRenderingComponent1->setMaterialType("Material-Default-1");
-	cubeRenderingComponent1->setShadingType(ShadingTypes::OPAQUE_BASIC);
-	cubeTransformComponent1->getTransform()->translateBy(glm::vec3(0.0, 1.25, 0.0));
-	cubeTransformComponent1->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
-
-
-	//	Create the Camera Entity.
-	cameraEntity1 = getEntityManager()->createEntity();
-	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::HIERARCHY_COMPONENT);
-	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::TRANSFORM_COMPONENT);
-	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::CAMERA_COMPONENT);
-
-	std::shared_ptr<TransformComponent> cameraTransformComponent1 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity1, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	cameraTransformComponent1->getTransform()->setPosition(glm::vec3(50.0, 20.0, 50.0));
-	cameraTransformComponent1->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
-
-	//	Create the Camera Entity.
-	cameraEntity2 = getEntityManager()->createEntity();
-	getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::HIERARCHY_COMPONENT);
-	getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::TRANSFORM_COMPONENT);
-	getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::CAMERA_COMPONENT);
-
-	std::shared_ptr<TransformComponent> cameraTransformComponent2 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity2, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	cameraTransformComponent2->getTransform()->setPosition(glm::vec3(-50.0, 20.0, 50.0));
-	cameraTransformComponent2->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
-
-
-	//	Create the Camera Entity.
-	cameraEntity3 = getEntityManager()->createEntity();
-	getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::HIERARCHY_COMPONENT);
-	getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::TRANSFORM_COMPONENT);
-	getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::CAMERA_COMPONENT);
-
-	std::shared_ptr<TransformComponent> cameraTransformComponent3 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity3, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	cameraTransformComponent3->getTransform()->setPosition(glm::vec3(-50.0, 20.0, -50.0));
-	cameraTransformComponent3->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
-
-	//	Create the Camera Entity.
-	cameraEntity4 = getEntityManager()->createEntity();
-	getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::HIERARCHY_COMPONENT);
-	getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::TRANSFORM_COMPONENT);
-	getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::CAMERA_COMPONENT);
-
-	std::shared_ptr<TransformComponent> cameraTransformComponent4 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity4, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	cameraTransformComponent4->getTransform()->setPosition(glm::vec3(50.0, 20.0, -50.0));
-	cameraTransformComponent4->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
-
-
 	//	Create the Sphere Entity.
 	baseEntity = getEntityManager()->createEntity();
 
@@ -177,15 +115,57 @@ void DemoECS::initializeScene()
 	getEntityManager()->addComponentToEntity(baseEntity, ComponentType::RENDERING_COMPONENT);
 
 	std::shared_ptr<GeometryComponent> baseGeometryComponent = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
-	baseGeometryComponent->setGeometryType("Cube");
+	baseGeometryComponent->setGeometryType("Terrain Block");
 
 	std::shared_ptr<RenderingComponent> baseRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
 	baseRenderingComponent->setMaterialType("Material-Default-2");
 	baseRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
 
-	std::shared_ptr<TransformComponent> baseTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	baseTransformComponent->getTransform()->setScale(glm::vec3(20.0, 0.01, 20.0));
+}
 
+//	Initialize the Camera Views.
+void DemoECS::initializeCameraViews()
+{
+	//	Create the Camera Entity.
+	cameraEntity1 = getEntityManager()->createEntity();
+	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::CAMERA_COMPONENT);
+
+	std::shared_ptr<TransformComponent> cameraTransformComponent1 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity1, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	cameraTransformComponent1->getTransform()->setPosition(glm::vec3(50.0, 50.0, 50.0));
+	cameraTransformComponent1->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
+
+	//	Create the Camera Entity.
+	cameraEntity2 = getEntityManager()->createEntity();
+	getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::CAMERA_COMPONENT);
+
+	std::shared_ptr<TransformComponent> cameraTransformComponent2 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity2, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	cameraTransformComponent2->getTransform()->setPosition(glm::vec3(-50.0, 50.0, 50.0));
+	cameraTransformComponent2->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
+
+
+	//	Create the Camera Entity.
+	cameraEntity3 = getEntityManager()->createEntity();
+	getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::CAMERA_COMPONENT);
+
+	std::shared_ptr<TransformComponent> cameraTransformComponent3 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity3, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	cameraTransformComponent3->getTransform()->setPosition(glm::vec3(-50.0, 50.0, -50.0));
+	cameraTransformComponent3->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
+
+	//	Create the Camera Entity.
+	cameraEntity4 = getEntityManager()->createEntity();
+	getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::CAMERA_COMPONENT);
+
+	std::shared_ptr<TransformComponent> cameraTransformComponent4 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity4, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	cameraTransformComponent4->getTransform()->setPosition(glm::vec3(50.0, 50.0, -50.0));
+	cameraTransformComponent4->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
 }
 
 //	Load the Resources From File.
@@ -258,9 +238,11 @@ void DemoECS::processInput(const InputType & ecsKey, const InputEventType & inpu
 //	Update the DemoECS
 void DemoECS::update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
 {
-	
-	std::shared_ptr<TransformComponent> cubeTransformComponent1 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cubeEntity1, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	cubeTransformComponent1->getTransform()->rotateBy((glm::pi<float>() / 2.0f) * deltaTime, glm::vec3(0.0, 1.0f, 0.0));
+	//	
+	std::shared_ptr<TransformComponent> baseTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	baseTransformComponent->getTransform()->rotateBy(glm::pi<float>() * 0.1 * deltaTime, glm::vec3(0.0, 1.0, 0.0));
+
+	//
 	ECS::update(deltaTime, currentFrameTime, lastFrameTime);
 }
 

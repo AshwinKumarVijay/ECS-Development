@@ -28,40 +28,16 @@ void GeometryResourceManager::processResource(const ResourceDescription & newRes
 	{
 		if (resourceType == "Geometry")
 		{
-			//	Get the Resource Name. Used as the Geometry Name.
-			newResourceDescription.findProperty("Resource Name", resourceName);
-
-			//	Get the Geometry Type. Used to create the geometry.
-			std::string geometryType = "None";
-			newResourceDescription.findProperty("Geometry Type", geometryType);
-
-			//	Get the Geometry Filename.
-			std::string geometryFilename = "None";
-			newResourceDescription.findProperty("Geometry Filename", geometryFilename);
-
-			//	Get the Geometry Parameters.
-			std::string geometryParameters = "None";
-			newResourceDescription.findProperty("Geometry Parameters", geometryParameters);
-
-			//	Parse OBJS.
-			std::shared_ptr<std::vector<std::shared_ptr<GeometryData>>> generatedGeometry = geometryGeneratorSelector->generateGeometry(geometryType, geometryFilename, geometryParameters);
-
 			//	
-			if (generatedGeometry->size() == 1)
-			{
-				addGeometry(resourceName, (*generatedGeometry)[0]);
-			}
-			else
-			{
-				//	Assuming more than one piece of Geometry was created.
-				for (int i = 0; i < generatedGeometry->size(); i++)
-				{
-					//	Create the new geometry name.
-					std::string currentGeometryName = resourceName + " " + std::to_string(i);
+			std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> generatedGeometry;
+			geometryGeneratorSelector->generateGeometry(generatedGeometry, newResourceDescription);
 
+
+			//	Assuming more than one piece of Geometry was created.
+			for (int i = 0; i < generatedGeometry.size(); i++)
+			{
 					//	Add the new geometry.
-					addGeometry(currentGeometryName, (*generatedGeometry)[i]);
-				}
+					addGeometry(generatedGeometry[i].first, generatedGeometry[i].second);	
 			}
 		}
 	}

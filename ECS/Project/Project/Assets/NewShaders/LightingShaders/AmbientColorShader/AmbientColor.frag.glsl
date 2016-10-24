@@ -29,5 +29,5 @@ uniform vec4 u_environmentMapIntensities;
 //	THE FRAGMENT SHADER MAIN.
 void main(void)
 {
-	o_baseOutputColor = vec4(0.0, 0.2, 0.4, 1.0);
+	o_baseOutputColor = vec4(u_ambientLight.xyz, 1.0);
 }

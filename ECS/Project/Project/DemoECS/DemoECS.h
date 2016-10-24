@@ -18,6 +18,7 @@
 #include "../TypesList/ResourceTypes.h"
 
 #include "../RDFP/RDFP.h"
+#include "../TBM/TBM.h"
 
 class System;
 class TransformSystem;
@@ -59,6 +60,9 @@ public:
 
 	//	Initialize the Scene.
 	void initializeScene();
+
+	//	Initialize the Camera Views.
+	void initializeCameraViews();
 
 	//	Load the Resources From a given file.
 	virtual void loadResourcesFromFile(const std::string & resourceFile);
@@ -130,6 +134,10 @@ private:
 	//	The Base Entity.
 	long int baseEntity;
 
+	//	Resource Description File Parser.
 	RDFP rdfp;
+
+	//	TerrainBlockMaker
+	TBM tbm;
 };
 

@@ -2096,7 +2096,7 @@ void DeferredRenderer::uploadAmbientLightData(const RendererShaderData & rendere
 {
 	GLuint currentShaderProgramID = rendererShaderData.shaderID;
 	GLuint currentLightAttributeLocation = -1;
-	glUniform4fv(rendererShaderData.shaderUniforms.lightDataUniforms.u_ambientLight, 1, glm::value_ptr(glm::vec4(0.0, 0.0, 0.0, 0.0)));
+	glUniform4fv(rendererShaderData.shaderUniforms.lightDataUniforms.u_ambientLight, 1, glm::value_ptr(glm::vec4(0.1, 0.1, 0.1, 1.0)));
 }
 
 //	Upload the Shader Lights Data to the Shader Pipeline.

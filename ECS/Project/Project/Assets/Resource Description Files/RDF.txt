@@ -4,7 +4,8 @@
 #define Resource
 Resource Name    = Octa Hollow
 Resource Type    = Geometry
-Geometry Type    = obj
+Geometry Name    = Octa Hollow
+Geometry Type    = OBJ
 Geometry Filename   = Assets/OBJs/octa_hollow3.obj
 Geometry Parameters = None
 #end Resource
@@ -12,7 +13,8 @@ Geometry Parameters = None
 #define Resource
 Resource Name    = Axes
 Resource Type    = Geometry
-Geometry Type    = obj
+Geometry Name    = Axes
+Geometry Type    = OBJ
 Geometry Filename   = Assets/OBJs/Axes.obj
 Geometry Parameters = None
 #end Resource
@@ -20,7 +22,8 @@ Geometry Parameters = None
 #define Resource
 Resource Name    = Sphere
 Resource Type    = Geometry
-Geometry Type    = obj
+Geometry Name    = Sphere
+Geometry Type    = OBJ
 Geometry Filename   = Assets/OBJs/Sphere.obj
 Geometry Parameters = None
 #end Resource
@@ -28,8 +31,18 @@ Geometry Parameters = None
 #define Resource
 Resource Name    = Cube
 Resource Type    = Geometry
-Geometry Type    = obj
+Geometry Name    = Cube
+Geometry Type    = OBJ
 Geometry Filename   = Assets/OBJs/Cube.obj
+Geometry Parameters = None
+#end Resource
+
+#define Resource
+Resource Name    = Terrain Block
+Resource Type    = Geometry
+Geometry Name    = Terrain Block
+Geometry Type    = TBM
+Geometry Filename   = NONE
 Geometry Parameters = None
 #end Resource
 
@@ -43,22 +56,7 @@ Light Shadow     = True
 Light Type       = 1.0
 Light Color      = 1.0, 1.0, 1.0
 Light Intensity  = 1.0
-Light Position   = 0.0, 50.0, 0.0, 1.0
-Light Attenuation and Distance    = 0.0, 0.0, 0.0, 0.0
-Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
-#end Resource
-
-
-//    Light Resources!
-#define Resource 
-Resource Name    = Light-2
-Resource Type    = Light
-Light Enabled    = True
-Light Shadow     = True
-Light Type       = 1.0
-Light Color      = 1.0, 1.0, 1.0
-Light Intensity  = 1.0
-Light Position   = 10.0, 10.0, 0.0, 1.0
+Light Position   = 25.0, 25.0, 0.0, 1.0
 Light Attenuation and Distance    = 0.0, 0.0, 0.0, 0.0
 Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
 #end Resource

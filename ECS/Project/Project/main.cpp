@@ -1,5 +1,6 @@
 #include "main.h"
 
+//	
 int main(int argc, char** argv)
 {
 
@@ -22,7 +23,6 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-
 // Default GLEW initialization. 
 int initializeGLEW()
 {
@@ -36,7 +36,7 @@ int initializeGLEW()
 	return 0;
 }
 
-
+//	Initialize GLFW.
 int initializeGLFW()
 {
 	/* Initialize the library */
@@ -73,8 +73,7 @@ int initializeGLFW()
 	return 0;
 }
 
-
-
+//	Initialize the ECS.
 void initializeECS()
 {
 	
@@ -85,9 +84,12 @@ void initializeECS()
 
 	//	Initialize the Demo ECS.
 	ecs->initializeDemoECS();
+
+	//	Read in the Resources from the Resources File.
 	ecs->loadResourcesFromFile(Configuration::getConfiguration().getProperty("RESOURCES FILE"));
 }
 
+//	Enter Render Cycle.
 void enterRenderCycle()
 {
 
@@ -117,6 +119,7 @@ void enterRenderCycle()
 	}
 }
 
+//	Terminate ECS.
 void terminateECS()
 {
 	//	Shut Down the ECS.
@@ -130,7 +133,7 @@ void terminateECS()
 
 }
 
-
+//	Key Callback.
 void key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
 {
 	//	ECS Event.
@@ -302,5 +305,4 @@ void key_callback(GLFWwindow * window, int key, int scancode, int action, int mo
 		ecs->processInput(ecsKey, inputEventType, eventType);
 	}
 }
-
 

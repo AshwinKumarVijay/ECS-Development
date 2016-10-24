@@ -18,7 +18,6 @@ public:
 
 	//	Default ECS Constructor
 	ECS();
-
 	
 	//	Default ECS Destructor
 	virtual ~ECS();
@@ -43,7 +42,6 @@ protected:
 
 	//	Destroy the ECS.
 	void destroyECS();
-
 
 	//	Return a pointer to the asssociated EntityManager.
 	virtual std::shared_ptr<EntityManager> getEntityManager() const;

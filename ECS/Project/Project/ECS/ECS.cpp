@@ -7,7 +7,6 @@
 #include "System\System.h"
 
 
-
 //	Default Entity Constructor
 ECS::ECS()
 {
@@ -43,7 +42,6 @@ int ECS::registerSystem(std::shared_ptr<System> newSystem)
 	//	Return the index of the added system.
 	return index;
 }
-
 
 //	Deregister the System.
 void ECS::deregisterSystem(const int & systemOrder)
@@ -95,7 +93,6 @@ std::shared_ptr<EventReceiver> ECS::getReceiver() const
 	return eventReceiver;
 }
 
-
 //	Initialize the Systems.
 void ECS::initializeECS()
 {
@@ -114,8 +111,6 @@ void ECS::initializeECS()
 	//	Create the EntityManager.
 	entityManager = std::make_shared<EntityManager>(eventQueue);
 }
-
-
 
 //	Shut Down the Systems.
 void ECS::shutDownECS()

@@ -73,6 +73,9 @@
     <ClCompile Include="Renderers\TestRenderer\TestRenderer.cpp" />
     <ClCompile Include="RDFP\RDFP.cpp" />
     <ClCompile Include="RDFP\ResourceDescription.cpp" />
+    <ClCompile Include="TBM\TBM.cpp" />
+    <ClCompile Include="TBM\TerrainTile\TerrainTile.cpp" />
+    <ClCompile Include="Triangle\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -154,6 +157,9 @@
     <ClInclude Include="Renderers\ShadingType.h" />
     <ClInclude Include="RDFP\RDFP.h" />
     <ClInclude Include="RDFP\ResourceDescription.h" />
+    <ClInclude Include="TBM\TBM.h" />
+    <ClInclude Include="TBM\TerrainTile\TerrainTile.h" />
+    <ClInclude Include="Triangle\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />

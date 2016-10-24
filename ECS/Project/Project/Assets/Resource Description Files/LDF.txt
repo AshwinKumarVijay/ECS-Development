@@ -11,22 +11,8 @@ Shadow = True
 LightType = 1.0
 Color = 0.1, 0.1, 0.1
 Intensity = 1.0
-Position = 0.0, 50.0, 0.0, 1.0
+Position = 25.0, 50.0, 0.0, 1.0
 AttenuationAndDistance = 0.0, 0.0, 0.0, 0.0
 SpotCosCutoffAndExponent = 0.0, 0.0, 0.0, 0.0
 #end Light
-
-
-#define Light
-LightName = LIGHT 2
-Enabled = True
-Shadow = True
-LightType = 1.0
-Color = 1.0, 1.0, 1.0
-Intensity = 1.0
-Position = 10.0, 10.0, 0.0, 1.0
-AttenuationAndDistance = 0.0, 0.0, 0.0, 0.0
-SpotCosCutoffAndExponent = 0.0, 0.0, 0.0, 0.0
-#end Light
-
 

@@ -9,25 +9,36 @@ GeometryGeneratorSelector::GeometryGeneratorSelector()
 }
 
 //	Generate the Geometry from the OBJ filename, and the parameters.
-std::shared_ptr<std::vector<std::shared_ptr<GeometryData>>> GeometryGeneratorSelector::generateGeometry(std::string geometryType, std::string geometryFilename, std::string geometryParameters)
+void GeometryGeneratorSelector::generateGeometry(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, const ResourceDescription & newResourceDescription)
 {
-	//	Create a new Geometry Data.
-	std::shared_ptr<std::vector<std::shared_ptr<GeometryData>>> newGeometryData = std::make_shared<std::vector<std::shared_ptr<GeometryData>>>();
+	//	Get the Resource Name. Used as the Geometry Name.
+	std::string geometryName = "None";
+	bool hasName = newResourceDescription.findProperty("Geometry Name", geometryName);
 
-	//	If the Geometry Type is that of an OBJ
-	if (geometryType == "obj")
+	//	Get the Geometry Type. Used to create the geometry.
+	std::string geometryType = "None";
+	newResourceDescription.findProperty("Geometry Type", geometryType);
+
+	//	Check if we are supposed to read in obj.
+	if (geometryType == "OBJ")
 	{
+		//	Get the Geometry Filename.
+		std::string geometryFilename = "None";
+		newResourceDescription.findProperty("Geometry Filename", geometryFilename);
+
 		//	Load the Object From File, and write it into the new Geommetry Data.
-		loadObjectFromFile(geometryFilename, newGeometryData);
+		loadGeometryFromObj(geometryList, geometryName, geometryFilename);
 	}
 
-	//	Return the Geometry Data.
-	return newGeometryData;
+	if (geometryType == "TBM")
+	{
+		loadGeometryFromTBM(geometryList, geometryName);
+	}
 
 }
 
-//	Load the Object Filename, and write it into the Geometry Data.
-void GeometryGeneratorSelector::loadObjectFromFile(std::string objFileName, std::shared_ptr<std::vector<std::shared_ptr<GeometryData>>> newGeometryData)
+//	Load the Geometry from the Obj.
+void GeometryGeneratorSelector::loadGeometryFromObj(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string name, std::string filename)
 {
 	//	Use the tiny object loader.
 
@@ -44,7 +55,7 @@ void GeometryGeneratorSelector::loadObjectFromFile(std::string objFileName, std:
 	std::string err;
 
 	//	Load the Obj into the attribute, the shapes and the materials.
-	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, objFileName.c_str());
+	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename.c_str());
 
 	//	Check if there is any error.
 	if (!err.empty()) 
@@ -160,18 +171,30 @@ void GeometryGeneratorSelector::loadObjectFromFile(std::string objFileName, std:
 
 	
 
-	//	Iterate over the list of lists of indices.	
-	for (int dataIterator = 0; dataIterator < currentIndicesArrays.size(); dataIterator++)
+	if (currentIndicesArrays.size() == 1)
 	{
 		//	Create the geometry data of this pair of indices and vertices.
-		std::shared_ptr<GeometryData> newGeometryDataElement = std::make_shared<GeometryData>(GL_TRIANGLES, currentIndicesArrays[dataIterator], currentVertexArrays[dataIterator]);
-		
-		//	Add the geometry data elememt to the Geometry Data.
-		newGeometryData->push_back(newGeometryDataElement);
+		geometryList.push_back(std::make_pair(name, std::make_shared<GeometryData>(GL_TRIANGLES, currentIndicesArrays[0], currentVertexArrays[0])));
 	}
-
+	else
+	{
+		//	Iterate over the list of lists of indices.	
+		for (int i = 0; i < currentIndicesArrays.size(); i++)
+		{
+			//	Create the geometry data of this pair of indices and vertices.
+			std::shared_ptr<GeometryData> newGeometryDataElement = std::make_shared<GeometryData>(GL_TRIANGLES, currentIndicesArrays[i], currentVertexArrays[i]);
+			geometryList.push_back(std::make_pair(name + std::to_string(i), newGeometryDataElement));
+		}
+	}
 }
 
+//	Load the Geometry from the Terrain Block Maker.
+void GeometryGeneratorSelector::loadGeometryFromTBM(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>>& geometryList, std::string name)
+{
+	TBM tbm;
+	tbm.generateTilesArray();
+	tbm.generateTerrainGeometry(geometryList, name);
+}
 
 //	Default GeometryGeneratorSelector Destructor
 GeometryGeneratorSelector::~GeometryGeneratorSelector()
