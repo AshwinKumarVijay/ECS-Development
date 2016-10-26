@@ -70,12 +70,12 @@
     <ClCompile Include="Renderers\RendererResourceManagers\RendererShaderManager\RendererShaderManager.cpp" />
     <ClCompile Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.cpp" />
     <ClCompile Include="Renderers\Sampler\Sampler.cpp" />
-    <ClCompile Include="Renderers\TestRenderer\TestRenderer.cpp" />
     <ClCompile Include="RDFP\RDFP.cpp" />
     <ClCompile Include="RDFP\ResourceDescription.cpp" />
-    <ClCompile Include="TBM\TBM.cpp" />
-    <ClCompile Include="TBM\TerrainTile\TerrainTile.cpp" />
     <ClCompile Include="Triangle\Triangle.cpp" />
+    <ClCompile Include="PM\Icosphere\Icosphere.cpp" />
+    <ClCompile Include="PM\PlanetRings\PlanetRings.cpp" />
+    <ClCompile Include="UniverseECS\UniverseECS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -153,13 +153,13 @@
     <ClInclude Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.h" />
     <ClInclude Include="Renderers\Sampler\Sampler.h" />
     <ClInclude Include="RNGs\RNGs.h" />
-    <ClInclude Include="Renderers\TestRenderer\TestRenderer.h" />
     <ClInclude Include="Renderers\ShadingType.h" />
     <ClInclude Include="RDFP\RDFP.h" />
     <ClInclude Include="RDFP\ResourceDescription.h" />
-    <ClInclude Include="TBM\TBM.h" />
-    <ClInclude Include="TBM\TerrainTile\TerrainTile.h" />
     <ClInclude Include="Triangle\Triangle.h" />
+    <ClInclude Include="PM\Icosphere\Icosphere.h" />
+    <ClInclude Include="PM\PlanetRings\PlanetRings.h" />
+    <ClInclude Include="UniverseECS\UniverseECS.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />
@@ -171,30 +171,6 @@
     <Text Include="Assets\Shaders\FRAGMENT SHADERS\DEFAULT_FRAGMENT_SHADER.txt" />
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFERRED_RENDERER_VERTEX_SHADER.txt" />
     <Text Include="Assets\Configurations\DefaultConfig.txt" />
-    <Text Include="Assets\Shaders\PBRShaders\FS\CT_FS_TEST.txt" />
-    <Text Include="Assets\Shaders\PBRShaders\VS\CT_VS_TEST.txt" />
-    <Text Include="Assets\Shaders\ShaderTemplate\FragementShaderTemplate.txt" />
-    <Text Include="Assets\Shaders\ShaderTemplate\VertexShaderTemplate.txt" />
-    <Text Include="Assets\Shaders\PBRShaders\VS\TEMP_VS.txt" />
-    <Text Include="Assets\Shaders\PBRShaders\FS\TEMP_FS.txt" />
-    <Text Include="Assets\Shaders\PBRShaders\FS\CookTorranceFS.txt" />
-    <Text Include="Assets\Shaders\PBRShaders\VS\CookTorranceVS.txt" />
-    <Text Include="Assets\Shaders\PBRShaders\FS\TemplateTestFS.txt" />
-    <Text Include="Assets\Shaders\PBRShaders\VS\TemplateTestVS.txt" />
-    <Text Include="Assets\Shaders\EnvironmentCubeMapShaders\EnvironmentCubeMapVertexShader.txt" />
-    <Text Include="Assets\Shaders\EnvironmentCubeMapShaders\EnvironmentCubeMapFragmentShader.txt" />
-    <Text Include="Assets\Shaders\HDR\HDRVS.txt" />
-    <Text Include="Assets\Shaders\HDR\HDRFS.txt" />
-    <Text Include="Assets\Shaders\GaussianBlur\GaussianBlurFS.txt" />
-    <Text Include="Assets\Shaders\GaussianBlur\GaussianBlurVS.txt" />
-    <Text Include="Assets\Shaders\AdditiveBlend\AdditiveBlendVS.txt" />
-    <Text Include="Assets\Shaders\AdditiveBlend\AdditiveBlendFS.txt" />
-    <Text Include="Assets\Shaders\VRShaders\Lighting\FS\BlinnPhongFS.txt" />
-    <Text Include="Assets\Shaders\VRShaders\Lighting\VS\BlinnPhongVS.txt" />
-    <Text Include="Assets\Shaders\VRShaders\Texturing\FS\BasicTexturingFS.txt" />
-    <Text Include="Assets\Shaders\VRShaders\Texturing\VS\BasicTexturingVS.txt" />
-    <Text Include="Assets\Shaders\VRShaders\Environment\FS\EnvironmentCubeMapFS.txt" />
-    <Text Include="Assets\Shaders\VRShaders\Environment\VS\EnvironmentCubeMapVS.txt" />
     <Text Include="Assets\Resource Description Files\GDF.txt" />
     <Text Include="Assets\Resource Description Files\TDF.txt" />
     <Text Include="Assets\Resource Description Files\MDF.txt" />
@@ -203,12 +179,6 @@
     <Text Include="Assets\NewShaders\ShaderTemplate\VertexShaderTemplate.txt" />
     <Text Include="Assets\NewShaders\PostProcessShader\SSAO\SSAO.frag.glsl" />
     <Text Include="Assets\NewShaders\PostProcessShader\SSAO\SSAO.vert.glsl" />
-    <Text Include="Assets\NewShaders\LightingShaders\BasicLightingShader\BL.frag.glsl" />
-    <Text Include="Assets\NewShaders\LightingShaders\BasicLightingShader\BL.vert.glsl" />
-    <Text Include="Assets\NewShaders\LightingShaders\MaterialLightingShader\MLOpaque.frag.glsl" />
-    <Text Include="Assets\NewShaders\LightingShaders\MaterialLightingShader\MLOpaque.vert.glsl" />
-    <Text Include="Assets\NewShaders\LightingShaders\MaterialLightingShader\MLTranslucency.frag.glsl" />
-    <Text Include="Assets\NewShaders\LightingShaders\MaterialLightingShader\MLTranslucency.vert.glsl" />
     <Text Include="Assets\NewShaders\EnvironmentShaders\ECube.frag.glsl" />
     <Text Include="Assets\NewShaders\EnvironmentShaders\ECube.vert.glsl" />
     <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.frag.glsl" />
@@ -224,8 +194,6 @@
     <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.frag.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\AmbientColorShader\AmbientColor.vert.glsl" />
     <None Include="Assets\NewShaders\LightingShaders\AmbientColorShader\AmbientColor.frag.glsl" />
-    <None Include="Assets\NewShaders\PostProcessShader\Gaussian Blur\GaussianBlur.vert.glsl" />
-    <None Include="Assets\NewShaders\PostProcessShader\Gaussian Blur\GaussianBlur.frag.glsl" />
     <None Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\BasicGBufferShader\BasicGBufferShader.vert.glsl" />
     <None Include="Assets\NewShaders\DeferredRenderingShaders\LightingPassShaders\BasicLightingShader\BasicLightingShader.frag.glsl" />
     <None Include="Assets\NewShaders\DeferredRenderingShaders\LightingPassShaders\BasicLightingShader\BasicLightingShader.vert.glsl" />
@@ -233,5 +201,13 @@
     <None Include="Assets\NewShaders\PostProcessShader\HDR\HDR.frag.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\AlphaBlendTextures\AlphaBlendTextures.frag.glsl" />
     <None Include="Assets\NewShaders\PostProcessShader\AlphaBlendTextures\AlphaBlendTextures.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\FXAA\FXAA.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\FXAA\FXAA.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\GaussianBlur\GaussianBlur.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\GaussianBlur\GaussianBlur.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\Bloom\Bloom.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\Bloom\Bloom.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\AdditiveBlendTextures\AdditiveBlendTextures.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\AdditiveBlendTextures\AdditiveBlendTextures.vert.glsl" />
   </ItemGroup>
 </Project>

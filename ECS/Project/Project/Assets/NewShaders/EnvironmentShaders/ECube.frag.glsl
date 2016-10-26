@@ -42,6 +42,7 @@ uniform vec4 u_environmentMapIntensities;
 //	THE FRAGMENT SHADER MAIN.
 void main(void)
 {
-	vec4 color = texture(u_backgroundEnvironmentCubeMapOne, (v_vertexPosition.xyz)) * u_environmentMapIntensities.x;
-	o_baseOutputColor = color;
+	//	Compute and ouput the Environment Color with the Intensity.
+	vec4 color = texture(u_backgroundEnvironmentCubeMapOne, (v_vertexPosition.xyz));
+	o_baseOutputColor = vec4(color.xyz * u_environmentMapIntensities.x, color.w);
 }

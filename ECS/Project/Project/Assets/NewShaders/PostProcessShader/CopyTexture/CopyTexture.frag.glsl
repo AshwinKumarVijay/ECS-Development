@@ -16,5 +16,6 @@ layout (binding = 38) uniform sampler2D pp_inputTextureFour;
 //	THE FRAGMENT SHADER MAIN.
 void main(void)
 {
+	//	Output the exact same color.
 	o_baseOutputColor = (texture(pp_inputTextureOne, v_vertexTextureCoordinates.xy));
 }

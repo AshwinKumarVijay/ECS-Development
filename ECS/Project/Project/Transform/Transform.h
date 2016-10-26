@@ -125,6 +125,7 @@ public:
 
 	*/
 	void computeTransformMatrix();
+	void computeHierarchyTransformMatrix(const glm::mat4 & hierarchyMatrix);
 
 
 	/**
@@ -215,7 +216,8 @@ public:
 
 	*/
 
-	std::shared_ptr<glm::mat4x4> getTransform() const;
+	std::shared_ptr<glm::mat4x4> getTransformMatrix() const;
+	std::shared_ptr<glm::mat4x4> getHierarchyTransformMatrix() const;
 
 
 
@@ -234,6 +236,8 @@ private:
 
 	//	The matrix representing the translation * rotation * scale.
 	std::shared_ptr<glm::mat4x4> transformMatrix;
+	std::shared_ptr<glm::mat4x4> hierarchyTransformMatrix;
+
 
 	//	The boolean representing whether the transformMatrix accurately depicts the current position, scale and rotation. 
 	bool dirtyMatrixFlag;

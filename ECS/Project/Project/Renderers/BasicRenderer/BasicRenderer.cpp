@@ -664,13 +664,13 @@ void BasicRenderer::uploadModelData(const RendererShaderData & rendererShaderDat
 void BasicRenderer::uploadMaterialData(const RendererShaderData & rendererShaderData, const glm::vec4 & diffuseAlbedo, const glm::vec4 & specularAlbedo, const glm::vec4 & emissiveColor,  const glm::vec4 & metallicnessRoughnessFresnelOpacity)
 {
 	//	Upload the Diffuse Albedo.
-	glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_diffuseAlbedo, 1, glm::value_ptr(diffuseAlbedo));
+	glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_diffuseAlbedoAndLitType, 1, glm::value_ptr(diffuseAlbedo));
 
 	//	Upload the Specular Albedo.
-	glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_specularAlbedo, 1, glm::value_ptr(specularAlbedo));
+	glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_specularAlbedoAndLightingType, 1, glm::value_ptr(specularAlbedo));
 
 	//	Upload the Emissive COlor.
-	glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_emissiveColor, 1, glm::value_ptr(emissiveColor));
+	glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_emssionColorAndIntensity, 1, glm::value_ptr(emissiveColor));
 
 	//	Upload the Diffuse Albedo.
 	glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_metallicnessRoughnessFresnelOpacity, 1, glm::value_ptr(metallicnessRoughnessFresnelOpacity));

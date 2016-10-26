@@ -25,7 +25,7 @@ layout (location = 2) out vec4 v_vertexColor;
 void main(void)
 {
 	
-	//	
+	//	Pass through the Vertex Position, the Vertex Normal and the Vertex Color.
 	v_vertexPosition = a_vertexPosition;
 	v_vertexNormal = a_vertexNormal;
 	v_vertexColor = a_vertexColor;

@@ -8,6 +8,7 @@ RenderingComponent::RenderingComponent()
 	renderableID = -1;
 	materialType = "DEFAULT MATERIAL";
 	shadingType = ShadingTypes::OPAQUE_BASIC;
+	activeRendering = true;
 }
 
 //	Default RenderingComponent Destructor
@@ -50,4 +51,14 @@ void RenderingComponent::setShadingType(const ShadingTypes::ShadingType newShadi
 ShadingTypes::ShadingType RenderingComponent::getShadingType() const
 {
 	return shadingType;
+}
+
+void RenderingComponent::setActiveRendering(const bool & newActiveRendering)
+{
+	activeRendering = newActiveRendering;
+}
+
+bool RenderingComponent::getActiveRendering() const
+{
+	return activeRendering;
 }

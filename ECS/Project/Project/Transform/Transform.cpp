@@ -8,6 +8,7 @@ Transform::Transform()
 	transformScale = glm::vec3(1.0);
 	transformRotation = glm::quat();
 	transformMatrix = std::make_shared<glm::mat4x4>(1.0f);
+	hierarchyTransformMatrix = std::make_shared<glm::mat4>(1.0f);
 	dirtyMatrixFlag = true;
 }
 
@@ -73,6 +74,13 @@ void Transform::computeTransformMatrix()
 	dirtyMatrixFlag = false;
 }
 
+//	Compute the Hierarchy Transform Matrix.
+void Transform::computeHierarchyTransformMatrix(const glm::mat4 & hierarchyMatrix)
+{
+	computeTransformMatrix();
+	*hierarchyTransformMatrix = (hierarchyMatrix) * (*transformMatrix);
+}
+
 //	Return the vector represeting the translation of the transform.
 glm::vec3 Transform::getPosition() const
 {
@@ -111,9 +119,14 @@ glm::vec3 Transform::getUpVector() const
 }
 
 //	Return a pointer to the transform matrix.
-std::shared_ptr<glm::mat4x4> Transform::getTransform() const
+std::shared_ptr<glm::mat4x4> Transform::getTransformMatrix() const
 {
 	return transformMatrix;
+}
+
+std::shared_ptr<glm::mat4x4> Transform::getHierarchyTransformMatrix() const
+{
+	return hierarchyTransformMatrix;
 }
 
 //	Set the Foward Direction of the Transform to be toward a particular point.

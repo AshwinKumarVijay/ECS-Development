@@ -53,20 +53,44 @@ void TransformSystem::update(const float & deltaTime, const float & currentFrame
 			//	Get the Hierarchy Component.
 			std::shared_ptr<const HierarchyComponent> hierarchyComponent = std::dynamic_pointer_cast<const HierarchyComponent>(entityManager->viewComponentOfEntity(currentEntity, ComponentType::HIERARCHY_COMPONENT));
 
-			//	Check if this entity has a parent. 
+			//	Check if this entity does not have parent. 
 			if (hierarchyComponent->getParent() == -1)
 			{
-				//	Get the transform component.
-				std::shared_ptr<TransformComponent> transformComponent = std::dynamic_pointer_cast<TransformComponent>(entityManager->getComponentOfEntity(currentEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::TRANSFORM_SYSTEM));
-
-				//	Compute the transform.
-				transformComponent->getTransform()->computeTransformMatrix();
-
-				//	TO DO
-				//	Here, compute the transform matrix recursively down the tree. 
+				computeHierarchyTransformMatrix(currentEntity, glm::mat4(1.0));
 			}
 		}
 
+	}
+}
+
+//	Compute the Hierarchy Transform Matrix.
+void TransformSystem::computeHierarchyTransformMatrix(long int currentEntity, const glm::mat4 & hierarchyMatrix)
+{
+	//	Get the EntityManager.
+	std::shared_ptr<EntityManager> entityManager = getEntityManager();
+	
+	//	Check if this is the currentEntity.
+	if (currentEntity != -1)
+	{
+		//	Get the Hierarchy Component.
+		std::shared_ptr<const HierarchyComponent> hierarchyComponent = std::dynamic_pointer_cast<const HierarchyComponent>(entityManager->viewComponentOfEntity(currentEntity, ComponentType::HIERARCHY_COMPONENT));
+
+		//	Get the transform component.
+		std::shared_ptr<TransformComponent> transformComponent = std::dynamic_pointer_cast<TransformComponent>(entityManager->getComponentOfEntity(currentEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::TRANSFORM_SYSTEM));
+
+		//	Compute the Hierarchy Component.
+		if (hierarchyComponent != NULL && transformComponent != NULL)
+		{
+			//	Compute the transform.
+			transformComponent->getTransform()->computeTransformMatrix();
+			transformComponent->getTransform()->computeHierarchyTransformMatrix(hierarchyMatrix);
+
+			//	Iterate over the entities lower on the hierarchy tree.
+			for (auto currentChildEntity = hierarchyComponent->getChildEntities().begin(); currentChildEntity != hierarchyComponent->getChildEntities().end(); currentChildEntity++)
+			{
+				computeHierarchyTransformMatrix(*currentChildEntity, *transformComponent->getTransform()->getHierarchyTransformMatrix());
+			}
+		}
 	}
 }
 

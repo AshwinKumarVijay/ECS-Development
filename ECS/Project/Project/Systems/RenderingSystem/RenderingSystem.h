@@ -81,9 +81,6 @@ private:
 	//	Process the Resource Events.
 	virtual void processResourceEvents(std::shared_ptr<const ECSEvent> nextEvent);
 
-	//	Process Camera Events.
-	virtual void processCameraEvents(std::shared_ptr<const ECSEvent> nextEvent);
-
 	//	A pointer to the associated Renderer.
 	std::shared_ptr<Renderer> renderer;
 

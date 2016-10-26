@@ -21,3 +21,4 @@ void main(void)
 
 	o_baseOutputColor = vec4((colorOne.xyz * colorOne.w) + (1.0 - colorOne.w) * (colorTwo.xyz * colorTwo.w), (colorOne.w) + (1.0 - colorOne.w) * (colorTwo.w));
 }
+

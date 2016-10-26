@@ -14,7 +14,7 @@ CameraComponent::CameraComponent()
 	farClip = 500.0f;
 
 	//	Aspect Ratio.
-	aspectRatio = 1920.0 / 1080.0;
+	aspectRatio = 1920.0f / 1080.0f;
 
 	//	Field of View.
 	FOV = glm::pi<float>() / 4.0f;

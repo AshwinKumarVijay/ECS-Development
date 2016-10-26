@@ -57,8 +57,10 @@ void RenderingSystem::update(const float & deltaTime, const float & currentFrame
 	//	Process the Events.
 	processEvents(deltaTime, currentFrameTime, lastFrameTime);
 
-	//	Render the Renderer
+	//	Update the Active Camera.
 	activeCamera->updateCamera();
+
+	//	Render the Renderer
 	renderer->render(deltaTime, currentFrameTime, lastFrameTime, activeCamera);
 }
 
@@ -218,16 +220,6 @@ void RenderingSystem::processResourceEvents(std::shared_ptr<const ECSEvent> next
 	}
 }
 
-//	Process Camera Events.
-void RenderingSystem::processCameraEvents(std::shared_ptr<const ECSEvent> nextEvent)
-{
-	//	
-	if (nextEvent != NULL)
-	{
-
-	}
-}
-
 //	Return a pointer to the Renderer associated with the Renderer.
 std::shared_ptr<Renderer> RenderingSystem::getRenderer()
 {
@@ -253,7 +245,7 @@ void RenderingSystem::addRenderable(const long int & entityID)
 	std::shared_ptr<RenderingComponent> renderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(entityID, ComponentType::RENDERING_COMPONENT, ModuleType::RENDERING_SYSTEM));
 	
 	//	Check if there is actual Rendering Component.
-	if (renderingComponent != NULL && renderingComponent->getRenderableID() == -1)
+	if (renderingComponent != NULL && renderingComponent->getActiveRendering() && renderingComponent->getRenderableID() == -1)
 	{
 		//	Get the Transform Component of the current entity.
 		std::shared_ptr<const TransformComponent> transformComponent = std::dynamic_pointer_cast<const TransformComponent>(getEntityManager()->viewComponentOfEntity(entityID, ComponentType::TRANSFORM_COMPONENT));
@@ -281,17 +273,43 @@ void RenderingSystem::addRenderable(const long int & entityID)
 //	Update the Renderable.
 void RenderingSystem::updateRenderable(const long int & entityID)
 {
-	//	Update the Shader Type associated with the Renderable of this EntityID.
-	updateRenderableShaderType(entityID);
+	//	Get the Rendering Component of the current entity.
+	std::shared_ptr<const RenderingComponent> renderingComponent = std::dynamic_pointer_cast<const RenderingComponent>(getEntityManager()->viewComponentOfEntity(entityID, ComponentType::RENDERING_COMPONENT));
 
-	//	Update the Material Type associated with the Renderable of this EntityID.
-	updateRenderableMaterialType(entityID);
+	//	Check if this Rendering Component is Active Rendering.
+	if (renderingComponent != NULL && !renderingComponent->getActiveRendering())
+	{
+		if (renderingComponent->getRenderableID() != -1)
+		{
+			std::shared_ptr<RenderingComponent> currentRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(entityID, ComponentType::RENDERING_COMPONENT, ModuleType::RENDERING_SYSTEM));
+			removeRenderable(currentRenderingComponent->getRenderableID());
+			currentRenderingComponent->setRenderableID(-1);
 
-	//	Update the Geometry Type associated with the Renderable of this EntityID.
-	updateRenderableGeometryType(entityID);
+		}
+	}	
+	else if(renderingComponent != NULL && renderingComponent->getActiveRendering())
+	{
+		if (renderingComponent->getRenderableID() == -1)
+		{
+			addRenderable(entityID);
+		}
 
-	//	Update the Transform Matrix associated with the Renderable of this EntityID.
-	updateRenderableTransformMatrix(entityID);
+		//	Update the Shader Type associated with the Renderable of this EntityID.
+		updateRenderableShaderType(entityID);
+
+		//	Update the Material Type associated with the Renderable of this EntityID.
+		updateRenderableMaterialType(entityID);
+
+		//	Update the Geometry Type associated with the Renderable of this EntityID.
+		updateRenderableGeometryType(entityID);
+
+		//	Update the Transform Matrix associated with the Renderable of this EntityID.
+		updateRenderableTransformMatrix(entityID);
+	}
+	else
+	{
+
+	}
 }
 
 //	Update the Shader Type of the specified Renderable.
@@ -354,7 +372,7 @@ void RenderingSystem::updateRenderableTransformMatrix(const long int & entityID)
 		std::shared_ptr<const TransformComponent> transformComponent = std::dynamic_pointer_cast<const TransformComponent>(getEntityManager()->viewComponentOfEntity(entityID, ComponentType::TRANSFORM_COMPONENT));
 
 		//	Update the Transform associated with this Renderable.
-		renderer->updateTransformMatrix(renderingComponent->getRenderableID(), *transformComponent->viewTransform()->getTransform());
+		renderer->updateTransformMatrix(renderingComponent->getRenderableID(), *transformComponent->viewTransform()->getHierarchyTransformMatrix());
 	}
 }
 

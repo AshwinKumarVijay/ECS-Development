@@ -2,7 +2,7 @@
 
 Camera::Camera()
 {
-	cameraPosition = glm::vec3(40.0f, 40.0f, 40.0f);
+	cameraPosition = glm::vec3(50.0f, 50.0f, 50.0f);
 
 	lookAtPoint = glm::vec3(0.0, 0.0, 0.0);
 
@@ -14,7 +14,7 @@ Camera::Camera()
 	
 	aspectRatio = 1920.0 / 1080.0f;
 
-	FOV = glm::pi<float>() / 4.0f;
+	FOV = glm::pi<float>() / 3.0f;
 
 	perspectiveMatrix = glm::perspective(FOV, aspectRatio, nearClip, farClip);
 

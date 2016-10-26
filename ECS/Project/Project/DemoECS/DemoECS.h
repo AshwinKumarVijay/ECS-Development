@@ -18,7 +18,6 @@
 #include "../TypesList/ResourceTypes.h"
 
 #include "../RDFP/RDFP.h"
-#include "../TBM/TBM.h"
 
 class System;
 class TransformSystem;
@@ -132,12 +131,11 @@ private:
 	long int cameraEntity4;
 
 	//	The Base Entity.
-	long int baseEntity;
+	long int planetEntity;
+	long int ringEntity;
 
 	//	Resource Description File Parser.
 	RDFP rdfp;
 
-	//	TerrainBlockMaker
-	TBM tbm;
 };
 

@@ -55,6 +55,8 @@ int initializeGLFW()
 	glfwWindowHint(GLFW_RESIZABLE, 0);
 	glfwWindowHint(GLFW_DECORATED, 0);
 
+	glfwWindowHint(GLFW_SAMPLES, 4);
+
 	window = glfwCreateWindow(1280, 720, "System Of Planets", NULL, NULL);
 	glfwSetWindowPos(window, 320, 180);
 	glfwSwapInterval(2);
@@ -69,6 +71,7 @@ int initializeGLFW()
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
+	glEnable(GL_MULTISAMPLE);
 
 	return 0;
 }

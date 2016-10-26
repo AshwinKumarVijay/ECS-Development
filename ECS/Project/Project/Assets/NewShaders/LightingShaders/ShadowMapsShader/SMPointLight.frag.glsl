@@ -44,9 +44,10 @@ void main(void)
 	//	Map this into the range of 0 to 1.
 	lightDistance = lightDistance / u_cameraNearFarPlaneDistance[1];
 
-	//		
+	//	Output the Light Distance.	
 	o_baseOutputColor = vec4(lightDistance, lightDistance, lightDistance, 1.0);
 
-	//
+	//	Out the Fragment Depth.
 	gl_FragDepth = lightDistance;
 }
+

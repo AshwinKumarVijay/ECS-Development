@@ -24,8 +24,8 @@ layout (location = 22) uniform mat4 u_modelViewMatrix;
 layout (location = 23) uniform mat3 u_inverseTransposeModelViewMatrix;
 
 //	MATERIAL DATA. DIFFUSE ALBEDO, METALLICNESS, ROUGHNESS, FRESNEL, OPACITY.
-layout (location = 25) uniform vec4 u_diffuseAlbedo;
-layout (location = 26) uniform vec4 u_specularAlbedo;
+layout (location = 25) uniform vec4 u_diffuseAlbedoAndLitType;
+layout (location = 26) uniform vec4 u_specularAlbedoAndLightingType;
 layout (location = 27) uniform vec4 u_emssionColorAndIntensity;
 layout (location = 28) uniform vec4 u_metallicnessRoughnessFresnelOpacity;
 
@@ -39,13 +39,11 @@ layout (location = 2) in vec4 v_vertexColor;
 //	FRAGMENT OUTPUT COLOR.
 //	G BUFFER TEXTURES OUT.
 layout (location = 0) out vec4 o_worldSpaceVertexPosition;
-layout (location = 1) out vec4 o_worldSpaceVertexNormal;
-layout (location = 2) out vec4 o_viewSpaceVertexPositionAndDepth;
-layout (location = 3) out vec4 o_viewSpaceVertexNormal;
-layout (location = 4) out vec4 o_diffuseAlbedo;
-layout (location = 5) out vec4 o_specularAlbedo;
-layout (location = 6) out vec4 o_emissionColorAndIntensity;
-layout (location = 7) out vec4 o_metallicnessRoughnessFresnelOpacity;
+layout (location = 1) out vec4 o_worldSpaceVertexNormalAndDepth;
+layout (location = 2) out vec4 o_diffuseAlbedoAndLitType;
+layout (location = 3) out vec4 o_specularAlbedoAndLightingType;
+layout (location = 4) out vec4 o_emissionColorAndIntensity;
+layout (location = 5) out vec4 o_metallicnessRoughnessFresnelOpacity;
 
 
 //	SAMPLING TEXTURES
@@ -68,20 +66,14 @@ float linearizeDepth(float depth)
 //	THE FRAGMENT SHADER MAIN.
 void main(void)
 {
-
 	//	OUPUT WORLD SPACE VERTEX DATA.
 	o_worldSpaceVertexPosition = (u_modelMatrix * v_vertexPosition);
 	o_worldSpaceVertexPosition = vec4((o_worldSpaceVertexPosition.xyz / o_worldSpaceVertexPosition.w), 1.0);
-	o_worldSpaceVertexNormal = vec4(normalize((u_inverseTransposeModelMatrix * v_vertexNormal)), 0.0);
+	o_worldSpaceVertexNormalAndDepth = vec4(normalize((u_inverseTransposeModelMatrix * v_vertexNormal)), linearizeDepth(gl_FragCoord.z));
 	
-	//	OUTPUT VIEW SPACE VERTEX DATA.
-	o_viewSpaceVertexPositionAndDepth = (u_modelViewMatrix * v_vertexPosition);
-	o_viewSpaceVertexPositionAndDepth = vec4(vec3(o_viewSpaceVertexPositionAndDepth.xyz / o_viewSpaceVertexPositionAndDepth.w), linearizeDepth(gl_FragCoord.z)); 
-	o_viewSpaceVertexNormal = vec4(normalize(u_inverseTransposeModelViewMatrix * v_vertexNormal), 0.0);
-
 	//	OUTPUT MATERIAL DATA.
-	o_diffuseAlbedo = u_diffuseAlbedo;
-	o_specularAlbedo = u_specularAlbedo;
+	o_diffuseAlbedoAndLitType = u_diffuseAlbedoAndLitType;
+	o_specularAlbedoAndLightingType = o_specularAlbedoAndLightingType;
 	o_emissionColorAndIntensity = u_emssionColorAndIntensity;
 	o_metallicnessRoughnessFresnelOpacity = u_metallicnessRoughnessFresnelOpacity;
 }

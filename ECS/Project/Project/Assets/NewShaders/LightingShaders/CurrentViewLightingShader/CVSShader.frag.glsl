@@ -22,34 +22,17 @@ layout (location = 0) in vec4 v_vertexTextureCoordinates;
 //	FRAGMENT OUTPUT COLOR.
 layout (location = 0) out vec4 o_baseOutputColor;
 
-
-//	SAMPLING TEXTURES
-//	ENVIRONMENT MAP SAMPLER CUBE.
-layout (binding = 0) uniform samplerCube u_backgroundEnvironmentCubeMapOne;
-layout (binding = 1) uniform samplerCube u_backgroundEnvironmentCubeMapTwo;
-layout (binding = 2) uniform samplerCube u_backgroundEnvironmentCubeMapThree;
-layout (binding = 3) uniform samplerCube u_backgroundEnvironmentCubeMapFour;
-
-
 //	G BUFFER TEXTURES FOR SECOND PASS OF DEFERRED RENDERING.
 layout (binding = 20) uniform sampler2D g_worldSpaceVertexPosition;
-layout (binding = 21) uniform sampler2D g_worldSpaceVertexNormal;
-layout (binding = 22) uniform sampler2D g_viewSpaceVertexPositionAndDepth;
-layout (binding = 23) uniform sampler2D g_viewSpaceVertexNormal;
-layout (binding = 24) uniform sampler2D g_diffuseAlbedo;
-layout (binding = 25) uniform sampler2D g_specularAlbedo;
+layout (binding = 21) uniform sampler2D g_worldSpaceVertexNormalAndDepth;
+layout (binding = 24) uniform sampler2D g_diffuseAlbedoAndLitType;
+layout (binding = 25) uniform sampler2D g_specularAlbedoAndLightingType;
 layout (binding = 26) uniform sampler2D g_emissionColorAndIntensity;
 layout (binding = 27) uniform sampler2D g_metallicnessRoughnessFresnelOpacity;
 
 //	Light Color And Depth Cube Map.
 layout (binding = 30) uniform samplerCube lightColorCubeMap;
 layout (binding = 31) uniform samplerCube lightDepthCubeMap;
-
-//	Environment Map Intensities.
-uniform vec4 u_backgroundEnvironmentIntensities;
-
-//	AMBIENT LIGHT.
-uniform vec4 u_ambientLight;
 
 //	Vector of Options: Light Enabled, Locality, Light Type.
 uniform vec4 lightEnabledShadowLightType;
@@ -72,24 +55,31 @@ uniform vec4 lightSpotCosCutOffAndExponent;
 
 float computeShadowingFactor()
 {
+	//	Compute the World Space Vertex Position.
 	vec3 worldspace_vertexPosition = texture(g_worldSpaceVertexPosition, v_vertexTextureCoordinates.xy).xyz;
 
+	//	Compute the World Space Light Position.
 	vec3 worldspace_lightPosition = lightPosition.xyz / lightPosition.w;
 
-	vec3 worldspace_vertexNormal = normalize(texture(g_worldSpaceVertexNormal, v_vertexTextureCoordinates.xy).xyz);
+	//	Compute the Vertex Normal.	
+	vec3 worldspace_vertexNormal = normalize(texture(g_worldSpaceVertexNormalAndDepth, v_vertexTextureCoordinates.xy).xyz);
 
-	vec3 vertexToLight = worldspace_vertexPosition - worldspace_lightPosition;
+	//	Compute the Vertex to Light Direction.
+	vec3 worldspace_vertexToLight = worldspace_vertexPosition - worldspace_lightPosition;
 
-	float closestDepth = texture(lightDepthCubeMap, normalize(vertexToLight)).x;
+	//	Find the Closest Depth of the Light.
+	float closestDepth = texture(lightDepthCubeMap, normalize(worldspace_vertexToLight)).x;
 
-	closestDepth = closestDepth;
+	//	Compute the Current Depth.
+	float currentDepth = length(worldspace_vertexToLight) / u_cameraNearFarPlaneDistance[1];
 
-	float currentDepth = length(vertexToLight) / u_cameraNearFarPlaneDistance[1];
-
+	//	The Shadow Bias.
 	float bias = 0.00025;  
 
+	//	Compute the Shadowing Factor.
 	float shadowingFactor = currentDepth  - bias > closestDepth ? 1.0 : 0.0;
-		
+
+	//	Return the Shadowing Factor.		
 	return shadowingFactor;
 }
 
@@ -100,7 +90,7 @@ void main(void)
 	//	Initialize the Total Light.
 	vec3 totalLightResult = vec3(0.0, 0.0, 0.0);
 
-	
+	//	Account for the Shadowing Factor.	
 	float shadowingFactor = 1.0 - computeShadowingFactor();
 
 	//	Output the Fragment Color.

@@ -126,9 +126,9 @@ struct ModelDataUniforms
 struct MaterialValuesUniforms
 {
 	//	MATERIAL DATA. DIFFUSE ALBEDO, METALLICNESS, ROUGHNESS, FRESNEL, OPACITY.
-	GLuint u_diffuseAlbedo = -1;
-	GLuint u_specularAlbedo = -1;
-	GLuint u_emissiveColor = -1;
+	GLuint u_diffuseAlbedoAndLitType = -1;
+	GLuint u_specularAlbedoAndLightingType = -1;
+	GLuint u_emssionColorAndIntensity = -1;
 	GLuint u_metallicnessRoughnessFresnelOpacity = -1;
 };
 
@@ -139,11 +139,9 @@ struct GBufferInputUniforms
 	//	G BUFFER - VERTEX POSITION AND DEPTH, VERTEX NORMAL, VERTEX TEXTURE COORDINATES
 	//	DIFFUSE ALBEDO AND METALLICNESS, SPECULAR ALBEDO AND ROUGHNESS, EMISSIVE COLOR AND INTENSITY.
 	GLuint g_worldSpaceVertexPosition;
-	GLuint g_worldSpaceVertexNormal;
-	GLuint g_viewSpaceVertexPositionAndDepth;
-	GLuint g_viewSpaceVertexNormal;
-	GLuint g_diffuseAlbedo;
-	GLuint g_specularAlbedo;
+	GLuint g_worldSpaceVertexNormalAndDepth;
+	GLuint g_diffuseAlbedoAndLitType;
+	GLuint g_specularAlbedoAndLightingType;
 	GLuint g_emissionColorAndIntensity;
 	GLuint g_metallicnessRoughnessFresnelOpacity;
 };

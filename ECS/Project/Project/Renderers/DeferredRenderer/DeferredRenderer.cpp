@@ -484,7 +484,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 
 
 	//	Create the World Space Vertex Normal Texture for the G Buffer.
-	std::string newWSVNTextureName = "G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE";
+	std::string newWSVNTextureName = "G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_AND_DEPTH_TEXTURE";
 	std::shared_ptr<RendererPipelineTexture> newWSVNTexture = std::make_shared<RendererPipelineTexture>();
 
 	//	Generate the G Buffer of the Texture ID.
@@ -499,39 +499,8 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	rendererPipelineTextures[newWSVNTextureName] = newWSVNTexture;
 
 
-	//	Create the View Space Vertex Position Texture for the G Buffer.
-	std::string newVSVPTextureName = "G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE";
-	std::shared_ptr<RendererPipelineTexture> newVSVPTexture = std::make_shared<RendererPipelineTexture>();
-
-	//	Generate the G Buffer of the Texture ID.
-	glGenTextures(1, &newVSVPTexture->textureID);
-	glBindTexture(GL_TEXTURE_2D, newVSVPTexture->textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowScreenWidth, windowScreenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//	Add the View Space Vertex Position Texture for the G Buffer for the name.
-	rendererPipelineTextures[newVSVPTextureName] = newVSVPTexture;
-
-
-	//	Create the View Space Normal Texture for the G Buffer.
-	std::string newVSVNTextureName = "G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE";
-	std::shared_ptr<RendererPipelineTexture> newVSVNTexture = std::make_shared<RendererPipelineTexture>();
-
-	//	Generate the G Buffer of the Texture ID.
-	glGenTextures(1, &newVSVNTexture->textureID);
-	glBindTexture(GL_TEXTURE_2D, newVSVNTexture->textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowScreenWidth, windowScreenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	//	Add the View Space Normal Texture for the G Buffer for the name.
-	rendererPipelineTextures[newVSVNTextureName] = newVSVNTexture;
-
 	//	Create the Diffuse Albedo Texture for the G Buffer.
-	std::string newDATextureName = "G_BUFFER_DIFFUSE_ALBEDO_TEXTURE";
+	std::string newDATextureName = "G_BUFFER_DIFFUSE_ALBEDO_AND_LIT_TYPE_TEXTURE";
 	std::shared_ptr<RendererPipelineTexture> newDATexture = std::make_shared<RendererPipelineTexture>();
 
 	//	Generate the G Buffer of the Texture ID.
@@ -546,7 +515,7 @@ void DeferredRenderer::initializeDeferredRenderingGBufferTextures()
 	rendererPipelineTextures[newDATextureName] = newDATexture;
 
 	//	Create the Specular Albedo Texture for the G Buffer.
-	std::string newSATextureName = "G_BUFFER_SPECULAR_ALBEDO_TEXTURE";
+	std::string newSATextureName = "G_BUFFER_SPECULAR_ALBEDO_AND_LIGHTING_TYPE_TEXTURE";
 	std::shared_ptr<RendererPipelineTexture> newSATexture = std::make_shared<RendererPipelineTexture>();
 
 	//	Generate the G Buffer of the Texture ID.
@@ -619,13 +588,11 @@ void DeferredRenderer::initializeDeferredRenderingGBufferFramebuffer()
 
 	//	Associate the Textures of the G Buffer with the G Buffer Framebuffer.
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->textureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 1, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 2, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->textureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 3, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 4, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_DIFFUSE_ALBEDO_TEXTURE"]->textureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 5, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_SPECULAR_ALBEDO_TEXTURE"]->textureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 6, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_EMISSIVE_COLOR_INTENSITIY_TEXTURE"]->textureID, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 7, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_METALLICNESS_ROUGHNESS_FRESNEL_OPACITY_TEXTURE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 1, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_AND_DEPTH_TEXTURE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 2, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_DIFFUSE_ALBEDO_AND_LIT_TYPE_TEXTURE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 3, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_SPECULAR_ALBEDO_AND_LIGHTING_TYPE_TEXTURE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 4, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_EMISSIVE_COLOR_INTENSITIY_TEXTURE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 5, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_METALLICNESS_ROUGHNESS_FRESNEL_OPACITY_TEXTURE"]->textureID, 0);
 
 	//	Associate the Depth Stencil Texture with the G Buffer Framebuffer.
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_DEPTH_STENCIL_TEXTURE"]->textureID, 0);
@@ -634,8 +601,8 @@ void DeferredRenderer::initializeDeferredRenderingGBufferFramebuffer()
 	checkFramebufferStatus();
 
 	//	Set up the 8 G Buffered Draw Buffers.
-	GLenum GBufferedDrawBuffers[] = { GL_COLOR_ATTACHMENT0 + 0, GL_COLOR_ATTACHMENT0 + 1, GL_COLOR_ATTACHMENT0 + 2, GL_COLOR_ATTACHMENT0 + 3, GL_COLOR_ATTACHMENT0 + 4, GL_COLOR_ATTACHMENT0 + 5,  GL_COLOR_ATTACHMENT0 + 6,  GL_COLOR_ATTACHMENT0 + 7 };
-	glDrawBuffers(8, GBufferedDrawBuffers);
+	GLenum GBufferedDrawBuffers[] = {GL_COLOR_ATTACHMENT0 + 0, GL_COLOR_ATTACHMENT0 + 1, GL_COLOR_ATTACHMENT0 + 2, GL_COLOR_ATTACHMENT0 + 3, GL_COLOR_ATTACHMENT0 + 4, GL_COLOR_ATTACHMENT0 + 5};
+	glDrawBuffers(6, GBufferedDrawBuffers);
 	
 	//	Add the G Buffer Framebuffer.
 	rendererPipelineFramebuffers[newGBufferFramebufferName] = newGBufferRendererFramebuffer;
@@ -707,6 +674,150 @@ void DeferredRenderer::initializePostProcessTextures()
 
 	//	Create the Entry for the Ambient Occlusion Depth Texture.
 	rendererPipelineTextures[newAmbientOcclusionDepthTextureName] = newAmbientOcclusionDepthTexture;
+
+
+
+	//	FXAA Color Texture.
+	std::string newFXAAColorTextureName = "FXAA_COLOR_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newFXAAColorTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the texture details.
+	glGenTextures(1, &newFXAAColorTexture->textureID);
+	glBindTexture(GL_TEXTURE_2D, newFXAAColorTexture->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowScreenWidth, windowScreenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Create the Entry for the Ambient Occlusion Color Texture.
+	rendererPipelineTextures[newFXAAColorTextureName] = newFXAAColorTexture;
+
+	//	FXAA  Depth Texture.
+	std::string newFXAADepthTextureName = "FXAA_DEPTH_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newFXAADepthTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the texture details.
+	glGenTextures(1, &newFXAADepthTexture->textureID);
+	glBindTexture(GL_TEXTURE_2D, newFXAADepthTexture->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, windowScreenWidth, windowScreenHeight, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Create the Entry for the Ambient Occlusion Depth Texture.
+	rendererPipelineTextures[newFXAADepthTextureName] = newFXAADepthTexture;
+
+
+	//	Gaussian Blur Color Texture One.
+	std::string newGaussianBlurColorTextureOneName = "GAUSSIAN_BLUR_COLOR_TEXTURE_ONE";
+	std::shared_ptr<RendererPipelineTexture> newGaussianBlurColorTextureOne = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the texture details.
+	glGenTextures(1, &newGaussianBlurColorTextureOne->textureID);
+	glBindTexture(GL_TEXTURE_2D, newGaussianBlurColorTextureOne->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowScreenWidth, windowScreenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Create the Entry for the Ambient Occlusion Color Texture.
+	rendererPipelineTextures[newGaussianBlurColorTextureOneName] = newGaussianBlurColorTextureOne;
+
+	//	Gaussian Blur Color Texture Two.
+	std::string newGaussianBlurColorTextureTwoName = "GAUSSIAN_BLUR_COLOR_TEXTURE_TWO";
+	std::shared_ptr<RendererPipelineTexture> newGaussianBlurColorTextureTwo = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the texture details.
+	glGenTextures(1, &newGaussianBlurColorTextureTwo->textureID);
+	glBindTexture(GL_TEXTURE_2D, newGaussianBlurColorTextureTwo->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowScreenWidth, windowScreenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Create the Entry for the Ambient Occlusion Depth Texture.
+	rendererPipelineTextures[newGaussianBlurColorTextureTwoName] = newGaussianBlurColorTextureTwo;
+
+
+	//	Gaussian Blur Depth Texture.
+	std::string newGaussianBlurDepthTextureName = "GAUSSIAN_BLUR_DEPTH_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newGaussianBlurDepthTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the texture details.
+	glGenTextures(1, &newGaussianBlurDepthTexture->textureID);
+	glBindTexture(GL_TEXTURE_2D, newGaussianBlurDepthTexture->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, windowScreenWidth, windowScreenHeight, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Create the Entry for the Ambient Occlusion Depth Texture.
+	rendererPipelineTextures[newGaussianBlurDepthTextureName] = newGaussianBlurDepthTexture;
+
+
+
+	//	Bloom Extraction Color Texture.
+	std::string newBloomExtractionColorTextureName = "BLOOM_EXTRACTION_COLOR_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newBloomExtractionColorTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Bloom Extraction Depth Texture.
+	glGenTextures(1, &newBloomExtractionColorTexture->textureID);
+	glBindTexture(GL_TEXTURE_2D, newBloomExtractionColorTexture->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowScreenWidth, windowScreenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Create the Entry for the Ambient Occlusion Depth Texture.
+	rendererPipelineTextures[newBloomExtractionColorTextureName] = newBloomExtractionColorTexture;
+
+
+	//	Bloom Extraction Depth Texture.
+	std::string newBloomExtractionDepthTextureName = "BLOOM_EXTRACTION_DEPTH_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newBloomExtractionDepthTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the texture details.
+	glGenTextures(1, &newBloomExtractionDepthTexture->textureID);
+	glBindTexture(GL_TEXTURE_2D, newBloomExtractionDepthTexture->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, windowScreenWidth, windowScreenHeight, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Bloom Extraction Depth Texture.
+	rendererPipelineTextures[newBloomExtractionDepthTextureName] = newBloomExtractionDepthTexture;
+
+
+	//	Bloom Extraction Color Texture.
+	std::string newBloomColorTextureName = "BLOOM_COLOR_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newBloomColorTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Bloom Extraction Depth Texture.
+	glGenTextures(1, &newBloomColorTexture->textureID);
+	glBindTexture(GL_TEXTURE_2D, newBloomColorTexture->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowScreenWidth, windowScreenHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Create the Entry for the Ambient Occlusion Depth Texture.
+	rendererPipelineTextures[newBloomColorTextureName] = newBloomColorTexture;
+
+	//	Bloom Extraction Depth Texture.
+	std::string newBloomDepthTextureName = "BLOOM_DEPTH_TEXTURE";
+	std::shared_ptr<RendererPipelineTexture> newBloomDepthTexture = std::make_shared<RendererPipelineTexture>();
+
+	//	Generate the texture details.
+	glGenTextures(1, &newBloomDepthTexture->textureID);
+	glBindTexture(GL_TEXTURE_2D, newBloomDepthTexture->textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, windowScreenWidth, windowScreenHeight, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	Bloom Extraction Depth Texture.
+	rendererPipelineTextures[newBloomDepthTextureName] = newBloomDepthTexture;
+
 
 }
 
@@ -1189,7 +1300,13 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 	for (int lightNumber = 0; lightNumber < activeLightNames.size(); lightNumber++)
 	{
 		//	Check if we are at an active light.
-		if (activeLightNames[lightNumber] != "NONE")
+		bool shadowing = (activeLightNames[lightNumber] != "NONE");
+
+		if(shadowing) 
+			shadowing = (((activeLights[lightNumber]->lightEnabledShadowLightType[1] == 1.0)) && shadowing);
+
+
+		if (false)
 		{
 			//	---------------------------------------------------------------------------------------------------------------	//
 
@@ -1470,45 +1587,9 @@ void DeferredRenderer::renderForwardRenderingPipeline(const float & deltaFrameTi
 
 }
 
-//	Render the Post Process Pipeline.
-void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
-{
-
-	//	blendTextures(rendererPipelineTextures["DEFERRED_RENDERING_LIGHTING_PASS_COLOR_TEXTURE"]->textureID, rendererPipelineTextures["AMBIENT_COLOR_PASS_TEXTURE"]->textureID);
-	//	
-
-	//	Bind the Default Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
-
-	glClearColor(0, 0, 0, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-	//	
-	getShaderManager()->setActiveShader("HDR Shader");
-	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("HDR Shader");
-
-	//	Upload the Camera Data, the Noise Textures, the Sampling Data, and the Post Process Textures.
-	uploadCameraData(*rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
-	uploadNoiseTextures(*rendererShaderData);
-	uploadSamplingData(*rendererShaderData);
-	uploadPrimaryPostProcessTextures(*rendererShaderData, rendererPipelineTextures["DEFERRED_RENDERING_LIGHTING_PASS_COLOR_TEXTURE"]->textureID, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->textureID, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID);
-
-
-	//	Draw the Arrays.
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	//	
-	GLenum cerr = GL_NO_ERROR;
-	while ((cerr = glGetError()) != GL_NO_ERROR)
-	{
-		std::cout << "OpenGL Post Process Error -> " << cerr << std::endl;
-	}
-}
-
 //	Render the Ambient Occlusion Pass.
 void DeferredRenderer::renderAmbientOcclusionPass(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
-	//	Bind the G Buffer Framebuffer.
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["SINGLE_TEXTURE_OUTPUT_POST_PROCESS_FRAMEBUFFER"]->framebufferID);
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["AMBIENT_COLOR_PASS_TEXTURE"]->textureID, 0);
@@ -1562,7 +1643,6 @@ void DeferredRenderer::renderAmbientOcclusionPass(const float & deltaFrameTime, 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 
-
 	//	
 	getShaderManager()->setActiveShader("SSAO Shader");
 	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("SSAO Shader");
@@ -1572,14 +1652,232 @@ void DeferredRenderer::renderAmbientOcclusionPass(const float & deltaFrameTime, 
 	uploadNoiseTextures(*rendererShaderData);
 	uploadSamplingData(*rendererShaderData);
 
-	uploadPrimaryPostProcessTextures(*rendererShaderData, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->textureID, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->textureID, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID);
+	uploadPrimaryPostProcessTextures(*rendererShaderData, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->textureID, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_AND_DEPTH_TEXTURE"]->textureID, 0, 0);
 	uploadSecondaryPostProcessTextures(*rendererShaderData, rendererPipelineTextures["AMBIENT_COLOR_PASS_TEXTURE"]->textureID, rendererPipelineTextures["AMBIENT_DEPTH_PASS_TEXTURE"]->textureID, 0, 0);
+
+	//	Draw the Arrays.
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	//	Render the Gaussian Blur.
+	renderGaussianBlur(deltaFrameTime, currentFrameTime, lastFrameTime, rendererPipelineTextures["AMBIENT_OCCLUSION_COLOR_TEXTURE"]->textureID, 2);
+
+	//	Bind the Default Framebuffer.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+}
+
+//	Render the Gaussian Blur.
+void DeferredRenderer::renderGaussianBlur(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, GLuint textureID, int blurAmount)
+{
+
+	//	
+	GLenum err1 = GL_NO_ERROR;
+	while ((err1 = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Pre - Gaussian Blur - Shadowing Pass Error -> " << err1 << std::endl;
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["SINGLE_TEXTURE_OUTPUT_POST_PROCESS_FRAMEBUFFER"]->framebufferID);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["GAUSSIAN_BLUR_COLOR_TEXTURE_ONE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["GAUSSIAN_BLUR_DEPTH_TEXTURE"]->textureID, 0);
+
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	getShaderManager()->setActiveShader("Copy Texture Shader");
+	std::shared_ptr<const RendererShaderData> copyTextureRendererShaderData = getShaderManager()->viewShaderData("Copy Texture Shader");
+
+	//	Check the Framebuffer Status.
+	checkFramebufferStatus();
+	uploadPrimaryPostProcessTextures(*copyTextureRendererShaderData, textureID, 0, 0, 0);
+
+	//	Draw the Arrays.
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+
+
+	bool isHorizontal = true;
+	bool firstIteration = true;
+
+	getShaderManager()->setActiveShader("Gaussian Blur Shader");
+	std::shared_ptr<const RendererShaderData> gaussianBlurRendererShaderData = getShaderManager()->viewShaderData("Gaussian Blur Shader");
+
+
+	//	
+	for (int i = 0; i < blurAmount; i++)
+	{
+		if (isHorizontal)
+		{
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["GAUSSIAN_BLUR_COLOR_TEXTURE_TWO"]->textureID, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["GAUSSIAN_BLUR_DEPTH_TEXTURE"]->textureID, 0);
+			uploadPrimaryPostProcessTextures(*gaussianBlurRendererShaderData, rendererPipelineTextures["GAUSSIAN_BLUR_COLOR_TEXTURE_ONE"]->textureID, 0, 0, 0);
+
+			glClearColor(0.0, 0.0, 0.0, 1.0);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+			checkFramebufferStatus();
+
+		}
+		else
+		{
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["GAUSSIAN_BLUR_COLOR_TEXTURE_ONE"]->textureID, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["GAUSSIAN_BLUR_DEPTH_TEXTURE"]->textureID, 0);
+			uploadPrimaryPostProcessTextures(*gaussianBlurRendererShaderData, rendererPipelineTextures["GAUSSIAN_BLUR_COLOR_TEXTURE_TWO"]->textureID, 0, 0, 0);
+
+			glClearColor(0.0, 0.0, 0.0, 1.0);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+			checkFramebufferStatus();
+		}
+
+		glUniform1i(glGetUniformLocation(gaussianBlurRendererShaderData->shaderID, "isBlurHorizontal"), isHorizontal);
+
+		//	Draw the Arrays.
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+		isHorizontal = !isHorizontal;
+
+		if (firstIteration)
+			firstIteration = !firstIteration;
+	}
+
+
+
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["GAUSSIAN_BLUR_DEPTH_TEXTURE"]->textureID, 0);
+
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	getShaderManager()->setActiveShader("Copy Texture Shader");
+
+	//	Check the Framebuffer Status.
+	checkFramebufferStatus();
+	uploadPrimaryPostProcessTextures(*copyTextureRendererShaderData, rendererPipelineTextures["GAUSSIAN_BLUR_COLOR_TEXTURE_ONE"]->textureID, 0, 0, 0);
 
 	//	Draw the Arrays.
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	//	Bind the Default Framebuffer.
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+
+	//	
+	GLenum err2 = GL_NO_ERROR;
+	while ((err2 = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Post - Gaussian Blur - Shadowing Pass Error -> " << err2 << std::endl;
+	}
+}
+
+//	Render the Post Process Pipeline.
+void DeferredRenderer::renderPostProcessPipeline(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
+{
+
+	//	------------------------------------------------------------------------------------------------------------------------------------------------------	//
+	//	Render the FXAA Shader.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["SINGLE_TEXTURE_OUTPUT_POST_PROCESS_FRAMEBUFFER"]->framebufferID);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["FXAA_COLOR_TEXTURE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["FXAA_DEPTH_TEXTURE"]->textureID, 0);
+
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	//	
+	getShaderManager()->setActiveShader("FXAA Shader");
+	std::shared_ptr<const RendererShaderData> fxaarendererShaderData = getShaderManager()->viewShaderData("FXAA Shader");
+
+	//	Upload the Post Process Textures.
+	uploadPrimaryPostProcessTextures(*fxaarendererShaderData, rendererPipelineTextures["DEFERRED_RENDERING_LIGHTING_PASS_COLOR_TEXTURE"]->textureID, 0, 0, 0);
+
+	//	Draw the Arrays.
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	//	------------------------------------------------------------------------------------------------------------------------------------------------------	//
+
+
+	//	------------------------------------------------------------------------------------------------------------------------------------------------------	//
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["SINGLE_TEXTURE_OUTPUT_POST_PROCESS_FRAMEBUFFER"]->framebufferID);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["BLOOM_EXTRACTION_COLOR_TEXTURE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["BLOOM_EXTRACTION_DEPTH_TEXTURE"]->textureID, 0);
+
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	//	
+	getShaderManager()->setActiveShader("Bloom Extraction Shader");
+	std::shared_ptr<const RendererShaderData> bloomRendererShaderData = getShaderManager()->viewShaderData("Bloom Extraction Shader");
+
+	glUniform1f(glGetUniformLocation(bloomRendererShaderData->shaderID, "u_extractionValue"), 1.25);
+
+	//	Upload the Post Process Textures.
+	uploadPrimaryPostProcessTextures(*bloomRendererShaderData, rendererPipelineTextures["FXAA_COLOR_TEXTURE"]->textureID, 0, 0, 0);
+
+	//	Draw the Arrays.
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	//	Bind the Default Framebuffer.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+	//	------------------------------------------------------------------------------------------------------------------------------------------------------	//
+
+
+	//	Gaussian Blur the place.
+	renderGaussianBlur(deltaFrameTime, currentFrameTime, lastFrameTime, rendererPipelineTextures["BLOOM_EXTRACTION_COLOR_TEXTURE"]->textureID, 2);
+
+
+	//	------------------------------------------------------------------------------------------------------------------------------------------------------	//
+
+	//	Render the Bloom Shader.
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["SINGLE_TEXTURE_OUTPUT_POST_PROCESS_FRAMEBUFFER"]->framebufferID);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, rendererPipelineTextures["BLOOM_COLOR_TEXTURE"]->textureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, rendererPipelineTextures["BLOOM_DEPTH_TEXTURE"]->textureID, 0);
+
+	glClearColor(0, 0, 0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	//	
+	getShaderManager()->setActiveShader("Additive Blend Shader");
+	std::shared_ptr<const RendererShaderData> additiveBlendRendererShader = getShaderManager()->viewShaderData("Additive Blend Shader");
+
+	//	Upload the Camera Data, the Noise Textures, the Sampling Data, and the Post Process Textures.
+	uploadPrimaryPostProcessTextures(*additiveBlendRendererShader, rendererPipelineTextures["BLOOM_EXTRACTION_COLOR_TEXTURE"]->textureID, rendererPipelineTextures["FXAA_COLOR_TEXTURE"]->textureID, 0, 0);
+
+	//	Draw the Arrays.
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	//	------------------------------------------------------------------------------------------------------------------------------------------------------	//
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
+
+	glClearColor(0, 0, 0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	//	
+	getShaderManager()->setActiveShader("HDR Shader");
+	std::shared_ptr<const RendererShaderData> hdrRendererShader = getShaderManager()->viewShaderData("HDR Shader");
+
+	//	Upload the Camera Data, the Noise Textures, the Sampling Data, and the Post Process Textures.
+	uploadPrimaryPostProcessTextures(*hdrRendererShader, rendererPipelineTextures["BLOOM_COLOR_TEXTURE"]->textureID, 0, 0, 0);
+
+	//	Draw the Arrays.
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	//	------------------------------------------------------------------------------------------------------------------------------------------------------	//
+
+
+
+	//	
+	GLenum cerr = GL_NO_ERROR;
+	while ((cerr = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Post Process Error -> " << cerr << std::endl;
+	}
+
+
 
 }
 
@@ -1748,11 +2046,9 @@ void DeferredRenderer::cleanUpRenderer()
 
 	//	Delete the Textures of the G Buffer.
 	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->textureID);
-	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID);
-	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->textureID);
-	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID);
-	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_DIFFUSE_ALBEDO_TEXTURE"]->textureID);
-	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_SPECULAR_ALBEDO_TEXTURE"]->textureID);
+	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_AND_DEPTH_TEXTURE"]->textureID);
+	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_DIFFUSE_ALBEDO_AND_LIT_TYPE_TEXTURE"]->textureID);
+	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_SPECULAR_ALBEDO_AND_LIGHTING_TYPE_TEXTURE"]->textureID);
 	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_EMISSIVE_COLOR_INTENSITIY_TEXTURE"]->textureID);
 	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_METALLICNESS_ROUGHNESS_FRESNEL_OPACITY_TEXTURE"]->textureID);
 	glDeleteTextures(1, &rendererPipelineTextures["G_BUFFER_DEPTH_STENCIL_TEXTURE"]->textureID);
@@ -1995,8 +2291,8 @@ void DeferredRenderer::uploadMaterialData(const RendererShaderData & rendererSha
 	}
 
 	//	Upload the Diffuse Albedo.
-	if(rendererShaderData.shaderUniforms.materialValuesUniforms.u_diffuseAlbedo != (GLuint) -1)
-		glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_diffuseAlbedo, 1, glm::value_ptr(diffuseAlbedo));
+	if(rendererShaderData.shaderUniforms.materialValuesUniforms.u_diffuseAlbedoAndLitType != (GLuint) -1)
+		glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_diffuseAlbedoAndLitType, 1, glm::value_ptr(diffuseAlbedo));
 
 	//	
 	GLenum cerr2 = GL_NO_ERROR;
@@ -2007,8 +2303,8 @@ void DeferredRenderer::uploadMaterialData(const RendererShaderData & rendererSha
 
 
 	//	Upload the Specular Albedo.
-	if (rendererShaderData.shaderUniforms.materialValuesUniforms.u_specularAlbedo != (GLuint)-1)
-		glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_specularAlbedo, 1, glm::value_ptr(specularAlbedo));
+	if (rendererShaderData.shaderUniforms.materialValuesUniforms.u_specularAlbedoAndLightingType != (GLuint)-1)
+		glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_specularAlbedoAndLightingType, 1, glm::value_ptr(specularAlbedo));
 
 	//	
 	GLenum cerr3 = GL_NO_ERROR;
@@ -2018,8 +2314,8 @@ void DeferredRenderer::uploadMaterialData(const RendererShaderData & rendererSha
 	}
 
 	//	Upload the Emissive Color And Intensity.
-	if (rendererShaderData.shaderUniforms.materialValuesUniforms.u_emissiveColor != (GLuint)-1)
-		glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_emissiveColor, 1, glm::value_ptr(emissiveColor));
+	if (rendererShaderData.shaderUniforms.materialValuesUniforms.u_emssionColorAndIntensity != (GLuint)-1)
+		glUniform4fv(rendererShaderData.shaderUniforms.materialValuesUniforms.u_emssionColorAndIntensity, 1, glm::value_ptr(emissiveColor));
 
 	//	
 	GLenum cerr4 = GL_NO_ERROR;
@@ -2096,7 +2392,7 @@ void DeferredRenderer::uploadAmbientLightData(const RendererShaderData & rendere
 {
 	GLuint currentShaderProgramID = rendererShaderData.shaderID;
 	GLuint currentLightAttributeLocation = -1;
-	glUniform4fv(rendererShaderData.shaderUniforms.lightDataUniforms.u_ambientLight, 1, glm::value_ptr(glm::vec4(0.1, 0.1, 0.1, 1.0)));
+	glUniform4fv(rendererShaderData.shaderUniforms.lightDataUniforms.u_ambientLight, 1, glm::value_ptr(glm::vec4(0.00, 0.00, 0.00, 1.0)));
 }
 
 //	Upload the Shader Lights Data to the Shader Pipeline.
@@ -2394,65 +2690,47 @@ void DeferredRenderer::uploadGBufferDataTextures(const RendererShaderData & rend
 		glActiveTexture(GL_TEXTURE0);
 	}
 
-	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_worldSpaceVertexNormal != (GLuint)-1)
+	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_worldSpaceVertexNormalAndDepth != (GLuint)-1)
 	{
 		glActiveTexture(GL_TEXTURE0 + 21);
-		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID);
-		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_worldSpaceVertexNormal, 21);
+		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_NORMAL_AND_DEPTH_TEXTURE"]->textureID);
+		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_worldSpaceVertexNormalAndDepth, 21);
 		//	Reset to the default active texture.
 		glActiveTexture(GL_TEXTURE0);
 	}
 
-	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_viewSpaceVertexPositionAndDepth != (GLuint)-1)
+	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_diffuseAlbedoAndLitType != (GLuint)-1)
 	{
 		glActiveTexture(GL_TEXTURE0 + 22);
-		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_POSITION_TEXTURE"]->textureID);
-		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_viewSpaceVertexPositionAndDepth, 22);
+		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_DIFFUSE_ALBEDO_AND_LIT_TYPE_TEXTURE"]->textureID);
+		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_diffuseAlbedoAndLitType, 22);
 		//	Reset to the default active texture.
 		glActiveTexture(GL_TEXTURE0);
 	}
 
-	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_viewSpaceVertexNormal != (GLuint)-1)
+	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_specularAlbedoAndLightingType != (GLuint)-1)
 	{
 		glActiveTexture(GL_TEXTURE0 + 23);
-		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_VIEW_SPACE_VERTEX_NORMAL_TEXTURE"]->textureID);
-		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_viewSpaceVertexNormal, 23);
-		//	Reset to the default active texture.
-		glActiveTexture(GL_TEXTURE0);
-	}
-
-	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_diffuseAlbedo != (GLuint)-1)
-	{
-		glActiveTexture(GL_TEXTURE0 + 24);
-		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_DIFFUSE_ALBEDO_TEXTURE"]->textureID);
-		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_diffuseAlbedo, 24);
-		//	Reset to the default active texture.
-		glActiveTexture(GL_TEXTURE0);
-	}
-
-	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_specularAlbedo != (GLuint)-1)
-	{
-		glActiveTexture(GL_TEXTURE0 + 25);
-		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_WORLD_SPACE_VERTEX_POSITION_TEXTURE"]->textureID);
-		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_specularAlbedo, 25);
+		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_SPECULAR_ALBEDO_AND_LIGHTING_TYPE_TEXTURE"]->textureID);
+		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_specularAlbedoAndLightingType, 23);
 		//	Reset to the default active texture.
 		glActiveTexture(GL_TEXTURE0);
 	}
 
 	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_emissionColorAndIntensity != (GLuint)-1)
 	{
-		glActiveTexture(GL_TEXTURE0 + 26);
-		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_SPECULAR_ALBEDO_TEXTURE"]->textureID);
-		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_emissionColorAndIntensity, 26);
+		glActiveTexture(GL_TEXTURE0 + 24);
+		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_EMISSIVE_COLOR_INTENSITIY_TEXTURE"]->textureID);
+		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_emissionColorAndIntensity, 24);
 		//	Reset to the default active texture.
 		glActiveTexture(GL_TEXTURE0);
 	}
 
 	if (rendererShaderData.shaderUniforms.gBufferInputUniforms.g_metallicnessRoughnessFresnelOpacity != (GLuint)-1)
 	{
-		glActiveTexture(GL_TEXTURE0 + 27);
+		glActiveTexture(GL_TEXTURE0 + 25);
 		glBindTexture(GL_TEXTURE_2D, rendererPipelineTextures["G_BUFFER_METALLICNESS_ROUGHNESS_FRESNEL_OPACITY_TEXTURE"]->textureID);
-		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_metallicnessRoughnessFresnelOpacity, 27);
+		glUniform1i(rendererShaderData.shaderUniforms.gBufferInputUniforms.g_metallicnessRoughnessFresnelOpacity, 25);
 		//	Reset to the default active texture.
 		glActiveTexture(GL_TEXTURE0);
 	}

@@ -24,19 +24,20 @@ public:
 	//	Return the Renderable ID.
 	virtual long int getRenderableID() const;
 
-
 	//	Set the Material associated with this Renderable.
 	virtual void setMaterialType(const std::string & newMaterialType);
 	//	Return the Material associated with this Renderable.
 	virtual std::string getMaterialType() const;
 
-
-
-	//	Set the Shader Type associated with this batch.
+	//	Set the Shader Type associated with this Renderable.
 	virtual void setShadingType(ShadingTypes::ShadingType newShadingType);
 	//	Return a string associated with the ShaderType.
 	virtual ShadingTypes::ShadingType getShadingType() const;
 
+	//	
+	virtual void setActiveRendering(const bool & newActiveRendering);
+	//
+	virtual bool getActiveRendering() const;
 
 private:
 
@@ -48,5 +49,8 @@ private:
 
 	//	The Material associated with the Component.
 	std::string materialType;
+
+	//	
+	bool activeRendering;
 };
 

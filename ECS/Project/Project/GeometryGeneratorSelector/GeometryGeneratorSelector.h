@@ -14,7 +14,8 @@
 #include "../RDFP/ResourceDescription.h"
 
 #include "TinyObjLoader\tiny_obj_loader.h"
-#include "../TBM/TBM.h"
+#include "../PM/Icosphere/Icosphere.h"
+#include "../PM/PlanetRings/PlanetRings.h"
 
 class GeometryData;
 
@@ -28,14 +29,17 @@ public:
 	//	Default GeometryGeneratorSelector Destructor.
 	virtual ~GeometryGeneratorSelector();
 
-	//	Add Comments - TO DO
+	//	Generate the Geometry from the provided Resource Description.
 	virtual void generateGeometry(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, const ResourceDescription & newResouceDescription);
 
-	//	Add Comments - TO DO
+	//	Load the Geometry from the Obj.
 	virtual void loadGeometryFromObj(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName, std::string filename);
 
-	//	Add Comments - TO DO
-	virtual void loadGeometryFromTBM(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName);
+	//	Generate geometry from an Icosphere.
+	virtual void loadGeometryFromIcosphere(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName, const ResourceDescription & newResourceDescription);
+
+	//	Generate geometry from a PlanetRing Maker.
+	virtual void loadGeometryFromPlanetRing(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName, const ResourceDescription & newResourceDescription);
 
 };
 

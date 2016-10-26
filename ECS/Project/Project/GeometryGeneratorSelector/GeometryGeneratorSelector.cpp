@@ -30,11 +30,16 @@ void GeometryGeneratorSelector::generateGeometry(std::vector<std::pair<std::stri
 		loadGeometryFromObj(geometryList, geometryName, geometryFilename);
 	}
 
-	if (geometryType == "TBM")
+	//	Check if we are supposed to Generate an Icosphere.
+	if (geometryType == "GEN-Icosphere")
 	{
-		loadGeometryFromTBM(geometryList, geometryName);
+		loadGeometryFromIcosphere(geometryList, geometryName, newResourceDescription);
 	}
 
+	if (geometryType == "GEN-PlanetRing")
+	{
+		loadGeometryFromPlanetRing(geometryList, geometryName, newResourceDescription);
+	}
 }
 
 //	Load the Geometry from the Obj.
@@ -188,12 +193,18 @@ void GeometryGeneratorSelector::loadGeometryFromObj(std::vector<std::pair<std::s
 	}
 }
 
-//	Load the Geometry from the Terrain Block Maker.
-void GeometryGeneratorSelector::loadGeometryFromTBM(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>>& geometryList, std::string name)
+//	Load the Geometry from the Icosphere Maker.
+void GeometryGeneratorSelector::loadGeometryFromIcosphere(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>>& geometryList, std::string geometryName, const ResourceDescription & newResourceDescription)
 {
-	TBM tbm;
-	tbm.generateTilesArray();
-	tbm.generateTerrainGeometry(geometryList, name);
+	Icosphere icosphere(3, 3);
+	icosphere.generateIcosphereGeometryPerFace(geometryList, geometryName);
+}
+
+//	Load the Geometry from the Planet Ring Maker.
+void GeometryGeneratorSelector::loadGeometryFromPlanetRing(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>>& geometryList, std::string geometryName, const ResourceDescription & newResourceDescription)
+{
+	PlanetRing planetRing(30);
+	planetRing.generatePlanetRing(geometryList, geometryName);
 }
 
 //	Default GeometryGeneratorSelector Destructor

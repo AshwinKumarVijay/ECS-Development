@@ -106,20 +106,43 @@ void DemoECS::initializeDemoECS()
 void DemoECS::initializeScene()
 {
 	//	Create the Sphere Entity.
-	baseEntity = getEntityManager()->createEntity();
+	planetEntity = getEntityManager()->createEntity();
 
-	//	Add the Hierarcy, Transform, Speed, Geometry and Rendering Component.
-	getEntityManager()->addComponentToEntity(baseEntity, ComponentType::HIERARCHY_COMPONENT);
-	getEntityManager()->addComponentToEntity(baseEntity, ComponentType::TRANSFORM_COMPONENT);
-	getEntityManager()->addComponentToEntity(baseEntity, ComponentType::GEOMETRY_COMPONENT);
-	getEntityManager()->addComponentToEntity(baseEntity, ComponentType::RENDERING_COMPONENT);
+	//	Add the Hierarcy, Transform, Geometry and Rendering Component.
+	getEntityManager()->addComponentToEntity(planetEntity, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(planetEntity, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(planetEntity, ComponentType::GEOMETRY_COMPONENT);
+	getEntityManager()->addComponentToEntity(planetEntity, ComponentType::RENDERING_COMPONENT);
 
-	std::shared_ptr<GeometryComponent> baseGeometryComponent = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
-	baseGeometryComponent->setGeometryType("Terrain Block");
+	std::shared_ptr<GeometryComponent> planetGeometryComponent = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(planetEntity, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
+	planetGeometryComponent->setGeometryType("GEN-Icosphere");
 
-	std::shared_ptr<RenderingComponent> baseRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
-	baseRenderingComponent->setMaterialType("Material-Default-2");
-	baseRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
+	std::shared_ptr<RenderingComponent> planetRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(planetEntity, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
+	planetRenderingComponent->setMaterialType("Material-Default-2");
+	planetRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
+
+	std::shared_ptr<TransformComponent> planetTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(planetEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	planetTransformComponent->getTransform()->setScale(glm::vec3(10.0, 10.0, 10.0));
+
+
+	ringEntity = getEntityManager()->createEntity();
+
+	//	Add the Hierarcy, Transform, Geometry and Rendering Component.
+	getEntityManager()->addComponentToEntity(ringEntity, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(ringEntity, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(ringEntity, ComponentType::GEOMETRY_COMPONENT);
+	getEntityManager()->addComponentToEntity(ringEntity, ComponentType::RENDERING_COMPONENT);
+
+	std::shared_ptr<GeometryComponent> planetRingGeometryComponent = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(ringEntity, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
+	planetRingGeometryComponent->setGeometryType("GEN-PlanetRing");
+
+	std::shared_ptr<RenderingComponent> planetRingRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(ringEntity, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
+	planetRingRenderingComponent->setMaterialType("Material-Default-1");
+	planetRingRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
+
+	std::shared_ptr<TransformComponent> planetRingTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(ringEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	planetRingTransformComponent->getTransform()->setScale(glm::vec3(20.0, 20.0, 20.0));
+
 
 }
 
@@ -239,8 +262,8 @@ void DemoECS::processInput(const InputType & ecsKey, const InputEventType & inpu
 void DemoECS::update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
 {
 	//	
-	std::shared_ptr<TransformComponent> baseTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(baseEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	baseTransformComponent->getTransform()->rotateBy(glm::pi<float>() * 0.1 * deltaTime, glm::vec3(0.0, 1.0, 0.0));
+	std::shared_ptr<TransformComponent> baseTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(planetEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
+	baseTransformComponent->getTransform()->rotateBy(glm::pi<float>() * 0.1f * deltaTime, glm::vec3(0.0, 1.0, 0.0));
 
 	//
 	ECS::update(deltaTime, currentFrameTime, lastFrameTime);

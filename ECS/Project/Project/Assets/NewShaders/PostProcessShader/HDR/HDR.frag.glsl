@@ -16,13 +16,16 @@ layout (binding = 38) uniform sampler2D pp_inputTextureFour;
 //	THE FRAGMENT SHADER MAIN.
 void main(void)
 {
-	
+	//	Extract the Current Value of the Texture.
 	vec4 current_value = (texture(pp_inputTextureOne, v_vertexTextureCoordinates.xy));
 	
+	//	Extract the maximum value of the texture.
 	float max_value = max(current_value.x, max(current_value.y, current_value.z));
 	
+	//	 Compute the new value of the texture.
 	vec3 new_value = current_value.xyz;
 	if(max_value > 1.0) new_value = new_value / max_value;
 	
+	//	Output the final color.
 	o_baseOutputColor = vec4(new_value, current_value.w);
 }

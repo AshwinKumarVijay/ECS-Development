@@ -7,7 +7,6 @@ Resource Type    = Geometry
 Geometry Name    = Octa Hollow
 Geometry Type    = OBJ
 Geometry Filename   = Assets/OBJs/octa_hollow3.obj
-Geometry Parameters = None
 #end Resource
 
 #define Resource
@@ -16,7 +15,6 @@ Resource Type    = Geometry
 Geometry Name    = Axes
 Geometry Type    = OBJ
 Geometry Filename   = Assets/OBJs/Axes.obj
-Geometry Parameters = None
 #end Resource
 
 #define Resource
@@ -25,7 +23,6 @@ Resource Type    = Geometry
 Geometry Name    = Sphere
 Geometry Type    = OBJ
 Geometry Filename   = Assets/OBJs/Sphere.obj
-Geometry Parameters = None
 #end Resource
 
 #define Resource
@@ -34,16 +31,21 @@ Resource Type    = Geometry
 Geometry Name    = Cube
 Geometry Type    = OBJ
 Geometry Filename   = Assets/OBJs/Cube.obj
-Geometry Parameters = None
 #end Resource
 
 #define Resource
-Resource Name    = Terrain Block
+Resource Name    = GEN-Icosphere
 Resource Type    = Geometry
-Geometry Name    = Terrain Block
-Geometry Type    = TBM
-Geometry Filename   = NONE
-Geometry Parameters = None
+Geometry Name    = GEN-Icosphere
+Geometry Type    = GEN-Icosphere
+#end Resource
+
+
+#define Resource
+Resource Name    = GEN-PlanetRing
+Resource Type    = Geometry
+Geometry Name    = GEN-PlanetRing
+Geometry Type    = GEN-PlanetRing
 #end Resource
 
 
@@ -62,13 +64,26 @@ Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
 #end Resource
 
 
+//    Light Resources!
+#define Resource 
+Resource Name    = Light-2
+Resource Type    = Light
+Light Enabled    = True
+Light Shadow     = True
+Light Type       = 1.0
+Light Color      = 1.0, 1.0, 1.0
+Light Intensity  = 1.0
+Light Position   = 0.0, 25.0, 0.0, 1.0
+Light Attenuation and Distance    = 0.0, 0.0, 0.0, 0.0
+Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
+#end Resource
 
 
 //    Material Resources!
 #define Resource 
 Resource Name = Material-Default-1
 Resource Type = Material
-Material Diffuse Albedo        = 0.0, 1.0, 0.4, 1.0
+Material Diffuse Albedo        = 1.0, 1.0, 1.0, 1.0
 Material Specular Albedo       = 0.0, 1.0, 0.6, 1.0
 Material Emissive Color        = 0.0, 0.0, 0.0, 0.0
 Material Metallicness Roughness and Opacity    = 0.3, 0.7, 0.6, 1.0
@@ -108,8 +123,6 @@ Material Occlusion Map       = None
 #end Resource
 
 
-
-
 #define Resource 
 Resource Name    = Environment Cube Map Shader
 Resource Type    = OpenGL Shader
@@ -130,54 +143,6 @@ Shader Output G Buffer              = False
 Shader Vertex Shader Source         = Assets/NewShaders/EnvironmentShaders/ECube.vert.glsl
 Shader Fragment Shader Source       = Assets/NewShaders/EnvironmentShaders/ECube.frag.glsl
 #end Resource
-
-#define Resource 
-Resource Name    = Basic Lighting Shader
-Resource Type    = OpenGL Shader
-Shader Name                         = Basic Lighting Shader
-Shader Rendering Type               = Forward Rendering
-Shader Require Camera Data          = True
-Shader Require Model Data           = True
-Shader Require Material Data        = False
-Shader Require Vertex Basic Data    = True
-Shader Require Vertex Tangent Bitangent Data      = False
-Shader Require Vertex Texture Coordinates Data    = False
-Shader Require Lights Data          = True
-Shader Require Environment Data     = False
-Shader Require Material Texture Data            = False 
-Shader Require G Buffer Data        = False
-Shader Output Base Color            = True
-Shader Output Opacity               = True
-Shader Output G Buffer              = False
-Shader Vertex Shader Source         = Assets/NewShaders/LightingShaders/BasicLightingShader/BL.vert.glsl
-Shader Fragment Shader Source       = Assets/NewShaders/LightingShaders/BasicLightingShader/BL.frag.glsl
-#end Resource
-
-
-
-#define Resource 
-Resource Name    = Material Lighting Shader
-Resource Type    = OpenGL Shader
-Shader Name                         = Material Lighting Shader
-Shader Rendering Type               = Forward Rendering
-Shader Require Camera Data          = True
-Shader Require Model Data           = True
-Shader Require Material Data        = False
-Shader Require Vertex Basic Data    = True
-Shader Require Vertex Tangent Bitangent Data      = False
-Shader Require Vertex Texture Coordinates Data    = False
-Shader Require Lights Data          = True
-Shader Require Environment Data     = False
-Shader Require Material Texture Data              = False 
-Shader Require G Buffer Data        = False
-Shader Output Base Color            = True
-Shader Output Opacity               = True
-Shader Output G Buffer              = False
-Shader Vertex Shader Source         = Assets/NewShaders/LightingShaders/BasicLightingShader/BL.vert.glsl
-Shader Fragment Shader Source       = Assets/NewShaders/LightingShaders/BasicLightingShader/BL.frag.glsl
-#end Resource
-
-
 
 #define Resource 
 Resource Name    = Basic Deferred G Buffer Shader
@@ -201,8 +166,6 @@ Shader Vertex Shader Source         = Assets/NewShaders/DeferredRenderingShaders
 Shader Fragment Shader Source       = Assets/NewShaders/DeferredRenderingShaders/GBufferPassShaders/BasicGBufferShader/BasicGBufferShader.frag.glsl
 #end Resource
 
-
-
 #define Resource 
 Resource Name    = Basic Deferred Lighting Pass Shader
 Resource Type    = OpenGL Shader
@@ -224,8 +187,6 @@ Shader Output G Buffer              = False
 Shader Vertex Shader Source         = Assets/NewShaders/DeferredRenderingShaders/LightingPassShaders/BasicLightingShader/BasicLightingShader.vert.glsl
 Shader Fragment Shader Source       = Assets/NewShaders/DeferredRenderingShaders/LightingPassShaders/BasicLightingShader/BasicLightingShader.frag.glsl
 #end Resource
-
-
 
 #define Resource 
 Resource Name    = Copy Texture Shader
@@ -365,6 +326,101 @@ Shader Output G Buffer              = False
 Shader Vertex Shader Source         = Assets/NewShaders/PostProcessShader/HDR/HDR.vert.glsl
 Shader Fragment Shader Source	    = Assets/NewShaders/PostProcessShader/HDR/HDR.frag.glsl
 #end Resource
+
+
+
+#define Resource 
+Resource Name    = Gaussian Blur Shader
+Resource Type    = OpenGL Shader
+Shader Name                         = Gaussian Blur Shader
+Shader Rendering Type               = Post Process
+Shader Require Camera Data          = False
+Shader Require Model Data           = False
+Shader Require Material Data        = False
+Shader Require Vertex Basic Data    = False
+Shader Require Vertex Tangent Bitangent Data      = False
+Shader Require Vertex Texture Coordinates Data    = False
+Shader Require Lights Data          = False
+Shader Require Environment Data     = False
+Shader Require Material Texture Data              = False 
+Shader Require G Buffer Data        = False
+Shader Output Base Color            = True
+Shader Output Opacity               = False
+Shader Output G Buffer              = False
+Shader Vertex Shader Source         = Assets/NewShaders/PostProcessShader/GaussianBlur/GaussianBlur.vert.glsl
+Shader Fragment Shader Source	    = Assets/NewShaders/PostProcessShader/GaussianBlur/GaussianBlur.frag.glsl
+#end Resource
+
+
+#define Resource 
+Resource Name    = FXAA Shader
+Resource Type    = OpenGL Shader
+Shader Name                         = FXAA Shader
+Shader Rendering Type               = Post Process
+Shader Require Camera Data          = False
+Shader Require Model Data           = False
+Shader Require Material Data        = False
+Shader Require Vertex Basic Data    = False
+Shader Require Vertex Tangent Bitangent Data      = False
+Shader Require Vertex Texture Coordinates Data    = False
+Shader Require Lights Data          = False
+Shader Require Environment Data     = False
+Shader Require Material Texture Data              = False 
+Shader Require G Buffer Data        = False
+Shader Output Base Color            = True
+Shader Output Opacity               = False
+Shader Output G Buffer              = False
+Shader Vertex Shader Source         = Assets/NewShaders/PostProcessShader/FXAA/FXAA.vert.glsl
+Shader Fragment Shader Source	    = Assets/NewShaders/PostProcessShader/FXAA/FXAA.frag.glsl
+#end Resource
+
+
+
+#define Resource 
+Resource Name    = Bloom Extraction Shader
+Resource Type    = OpenGL Shader
+Shader Name                         = Bloom Extraction Shader
+Shader Rendering Type               = Post Process
+Shader Require Camera Data          = False
+Shader Require Model Data           = False
+Shader Require Material Data        = False
+Shader Require Vertex Basic Data    = False
+Shader Require Vertex Tangent Bitangent Data      = False
+Shader Require Vertex Texture Coordinates Data    = False
+Shader Require Lights Data          = False
+Shader Require Environment Data     = False
+Shader Require Material Texture Data              = False 
+Shader Require G Buffer Data        = False
+Shader Output Base Color            = True
+Shader Output Opacity               = False
+Shader Output G Buffer              = False
+Shader Vertex Shader Source         = Assets/NewShaders/PostProcessShader/Bloom/Bloom.vert.glsl
+Shader Fragment Shader Source	    = Assets/NewShaders/PostProcessShader/Bloom/Bloom.frag.glsl
+#end Resource
+
+
+#define Resource 
+Resource Name    = Additive Blend Shader
+Resource Type    = OpenGL Shader
+Shader Name                         = Additive Blend Shader
+Shader Rendering Type               = Post Process
+Shader Require Camera Data          = False
+Shader Require Model Data           = False
+Shader Require Material Data        = False
+Shader Require Vertex Basic Data    = False
+Shader Require Vertex Tangent Bitangent Data      = False
+Shader Require Vertex Texture Coordinates Data    = False
+Shader Require Lights Data          = False
+Shader Require Environment Data     = False
+Shader Require Material Texture Data              = False 
+Shader Require G Buffer Data        = False
+Shader Output Base Color            = True
+Shader Output Opacity               = False
+Shader Output G Buffer              = False
+Shader Vertex Shader Source         = Assets/NewShaders/PostProcessShader/AdditiveBlendTextures/AdditiveBlendTextures.vert.glsl
+Shader Fragment Shader Source	    = Assets/NewShaders/PostProcessShader/AdditiveBlendTextures/AdditiveBlendTextures.frag.glsl
+#end Resource
+
 
 
 

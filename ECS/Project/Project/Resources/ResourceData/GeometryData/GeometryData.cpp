@@ -1,7 +1,5 @@
 #include "GeometryData.h"
 
-
-
 //	Default GeometryData Constructor.
 GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector<int>& newGeometryIndices, const std::vector<Vertex>& newGeometryVertices)
 {

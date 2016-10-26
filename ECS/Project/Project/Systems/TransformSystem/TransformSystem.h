@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glm\glm.hpp"
+
 #include "../ECS/System/System.h"
 
 class Component;
@@ -27,6 +29,8 @@ public:
 
 	//	Update the System - Compute the Transform Matrix Hierarchy of the scene.
 	virtual void update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime);
+
+	virtual void computeHierarchyTransformMatrix(long int currentEntity, const glm::mat4 & hierarchyMatrix);
 
 	//	Shut Down the System.
 	virtual void shutDownSystem();
