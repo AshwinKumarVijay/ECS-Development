@@ -8,7 +8,7 @@
 layout (location = 10) uniform vec4 u_worldCameraPosition;
 layout (location = 11) uniform mat4 u_cameraPerspectiveMatrix;
 layout (location = 12) uniform mat4 u_cameraViewMatrix;
-layout (location = 13) uniform mat4 u_inverseTransposeCameraViewMatrix;
+layout (location = 13) uniform mat3 u_inverseTransposeCameraViewMatrix;
 layout (location = 14) uniform mat4 u_screenSpaceViewMatrix;
 layout (location = 15) uniform vec4 u_cameraNearFarPlaneDistance;
 
@@ -71,7 +71,7 @@ void main(void)
 	//	Compute the View Space Vetex Position and Normal.
 	vec4 viewSpaceVertexPosition = u_cameraViewMatrix * worldSpaceVertexPosition;
 	viewSpaceVertexPosition = vec4(viewSpaceVertexPosition.xyz / viewSpaceVertexPosition.w , 1.0);
-	vec3 viewSpaceVertexNormal = normalize((u_inverseTransposeCameraViewMatrix * vec4(worldSpaceVertexNormal, 0.0)).xyz);
+	vec3 viewSpaceVertexNormal = normalize(u_inverseTransposeCameraViewMatrix * worldSpaceVertexNormal.xyz);
 
 	//	Compute the Random Vector.
 	vec3 randomVector = normalize(((texture(t_noiseTextureOne, v_vertexPosition.xy * noiseScale).xyz)));

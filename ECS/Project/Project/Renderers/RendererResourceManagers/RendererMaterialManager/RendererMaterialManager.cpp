@@ -34,6 +34,7 @@ void RendererMaterialManager::addMaterial(std::string newMaterialName, std::shar
 		
 		//	Copy over the Diffuse Albedo and the Metallic, Roughness, Fresnel and Opactiy.
 		newRendererMaterialData->first.diffuseAlbedo = newMaterialData->viewMaterialValues().diffuseAlbdeo;
+		newRendererMaterialData->first.specularAlbedo = newMaterialData->viewMaterialValues().specularAlbedo;
 		newRendererMaterialData->first.metallicRoughnessFresnelOpacity = newMaterialData->viewMaterialValues().metallicRoughnessFresnelOpacity;
 
 		//	Copy over the Diffuse and Specular Albedo Maps.
@@ -61,6 +62,7 @@ void RendererMaterialManager::updateMaterial(std::string requestedMaterialName, 
 	{
 		//	Copy over the Diffuse Albedo and the Metallic, Roughness, Fresnel and Opactiy.
 		mapNameToMaterialData[requestedMaterialName]->first.diffuseAlbedo = newMaterialData->viewMaterialValues().diffuseAlbdeo;
+		mapNameToMaterialData[requestedMaterialName]->first.specularAlbedo = newMaterialData->viewMaterialValues().specularAlbedo;
 		mapNameToMaterialData[requestedMaterialName]->first.metallicRoughnessFresnelOpacity = newMaterialData->viewMaterialValues().metallicRoughnessFresnelOpacity;
 
 		//	Copy over the Diffuse and Specular Albedo Maps.

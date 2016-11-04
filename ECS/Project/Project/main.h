@@ -11,6 +11,7 @@
 
 #include "Configuration\Configuration.h"
 #include "DemoECS\DemoECS.h"
+#include "PlanetMakerECS\PlanetMakerECS.h"
 
 #include "TypesList\ComponentTypes.h"
 #include "TypesList\EntityState.h"
@@ -18,6 +19,7 @@
 #include "TypesList\InputTypes.h"
 #include "TypesList\ModuleType.h"
 #include "TypesList\ResourceTypes.h"
+
 
 //	
 int main(int argc, char** argv);
@@ -43,7 +45,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 
 //	Pointer to the ECS.
-std::shared_ptr<DemoECS> ecs;
+std::shared_ptr<PlanetMakerECS> ecs;
 
 //	Current Frame Time.
 float deltaFrameTime, currentFrameTime, lastFrameTime;

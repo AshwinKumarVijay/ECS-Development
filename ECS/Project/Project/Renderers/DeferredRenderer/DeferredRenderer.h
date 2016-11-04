@@ -114,6 +114,9 @@ private:
 	//	Initialize the Deferred Rendering G Buffer Framebuffer.
 	virtual void initializeDeferredRenderingGBufferFramebuffer();
 
+	//	
+	virtual void initializeMSAATexturesAndFramebuffers();
+
 	//	Initialize the Post Process Textures.
 	virtual void initializePostProcessTextures();
 

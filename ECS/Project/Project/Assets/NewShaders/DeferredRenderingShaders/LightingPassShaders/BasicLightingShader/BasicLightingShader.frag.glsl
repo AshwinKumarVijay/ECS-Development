@@ -1,5 +1,10 @@
 #version 430 core
 
+// CONSTANTS - PI
+const float PI = 3.1415926535897932384626433832795;
+const float PI_2 = 1.57079632679489661923;
+const float PI_4 = 0.785398163397448309616;
+
 //	MAX LIGHTS
 #define MAX_LIGHTS 16
 #define SAMPLES 256
@@ -137,11 +142,27 @@ void computeDiffuseLighting(in int lightIndex, out vec3 diffuseColor)
 
 	float NdotL = clamp(dot(N, L), 0.0, 1.0);
 
-	vec3 diffuseAlbedo = (texture(g_diffuseAlbedoAndLitType, v_vertexPosition.xy).xyz);
+	vec4 diffuseAlbedoAndLitType = (texture(g_diffuseAlbedoAndLitType, v_vertexPosition.xy));
+	vec4 metallicnessRoughnessFresnelOpacity = (texture(g_metallicnessRoughnessFresnelOpacity, v_vertexPosition.xy));
+	diffuseColor = diffuseAlbedoAndLitType.xyz * lightColor * lightIntensity * NdotL * (1.0 - metallicnessRoughnessFresnelOpacity[0]); 	
 
-	diffuseColor = diffuseAlbedo * lightColor * lightIntensity * NdotL; 
 }
 
+float computeNDF(in float alpha, in vec3 N, in vec3 H)
+{
+	float power = ((2.0 / (alpha * alpha)) - 2.0);
+	return (1.0/ (PI * alpha * alpha)) * pow( dot(N, H), power);
+}
+
+float computeF(in float f0, in vec3 V, in vec3 H)
+{
+	return f0 + ((1 - f0) * (1 - dot(V, H)));
+}
+
+float computeG(in vec3 N, in vec3 L, in vec3 V, in vec3 H)
+{
+	return (dot(N, L)) * (dot(N, H));
+}
 
 //	Compute the Specular Lighting.
 void computeSpecularLighting(int lightIndex, out vec3 specularColor)
@@ -158,6 +179,36 @@ void computeSpecularLighting(int lightIndex, out vec3 specularColor)
 	float lightIntensity = 0.0;
 
 	getLightingProperties(lightIndex, V, L, N, R, H, lightColor, lightIntensity);
+
+	vec4 specularAlbedoAndLightingType = (texture(g_specularAlbedoAndLightingType, v_vertexPosition.xy));
+	
+	float specular = 0.0;
+	float NdotL = dot(N, L);
+
+	if(NdotL > 0.0)
+	{
+		vec4 metallicnessRoughnessFresnelOpacity = (texture(g_metallicnessRoughnessFresnelOpacity, v_vertexPosition.xy));
+
+		float alpha = (metallicnessRoughnessFresnelOpacity[1])  * (metallicnessRoughnessFresnelOpacity[1]);
+		float f0 = metallicnessRoughnessFresnelOpacity[2];
+		
+		if(alpha == 0.0) 
+		{
+			alpha = 0.0001; 
+		}
+
+		float NDF = computeNDF(alpha, N, H);
+		float F = computeF(f0, V, H);
+		float G = computeG(N, L, V, H);
+
+		float top = NDF * F * G;
+
+		float NdotV = clamp(dot(N, V), 0.0001, 1.0);
+		float bot = 4.0 * (dot(N, L) * NdotV);
+		specular = (top / bot) * (metallicnessRoughnessFresnelOpacity[0]);
+	}
+
+	specularColor = lightColor * lightIntensity * NdotL * specular * specularAlbedoAndLightingType.xyz;
 }
 
 
@@ -171,6 +222,7 @@ void computeLighting(in int lightIndex, out vec3 shadedColor)
 
 		computeDiffuseLighting(lightIndex, diffuseColor);
 		computeSpecularLighting(lightIndex, specularColor);
+
 
 		shadedColor = diffuseColor + specularColor;
 	}
@@ -186,6 +238,16 @@ void main(void)
 {
 	//	Initialize the Total Light.
 	vec3 totalLightResult = vec3(0.0, 0.0, 0.0);
+
+	vec4 diffuseAlbedoAndLitType = (texture(g_diffuseAlbedoAndLitType, v_vertexPosition.xy));
+
+	//	Check if this is an UnLit Material.
+	if(diffuseAlbedoAndLitType.w == 0)
+	{
+		totalLightResult = diffuseAlbedoAndLitType.xyz;
+	}
+	else
+	{
 
 	//	Iterate over the Lights.
 	for(int i = 0; i < MAX_LIGHTS; i++)
@@ -205,9 +267,8 @@ void main(void)
 			//	Add the Light to the Total Lighting.
 			totalLightResult = totalLightResult + (lightShadowFactor * lightResult);
 		}
-
 	}
-
+	}
 	//	Compute the Ambient Color with the SSAO texture.
 	vec3 ambientColor = texture(pp_inputTextureOne, v_vertexPosition.xy).xyz;
 

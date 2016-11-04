@@ -38,6 +38,18 @@ Resource Name    = GEN-Icosphere
 Resource Type    = Geometry
 Geometry Name    = GEN-Icosphere
 Geometry Type    = GEN-Icosphere
+Icosphere Detail Level = 4
+Icosphere Roughness Level = 5
+#end Resource
+
+
+#define Resource
+Resource Name    = GEN-Asteroid
+Resource Type    = Geometry
+Geometry Name    = GEN-Asteroid
+Geometry Type    = GEN-Icosphere
+Icosphere Detail Level = 1
+Icosphere Roughness Level = 30
 #end Resource
 
 
@@ -46,6 +58,7 @@ Resource Name    = GEN-PlanetRing
 Resource Type    = Geometry
 Geometry Name    = GEN-PlanetRing
 Geometry Type    = GEN-PlanetRing
+Planet Ring Divisions = 60
 #end Resource
 
 
@@ -68,7 +81,7 @@ Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
 #define Resource 
 Resource Name    = Light-2
 Resource Type    = Light
-Light Enabled    = True
+Light Enabled    = False
 Light Shadow     = True
 Light Type       = 1.0
 Light Color      = 1.0, 1.0, 1.0
@@ -83,7 +96,7 @@ Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
 #define Resource 
 Resource Name = Material-Default-1
 Resource Type = Material
-Material Diffuse Albedo        = 1.0, 1.0, 1.0, 1.0
+Material Diffuse Albedo        = 0.6, 0.6, 0.6, 0.0
 Material Specular Albedo       = 0.0, 1.0, 0.6, 1.0
 Material Emissive Color        = 0.0, 0.0, 0.0, 0.0
 Material Metallicness Roughness and Opacity    = 0.3, 0.7, 0.6, 1.0
@@ -97,10 +110,10 @@ Material Occlusion Map       = None
 #define Resource 
 Resource Name = Material-Default-2
 Resource Type = Material
-Material Diffuse Albedo        = 0.0, 1.0, 0.4, 1.0
-Material Specular Albedo       = 0.0, 1.0, 0.6, 1.0
+Material Diffuse Albedo        = 0.0, 0.7, 0.6, 1.0
+Material Specular Albedo       = 0.0, 0.0, 0.3, 1.0
 Material Emissive Color        = 0.0, 0.0, 0.0, 0.0
-Material Metallicness Roughness and Opacity    = 0.3, 0.7, 0.6, 1.0
+Material Metallicness Roughness and Opacity    = 0.1, 0.9, 0.8, 1.0
 Material Diffuse Albedo Map  = None
 Material Specular Albedo Map = None
 Material MRFO Map            = None

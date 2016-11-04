@@ -73,7 +73,7 @@ void main(void)
 	
 	//	OUTPUT MATERIAL DATA.
 	o_diffuseAlbedoAndLitType = u_diffuseAlbedoAndLitType;
-	o_specularAlbedoAndLightingType = o_specularAlbedoAndLightingType;
+	o_specularAlbedoAndLightingType = u_specularAlbedoAndLightingType;
 	o_emissionColorAndIntensity = u_emssionColorAndIntensity;
 	o_metallicnessRoughnessFresnelOpacity = u_metallicnessRoughnessFresnelOpacity;
 }

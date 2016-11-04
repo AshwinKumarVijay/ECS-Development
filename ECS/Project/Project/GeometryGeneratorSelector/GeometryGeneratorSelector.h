@@ -14,8 +14,8 @@
 #include "../RDFP/ResourceDescription.h"
 
 #include "TinyObjLoader\tiny_obj_loader.h"
-#include "../PM/Icosphere/Icosphere.h"
-#include "../PM/PlanetRings/PlanetRings.h"
+#include "../Icosphere/Icosphere.h"
+#include "../PlanetRings/PlanetRings.h"
 
 class GeometryData;
 
@@ -33,7 +33,7 @@ public:
 	virtual void generateGeometry(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, const ResourceDescription & newResouceDescription);
 
 	//	Load the Geometry from the Obj.
-	virtual void loadGeometryFromObj(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName, std::string filename);
+	virtual void loadGeometryFromObj(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName, const ResourceDescription & newResourceDescription);
 
 	//	Generate geometry from an Icosphere.
 	virtual void loadGeometryFromIcosphere(std::vector<std::pair<std::string, std::shared_ptr<GeometryData>>> & geometryList, std::string geometryName, const ResourceDescription & newResourceDescription);

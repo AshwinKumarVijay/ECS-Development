@@ -13,9 +13,9 @@
 #include "../Systems/InputSystem/InputSystem.h"
 #include "../Systems/InteractionMovementResponseSystem/InteractionMovementResponseSystem.h"
 
+#include "../Components/HierarchyComponent/HierarchyComponent.h"
 #include "../Components/GeometryComponent/GeometryComponent.h"
 #include "../Components/RenderingComponent/RenderingComponent.h"
-#include "../Components/SpeedComponent/SpeedComponent.h"
 #include "../Components/TransformComponent/TransformComponent.h"
 
 #include "../Transform/Transform.h"
@@ -114,6 +114,8 @@ void DemoECS::initializeScene()
 	getEntityManager()->addComponentToEntity(planetEntity, ComponentType::GEOMETRY_COMPONENT);
 	getEntityManager()->addComponentToEntity(planetEntity, ComponentType::RENDERING_COMPONENT);
 
+
+
 	std::shared_ptr<GeometryComponent> planetGeometryComponent = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(planetEntity, ComponentType::GEOMETRY_COMPONENT, ModuleType::NO_MODULE));
 	planetGeometryComponent->setGeometryType("GEN-Icosphere");
 
@@ -141,8 +143,15 @@ void DemoECS::initializeScene()
 	planetRingRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
 
 	std::shared_ptr<TransformComponent> planetRingTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(ringEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
-	planetRingTransformComponent->getTransform()->setScale(glm::vec3(20.0, 20.0, 20.0));
+	planetRingTransformComponent->getTransform()->setScale(glm::vec3(2.0, 2.0, 2.0));
 
+
+	std::shared_ptr<HierarchyComponent> planetHierarchyComponent = std::dynamic_pointer_cast<HierarchyComponent >(getEntityManager()->getComponentOfEntity(planetEntity, ComponentType::HIERARCHY_COMPONENT, ModuleType::NO_MODULE));
+	planetHierarchyComponent->addChild(ringEntity);
+
+
+	std::shared_ptr<HierarchyComponent> ringHierarchyComponent = std::dynamic_pointer_cast<HierarchyComponent >(getEntityManager()->getComponentOfEntity(ringEntity, ComponentType::HIERARCHY_COMPONENT, ModuleType::NO_MODULE));
+	ringHierarchyComponent->setParent(planetEntity);
 
 }
 

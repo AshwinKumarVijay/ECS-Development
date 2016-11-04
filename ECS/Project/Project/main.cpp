@@ -83,10 +83,10 @@ void initializeECS()
 	Configuration::getConfiguration().loadConfigurationFromFile("Assets/Configurations/DefaultConfig.txt");
 
 	//	Create the Demo ECS.
-	ecs = std::make_shared<DemoECS>();
+	ecs = std::make_shared<PlanetMakerECS>();
 
 	//	Initialize the Demo ECS.
-	ecs->initializeDemoECS();
+	ecs->initializePlanetMakerECS();
 
 	//	Read in the Resources from the Resources File.
 	ecs->loadResourcesFromFile(Configuration::getConfiguration().getProperty("RESOURCES FILE"));
@@ -126,10 +126,10 @@ void enterRenderCycle()
 void terminateECS()
 {
 	//	Shut Down the ECS.
-	ecs->shutDownDemoECS();
+	ecs->shutDownPlanetMakerECS();
 
 	//	Clean Up the ECS.
-	ecs->destroyDemoECS();
+	ecs->destroyPlanetMakerECS();
 
 	//	Terminate GLFW.
 	glfwTerminate();

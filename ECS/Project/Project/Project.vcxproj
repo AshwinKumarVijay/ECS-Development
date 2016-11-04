@@ -153,10 +153,13 @@
     <ClCompile Include="Components\SpeedComponent\SpeedComponent.cpp" />
     <ClCompile Include="Components\SelectionComponent\SelectionComponent.cpp" />
     <ClCompile Include="Components\MovementResponseComponent\MovementResponseComponent.cpp" />
+    <ClCompile Include="PlanetMakerSystem\PlanetMakerSystem.cpp" />
+    <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
-    <ClCompile Include="PM\PlanetRings\PlanetRings.cpp" />
-    <ClCompile Include="PM\Icosphere\Icosphere.cpp" />
+    <ClCompile Include="PlanetMakerECS\PlanetMakerECS.cpp" />
+    <ClCompile Include="PlanetRings\PlanetRings.cpp" />
+    <ClCompile Include="Icosphere\Icosphere.cpp" />
     <ClCompile Include="RDFP\RDFP.cpp" />
     <ClCompile Include="RDFP\ResourceDescription.cpp" />
     <ClCompile Include="Renderers\Sampler\Sampler.cpp" />
@@ -217,16 +220,18 @@
     <ClCompile Include="Renderers\BasicRenderer\BasicRenderer.cpp" />
     <ClCompile Include="DemoECS\DemoECS.cpp" />
     <ClCompile Include="Triangle\Triangle.cpp" />
-    <ClCompile Include="UniverseECS\UniverseECS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\SpeedComponent\SpeedComponent.h" />
     <ClInclude Include="Components\SelectionComponent\SelectionComponent.h" />
     <ClInclude Include="Components\MovementResponseComponent\MovementResponseComponent.h" />
+    <ClInclude Include="PlanetMakerSystem\PlanetMakerSystem.h" />
+    <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />
-    <ClInclude Include="PM\PlanetRings\PlanetRings.h" />
-    <ClInclude Include="PM\Icosphere\Icosphere.h" />
+    <ClInclude Include="PlanetMakerECS\PlanetMakerECS.h" />
+    <ClInclude Include="PlanetRings\PlanetRings.h" />
+    <ClInclude Include="Icosphere\Icosphere.h" />
     <ClInclude Include="RDFP\RDFP.h" />
     <ClInclude Include="RDFP\ResourceDescription.h" />
     <ClInclude Include="Renderers\Sampler\Sampler.h" />
@@ -272,7 +277,6 @@
     <ClInclude Include="TypesList\InteractionTypes.h" />
     <ClInclude Include="TypesList\ModuleType.h" />
     <ClInclude Include="TypesList\ResourceTypes.h" />
-    <ClInclude Include="UniverseECS\UniverseECS.h" />
     <ClInclude Include="Vertex\Vertex.h" />
     <ClInclude Include="Resources\ResourceManager\GeometryResourceManager\GeometryResourceManager.h" />
     <ClInclude Include="GeometryGeneratorSelector\GeometryGeneratorSelector.h" />
@@ -312,12 +316,7 @@
     <Text Include="Assets\NewShaders\PostProcessShader\SSAO\SSAO.frag.glsl" />
     <Text Include="Assets\NewShaders\ShaderTemplate\FragementShaderTemplate.txt" />
     <Text Include="Assets\NewShaders\ShaderTemplate\VertexShaderTemplate.txt" />
-    <Text Include="Assets\Resource Description Files\GDF.txt" />
-    <Text Include="Assets\Resource Description Files\LDF.txt" />
-    <Text Include="Assets\Resource Description Files\MDF.txt" />
     <Text Include="Assets\Resource Description Files\RDF.txt" />
-    <Text Include="Assets\Resource Description Files\SDF.txt" />
-    <Text Include="Assets\Resource Description Files\TDF.txt" />
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFERRED_RENDERER_VERTEX_SHADER.txt" />
     <Text Include="Assets\Shaders\FRAGMENT SHADERS\DEFAULT_FRAGMENT_SHADER.txt" />
     <Text Include="Assets\Shaders\FRAGMENT SHADERS\ENVIRONMENT_CUBEMAP_FRAGMENT_SHADER.txt" />

@@ -73,9 +73,11 @@
     <ClCompile Include="RDFP\RDFP.cpp" />
     <ClCompile Include="RDFP\ResourceDescription.cpp" />
     <ClCompile Include="Triangle\Triangle.cpp" />
-    <ClCompile Include="PM\Icosphere\Icosphere.cpp" />
-    <ClCompile Include="PM\PlanetRings\PlanetRings.cpp" />
-    <ClCompile Include="UniverseECS\UniverseECS.cpp" />
+    <ClCompile Include="Icosphere\Icosphere.cpp" />
+    <ClCompile Include="PlanetRings\PlanetRings.cpp" />
+    <ClCompile Include="PlanetMakerECS\PlanetMakerECS.cpp" />
+    <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
+    <ClCompile Include="PlanetMakerSystem\PlanetMakerSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -157,9 +159,11 @@
     <ClInclude Include="RDFP\RDFP.h" />
     <ClInclude Include="RDFP\ResourceDescription.h" />
     <ClInclude Include="Triangle\Triangle.h" />
-    <ClInclude Include="PM\Icosphere\Icosphere.h" />
-    <ClInclude Include="PM\PlanetRings\PlanetRings.h" />
-    <ClInclude Include="UniverseECS\UniverseECS.h" />
+    <ClInclude Include="Icosphere\Icosphere.h" />
+    <ClInclude Include="PlanetRings\PlanetRings.h" />
+    <ClInclude Include="PlanetMakerECS\PlanetMakerECS.h" />
+    <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
+    <ClInclude Include="PlanetMakerSystem\PlanetMakerSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />
@@ -171,10 +175,6 @@
     <Text Include="Assets\Shaders\FRAGMENT SHADERS\DEFAULT_FRAGMENT_SHADER.txt" />
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFERRED_RENDERER_VERTEX_SHADER.txt" />
     <Text Include="Assets\Configurations\DefaultConfig.txt" />
-    <Text Include="Assets\Resource Description Files\GDF.txt" />
-    <Text Include="Assets\Resource Description Files\TDF.txt" />
-    <Text Include="Assets\Resource Description Files\MDF.txt" />
-    <Text Include="Assets\Resource Description Files\LDF.txt" />
     <Text Include="Assets\NewShaders\ShaderTemplate\FragementShaderTemplate.txt" />
     <Text Include="Assets\NewShaders\ShaderTemplate\VertexShaderTemplate.txt" />
     <Text Include="Assets\NewShaders\PostProcessShader\SSAO\SSAO.frag.glsl" />
@@ -183,7 +183,6 @@
     <Text Include="Assets\NewShaders\EnvironmentShaders\ECube.vert.glsl" />
     <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.frag.glsl" />
     <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.vert.glsl" />
-    <Text Include="Assets\Resource Description Files\SDF.txt" />
     <Text Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\BasicGBufferShader\BasicGBufferShader.frag.glsl" />
     <Text Include="Assets\Resource Description Files\RDF.txt" />
   </ItemGroup>
