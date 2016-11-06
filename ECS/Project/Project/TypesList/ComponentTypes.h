@@ -6,7 +6,7 @@ enum class ComponentType : long int
 	//	No Component
 	NO_COMPONENT = 0,
 
-	//	Hierarchy Component.
+	//	Hierarchy Component - Only Required Component Type.
 	HIERARCHY_COMPONENT = 2,
 
 	//	Transform Component.

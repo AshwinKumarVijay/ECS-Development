@@ -27,6 +27,7 @@ class InputSystem;
 class InteractionMovementResponseSystem;
 class MovementSystem;
 class DebugSystem;
+class PlanetMakerSystem;
 
 class GeometryGeneratorSelector;
 class TextureGeneratorSelector;
@@ -73,9 +74,6 @@ public:
 	//	Update the ECS.
 	virtual void update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime);
 
-	//	Create the Planet.
-	virtual void createPlanet();
-
 	//	Shut Down the Demo ECS.
 	void shutDownPlanetMakerECS();
 
@@ -84,6 +82,9 @@ public:
 
 
 private:
+
+	//	The Debug System.
+	std::shared_ptr<DebugSystem> debugSystem;
 
 	//	The Interaction Generation System associated with the PlanetMakerECS.
 	std::shared_ptr<InputSystem> inputSystem;
@@ -94,8 +95,8 @@ private:
 	//	The Camera System associated with the PlanetMakerECS.
 	std::shared_ptr<CameraSystem> cameraSystem;
 
-	//	The Movement System associated with the PlanetMakerECS.
-	std::shared_ptr<MovementSystem> movementSystem;
+	//	The PlanetMaker System associated with the PlanetMakerECS.
+	std::shared_ptr<PlanetMakerSystem> planetMakerSystem;
 
 	//	The Transform System associated with the PlanetMakerECS.
 	std::shared_ptr<TransformSystem> transformSystem;
@@ -103,8 +104,7 @@ private:
 	//	The Rendering System associated with the PlanetMakerECS.
 	std::shared_ptr<RenderingSystem> renderingSystem;
 
-	//	The Debug System.
-	std::shared_ptr<DebugSystem> debugSystem;
+
 
 	//	The Resources and the Resource Description.
 	std::map<std::string, ResourceDescription> resources;
@@ -123,13 +123,6 @@ private:
 
 	//	Shader Resource Manager
 	std::shared_ptr<ShaderResourceManager> shaderResourceManager;
-
-	//	The Base Entity.
-	long int planetVesselEntity;
-	long int planetEntity;
-	long int ringsVesselEntity;
-
-	std::map<std::string, long int> mapNamesToEntities;
 
 	//	Resource Description File Parser.
 	RDFP rdfp;

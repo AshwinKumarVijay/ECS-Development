@@ -118,7 +118,7 @@ void ECS::shutDownECS()
 
 }
 
-//	Destroy the ECS.
+	//	Destroy the ECS.
 void ECS::destroyECS()
 {
 

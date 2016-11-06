@@ -54,11 +54,10 @@ enum class ModuleType : long int
 	//	The Movement System Signature.
 	MOVEMENT_SYSTEM = 16,
 
-	//	The Selection System Signature.
-	SELECTION_SYSTEM = 17,
-
 	//	The Interaction Movement Response System.
 	INTERACTION_MOVEMENT_RESPONSE_SYSTEM = 18,
 
-	TIMER_SYSTEM = 19
+	//	The Planet Maker System.
+	PLANET_MAKER_SYSTEM = 19
+
 };

@@ -28,7 +28,6 @@
     <ClCompile Include="Resources\ResourceData\ShaderData\ShaderData.cpp" />
     <ClCompile Include="Resources\ResourceData\TextureData\TextureData.cpp" />
     <ClCompile Include="Resources\ResourceData\ResourceData.cpp" />
-    <ClCompile Include="Systems\TransformSystem\TransformSystem.cpp" />
     <ClCompile Include="Systems\RenderingSystem\RenderingSystem.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="GeometryGeneratorSelector\GeometryGeneratorSelector.cpp" />
@@ -78,6 +77,7 @@
     <ClCompile Include="PlanetMakerECS\PlanetMakerECS.cpp" />
     <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
     <ClCompile Include="PlanetMakerSystem\PlanetMakerSystem.cpp" />
+    <ClCompile Include="Systems\TransformSystem\TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -102,7 +102,6 @@
     <ClInclude Include="Resources\ResourceData\ShaderData\ShaderData.h" />
     <ClInclude Include="Resources\ResourceData\TextureData\TextureData.h" />
     <ClInclude Include="Resources\ResourceData\ResourceData.h" />
-    <ClInclude Include="Systems\TransformSystem\TransformSystem.h" />
     <ClInclude Include="Systems\RenderingSystem\RenderingSystem.h" />
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="GeometryGeneratorSelector\GeometryGeneratorSelector.h" />
@@ -164,6 +163,7 @@
     <ClInclude Include="PlanetMakerECS\PlanetMakerECS.h" />
     <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
     <ClInclude Include="PlanetMakerSystem\PlanetMakerSystem.h" />
+    <ClInclude Include="Systems\TransformSystem\TransformSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />
