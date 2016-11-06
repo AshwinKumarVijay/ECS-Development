@@ -37,7 +37,7 @@ void PlanetMakerSystem::initializeSystem()
 }
 
 //	Create a new planet and add it to the current list of planets.
-void PlanetMakerSystem::createPlanet()
+long int PlanetMakerSystem::createPlanet()
 {
 	PlanetEntity newPlanet;
 	newPlanet.planet = getEntityManager()->createEntity();
@@ -78,7 +78,7 @@ void PlanetMakerSystem::createPlanet()
 
 	//	Set the Rendering Types of the Planetary Body.
 	std::shared_ptr<RenderingComponent> planetaryBodyRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(newPlanet.planetaryBody, ComponentType::RENDERING_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
-	planetaryBodyRenderingComponent->setMaterialType("Material-Default-2");
+	planetaryBodyRenderingComponent->setMaterialType("Material-Default-4");
 	planetaryBodyRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
 
 	//	Set the rotation of the planetary body.
@@ -87,7 +87,7 @@ void PlanetMakerSystem::createPlanet()
 	//	
 	int ringCount = RNGs::intRand(0, 4);
 
-	for (int i = 0; i < ringCount; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		PlanetRingEntity newPlanetRingEntity;
 		
@@ -107,9 +107,8 @@ void PlanetMakerSystem::createPlanet()
 
 		//
 		std::shared_ptr<TransformComponent> planetRingTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(newPlanetRingEntity.ringEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
-		float ringRotate = RNGs::doubleRand(00, glm::pi<float>());
-		planetRingTransformComponent->getTransform()->rotateBy(ringRotate, glm::normalize(glm::vec3(1.0, 0.0, 0.0)));
-		planetRingTransformComponent->getTransform()->scaleBy(glm::vec3(2.0));
+		float ringRotate = RNGs::doubleRand(00, glm::pi<float>() * 2.0f);
+		planetRingTransformComponent->getTransform()->rotateBy(ringRotate, glm::normalize(glm::vec3(0.0, 1.0, 0.0)));
 
 		//	
 		newPlanetRingEntity.rotation = RNGs::doubleRand(0.0, 0.1);
@@ -132,15 +131,17 @@ void PlanetMakerSystem::createPlanet()
 
 		//	Get the Transform Component of the Planet Ring.
 		std::shared_ptr<TransformComponent> subRingTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(newPlanetRingEntity.subRingEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
-		subRingTransformComponent->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0) * float(i + 1));
+		subRingTransformComponent->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0) * (float)RNGs::doubleRand(0.1, 0.2));
+		subRingTransformComponent->getTransform()->translateBy(glm::vec3(1.0, 0.0, 0.0) * (float)RNGs::doubleRand(3.0, 5.25));
+		subRingTransformComponent->getTransform()->translateBy(glm::vec3(0.0, 1.0, 0.0) * (float)RNGs::doubleRand(-1.0, 1.0));
 
 		//	Set the Geometry Type of the Planet Ring.
 		std::shared_ptr<GeometryComponent> subRingGeometryComponent = std::dynamic_pointer_cast<GeometryComponent>(getEntityManager()->getComponentOfEntity(newPlanetRingEntity.subRingEntity, ComponentType::GEOMETRY_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
-		subRingGeometryComponent->setGeometryType("GEN-PlanetRing");
+		subRingGeometryComponent->setGeometryType("GEN-Asteroid");
 
 		//	Set the Rendering Types of the Planet Ring.
 		std::shared_ptr<RenderingComponent> subRingRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(newPlanetRingEntity.subRingEntity, ComponentType::RENDERING_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
-		subRingRenderingComponent->setMaterialType("Material-Default-1");
+		subRingRenderingComponent->setMaterialType("Material-Default-5");
 		subRingRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
 
 		//	Add the new planet ring.
@@ -150,6 +151,9 @@ void PlanetMakerSystem::createPlanet()
 	
 	// Add the planet to the list of planets.
 	planets.push_back(newPlanet);
+
+	//	Return the new planet.
+	return newPlanet.planet;
 }
 
 //	Update the System.
@@ -158,7 +162,7 @@ void PlanetMakerSystem::update(const float & deltaTime, const float & currentFra
 	//	Iterate over the planets, and rotate them by some amount.
 	for (int i = 0; i < planets.size(); i++)
 	{
-		std::shared_ptr<TransformComponent> planetaryBodyTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(planets[i].planetaryBody, ComponentType::TRANSFORM_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
+		std::shared_ptr<TransformComponent> planetaryBodyTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(planets[i].planet, ComponentType::TRANSFORM_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
 		planetaryBodyTransformComponent->getTransform()->rotateBy(planets[i].planetaryRotation, glm::normalize(glm::vec3(0.1, 1.0, 0.0)));
 
 		for (int j = 0; j < planets[i].planetRings.size(); j++)

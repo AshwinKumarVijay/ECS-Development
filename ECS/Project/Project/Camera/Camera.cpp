@@ -2,7 +2,7 @@
 
 Camera::Camera()
 {
-	cameraPosition = glm::vec3(50.0f, 50.0f, 50.0f);
+	cameraPosition = glm::vec3(50.0f, 40.0f, 50.0f);
 
 	lookAtPoint = glm::vec3(0.0, 0.0, 0.0);
 

@@ -1364,7 +1364,7 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 			shadowing = (((activeLights[lightNumber]->lightEnabledShadowLightType[1] == 1.0)) && shadowing);
 
 
-		if (false)
+		if (shadowing)
 		{
 			//	---------------------------------------------------------------------------------------------------------------	//
 
@@ -2470,7 +2470,7 @@ void DeferredRenderer::uploadAmbientLightData(const RendererShaderData & rendere
 {
 	GLuint currentShaderProgramID = rendererShaderData.shaderID;
 	GLuint currentLightAttributeLocation = -1;
-	glUniform4fv(rendererShaderData.shaderUniforms.lightDataUniforms.u_ambientLight, 1, glm::value_ptr(glm::vec4(0.125, 0.125, 0.125, 1.0)));
+	glUniform4fv(rendererShaderData.shaderUniforms.lightDataUniforms.u_ambientLight, 1, glm::value_ptr(glm::vec4(0.025, 0.025, 0.025, 1.0)));
 }
 
 //	Upload the Shader Lights Data to the Shader Pipeline.
