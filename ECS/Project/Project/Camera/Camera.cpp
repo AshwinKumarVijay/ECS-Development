@@ -12,7 +12,7 @@ Camera::Camera()
 
 	farClip = 500.0f;
 	
-	aspectRatio = 1920.0 / 1080.0f;
+	aspectRatio = 1920.0f / 1080.0f;
 
 	FOV = glm::pi<float>() / 3.0f;
 

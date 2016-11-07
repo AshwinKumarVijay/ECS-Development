@@ -112,6 +112,16 @@ void PlanetMakerECS::initializePlanetMakerECS()
 //	Initialize the VR Scene.
 void PlanetMakerECS::initializeScene()
 {
+	//	Generate the Camera Entity.
+	cameraEntity = getEntityManager()->createEntity();
+
+	//	Attach the Components to the Camera Entity.
+	getEntityManager()->addComponentToEntity(cameraEntity, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity, ComponentType::CAMERA_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity, ComponentType::MOVEMENT_RESPONSE_COMPONENT);
+
+	//	Create the Planet.
 	planetMakerSystem->createPlanet();
 }
 

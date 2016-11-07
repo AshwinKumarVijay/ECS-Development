@@ -42,15 +42,16 @@ void CameraSystem::update(const float & deltaTime, const float & currentFrameTim
 //	Process the Events.
 void CameraSystem::processEvents(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime)
 {
+	//	Check if there are any events.
 	while (getReceiver()->getNumberOfEvents() > 0)
 	{
-
-		//	Get the events.
+		//	Get the next Event.
 		std::shared_ptr<const ECSEvent> nextEvent = getReceiver()->getNextEvent();
 
-		//	Check if the Event was not sent out by the Camera System.
+		//	Make sure the Event was not sent out by the Camera System.
 		if (nextEvent->getModuleOrigin() != ModuleType::CAMERA_SYSTEM)
 		{
+			//	Check if we are responding to an Interaction Event.
 			if (nextEvent->getEventType() == EventType::INTERACTION_EVENT)
 			{
 				std::shared_ptr<const InteractionEvent> interactionEvent = std::dynamic_pointer_cast<const InteractionEvent>(nextEvent);
@@ -70,19 +71,6 @@ void CameraSystem::processEvents(const float & deltaTime, const float & currentF
 					setPreviousCamera();
 				}
 			}
-
-			if (nextEvent->getEventType() == EventType::COMPONENT_CHANGED)
-			{
-				//	Check whether the Camera Component has been changed.
-				if (nextEvent->getComponentType() == ComponentType::CAMERA_COMPONENT)
-				{
-					updateCamera(nextEvent->getEntityID());
-				}	//	Check whether the Transform Component has been changed.
-				else if (nextEvent->getComponentType() == ComponentType::TRANSFORM_COMPONENT)
-				{
-					updateCamera(nextEvent->getEntityID());
-				}
-			}
 		}
 
 		//	Respond to the System shutdown.
@@ -91,16 +79,6 @@ void CameraSystem::processEvents(const float & deltaTime, const float & currentF
 			shutDownSystem();
 		}
 	}
-}
-
-//	Update the Camera.
-void CameraSystem::updateCamera(long int entity)
-{
-	//	Get the Transform component.
-	std::shared_ptr<const TransformComponent> transformComponent = std::dynamic_pointer_cast<const TransformComponent>(getEntityManager()->viewComponentOfEntity(entity, ComponentType::TRANSFORM_COMPONENT));
-
-	//	Get the Camera Component.
-	std::shared_ptr<CameraComponent> cameraComponent = std::dynamic_pointer_cast<CameraComponent>(getEntityManager()->getComponentOfEntity(entity, ComponentType::CAMERA_COMPONENT, ModuleType::CAMERA_SYSTEM));
 }
 
 //	Shut Down the System.

@@ -81,7 +81,7 @@ Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
 #define Resource 
 Resource Name    = Light-2
 Resource Type    = Light
-Light Enabled    = True
+Light Enabled    = False
 Light Shadow     = True
 Light Type       = 1.0
 Light Color      = 1.0, 1.0, 1.0

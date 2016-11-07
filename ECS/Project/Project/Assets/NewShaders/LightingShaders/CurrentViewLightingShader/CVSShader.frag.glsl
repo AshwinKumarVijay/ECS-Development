@@ -74,7 +74,7 @@ float computeShadowingFactor()
 	float currentDepth = length(worldspace_vertexToLight) / u_cameraNearFarPlaneDistance[1];
 
 	//	The Shadow Bias.
-	float bias = 0.00025;  
+	float bias = 0.0005;  
 
 	//	Compute the Shadowing Factor.
 	float shadowingFactor = currentDepth  - bias > closestDepth ? 1.0 : 0.0;

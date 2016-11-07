@@ -50,7 +50,10 @@ public:
 	virtual void initializeSystem();
 
 	//	Create a new planet and add it to the current list of planets.
-	virtual void createPlanet();
+	virtual long int createPlanet();
+
+	//	Create a new planet, based on the provided specifications.
+	//	virtual long int createPlanet(PlanetCreationBlueprints newPlanetCreationBlueprint);
 
 	//	Update the System.
 	virtual void update(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime);

@@ -46,9 +46,6 @@ protected:
 	//	Process the Events.
 	virtual void processEvents(const float & deltaTime, const float & currentFrameTime, const float & lastFrameTime);
 
-	//	Update the Camera on the specified entity.
-	virtual void updateCamera(long int entity);
-
 	//	Set the Next Camera.
 	virtual void setNextCamera();
 
@@ -57,7 +54,6 @@ protected:
 
 	//	Set No Camera.
 	virtual void setNoCamera();
-
 
 
 private:

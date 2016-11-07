@@ -107,11 +107,11 @@ long int PlanetMakerSystem::createPlanet()
 
 		//
 		std::shared_ptr<TransformComponent> planetRingTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(newPlanetRingEntity.ringEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
-		float ringRotate = RNGs::doubleRand(00, glm::pi<float>() * 2.0f);
+		float ringRotate = (float)RNGs::doubleRand(00.0f, glm::pi<float>() * 2.0f);
 		planetRingTransformComponent->getTransform()->rotateBy(ringRotate, glm::normalize(glm::vec3(0.0, 1.0, 0.0)));
 
 		//	
-		newPlanetRingEntity.rotation = RNGs::doubleRand(0.0, 0.1);
+		newPlanetRingEntity.rotation = (float)RNGs::doubleRand(0.0, 0.1);
 
 		//	
 		newPlanetRingEntity.subRingEntity = getEntityManager()->createEntity();

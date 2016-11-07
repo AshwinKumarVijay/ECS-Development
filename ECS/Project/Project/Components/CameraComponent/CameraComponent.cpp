@@ -6,7 +6,6 @@
 CameraComponent::CameraComponent()
 	:Component(ComponentType::CAMERA_COMPONENT, ComponentTypeRequirement::CAMERA_COMPONENT_REQUIREMENTS)
 {
-
 	//	Near Clip.
 	nearClip = 0.01f;
 

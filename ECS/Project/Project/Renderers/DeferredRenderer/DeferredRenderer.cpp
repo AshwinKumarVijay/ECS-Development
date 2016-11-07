@@ -89,6 +89,7 @@ void DeferredRenderer::initializeRenderingHints()
 	//	Set the pixel size.
 	glPointSize(5.0f);
 
+	//	The Shadow Map Resolution.
 	shadowMapResolution = 2048;
 }
 
@@ -1500,6 +1501,9 @@ void DeferredRenderer::renderShadowMaps(const float & deltaFrameTime, const floa
 
 			//	Draw the Arrays.
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+			//	Blur the Shadow Map.
+			renderGaussianBlur(deltaFrameTime, currentFrameTime, lastFrameTime, mainLightColorMaps[lightNumber], 4);
 
 			//	Bind the Default Framebuffer.
 			glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);

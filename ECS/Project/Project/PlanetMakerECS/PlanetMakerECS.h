@@ -126,5 +126,7 @@ private:
 
 	//	Resource Description File Parser.
 	RDFP rdfp;
+
+	long int cameraEntity;
 };
 

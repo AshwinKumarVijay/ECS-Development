@@ -144,33 +144,48 @@ int RenderableManager::getShadingTypeGeometryTypeRenderableNumber(const ShadingT
 //	Update the ShaderType of the renderable specified by ID.
 void RenderableManager::updateShadingType(const long int & currentRenderableID, ShadingTypes::ShadingType newShadingType)
 {
-	//	Remove the Renderable from storage.
-	removeRenderableFromStorage(currentRenderableID);
-	
-	//	Change the Shader Type.
-	mapIDToRenderable[currentRenderableID]->setShadingType(newShadingType);
+	std::shared_ptr<Renderable> currentRenderable = getRenderable(currentRenderableID);
 
-	//	Add it back in.
-	addRenderableToStorage(currentRenderableID);
+	if (currentRenderable != NULL)
+	{
+		if (currentRenderable->getShadingType() != newShadingType)
+		{
+			//	Remove the Renderable from storage.
+			removeRenderableFromStorage(currentRenderableID);
+
+			//	Change the Shader Type.
+			mapIDToRenderable[currentRenderableID]->setShadingType(newShadingType);
+
+			//	Add it back in.
+			addRenderableToStorage(currentRenderableID);
+		}
+	}
 }
 
 //	Update the Geometry of the renderable specified by ID.
 void RenderableManager::updateGeometryType(const long int & currentRenderableID, const std::string & newGeometryType)
 {
-	//	Remove the Renderable from Storage.
-	removeRenderableFromStorage(currentRenderableID);
+	std::shared_ptr<Renderable> currentRenderable = getRenderable(currentRenderableID);
 
-	//	Change the Geometry Type.
-	mapIDToRenderable[currentRenderableID]->setGeometryType(newGeometryType);
+	if (currentRenderable != NULL)
+	{
+		if (currentRenderable->getGeometryType() != newGeometryType)
+		{
+			//	Remove the Renderable from Storage.
+			removeRenderableFromStorage(currentRenderableID);
 
-	//	Add the Renderable Back in.
-	addRenderableToStorage(currentRenderableID);
+			//	Change the Geometry Type.
+			mapIDToRenderable[currentRenderableID]->setGeometryType(newGeometryType);
+
+			//	Add the Renderable Back in.
+			addRenderableToStorage(currentRenderableID);
+		}
+	}
 }
 
 //	Update the Material of the renderable specified by ID.
 void RenderableManager::updateMaterialType(const long int & currentRenderableID, const std::string & newMaterialType)
 {
-
 	for (auto itr = mapShadingTypeAndGeometryTypeToRenderables.begin(); itr != mapShadingTypeAndGeometryTypeToRenderables.end(); itr++)
 	{
 		for (int i = 0; i < itr->second->size(); i++)
@@ -178,6 +193,7 @@ void RenderableManager::updateMaterialType(const long int & currentRenderableID,
 			if ((*itr->second)[i]->getRenderableID() == currentRenderableID)
 			{
 				(*itr->second)[i]->setMaterialType(newMaterialType);
+				(*(getMaterialsList(itr->first)))[i] = newMaterialType;
 			}
 		}
 	}
@@ -193,6 +209,7 @@ void RenderableManager::updateTransformMatrix(const long int & currentRenderable
 			if ((*itr->second)[i]->getRenderableID() == currentRenderableID)
 			{
 				(*itr->second)[i]->setTransformMatrix(newTransformMatrix);
+				(*(getTransformsList(itr->first)))[i] = newTransformMatrix;
 			}
 		}
 	}
@@ -283,7 +300,6 @@ std::shared_ptr<std::vector<std::string>> RenderableManager::getMaterialsList(st
 		return mapShadingTypeAndGeometryTypeToMaterials[shaderTypeAndGeometryType] = std::make_shared<std::vector<std::string>>();
 	}
 }
-
 
 //	Return the list of transforms that use both the shader and geometry type specified, and create one if none exists.
 std::shared_ptr<std::vector<glm::mat4>> RenderableManager::getTransformsList(std::pair<ShadingTypes::ShadingType, std::string> shaderTypeAndGeometryType)

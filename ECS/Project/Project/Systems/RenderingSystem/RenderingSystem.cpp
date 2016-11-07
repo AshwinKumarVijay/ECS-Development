@@ -46,8 +46,10 @@ void RenderingSystem::initializeSystem()
 	//	Initialize the Renderer.
 	renderer->initializeRenderer();
 
-	//	Create the new camera.
+	//	Create a Default Camera, which will have the default camera data.
 	defaultCamera = std::make_shared<Camera>();
+
+	//	Create an Active Camera, into which we will copy over the data camera data, and use it for rendering.
 	activeCamera = std::make_shared<Camera>();
 }
 
@@ -73,6 +75,7 @@ void RenderingSystem::processEvents(const float & deltaTime, const float & curre
 		//	Get the events.
 		std::shared_ptr<const ECSEvent> nextEvent = getReceiver()->getNextEvent();
 
+		//	Make sure this Event was not sent out by the Rendering System.
 		if (nextEvent->getModuleOrigin() != ModuleType::RENDERING_SYSTEM)
 		{
 			//	Component Added.
@@ -91,6 +94,7 @@ void RenderingSystem::processEvents(const float & deltaTime, const float & curre
 				if (nextEvent->getComponentType() == ComponentType::TRANSFORM_COMPONENT)
 				{
 					updateRenderable(nextEvent->getEntityID());
+					updateCamera();
 
 				}	//	Check if the component changed was the Geometry Component.
 				else if (nextEvent->getComponentType() == ComponentType::GEOMETRY_COMPONENT)
@@ -349,7 +353,6 @@ void RenderingSystem::updateRenderableGeometryType(const long int & entityID)
 	//	Check if there is actual Rendering Component.
 	if (renderingComponent != NULL && renderingComponent->getRenderableID() != -1)
 	{
-
 		//	Get the Geometry Component of the current entity.
 		std::shared_ptr<const GeometryComponent> geometryComponent = std::dynamic_pointer_cast<const GeometryComponent>(getEntityManager()->viewComponentOfEntity(entityID, ComponentType::GEOMETRY_COMPONENT));
 
@@ -404,7 +407,6 @@ void RenderingSystem::updateCamera()
 			//	Check if this is the Actice Camera.
 			if (cameraComponent->getIsActive())
 			{
-
 				//	Active Camera.
 				activeCameraAvailable = true;
 

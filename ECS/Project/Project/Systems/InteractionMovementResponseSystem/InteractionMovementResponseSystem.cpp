@@ -152,7 +152,7 @@ void InteractionMovementResponseSystem::processInteractionEvents(std::shared_ptr
 						glm::vec3 axis = transformComponent->getTransform()->getFowardDirection();
 
 						//	Compute the Rotation Step.
-						float rotationStep = 1.0f / 4.0f * glm::pi<float>();
+						float rotationStep = movementResponseComponent->getRollCoefficient();
 
 						//	Translate the Transform Component.
 						transformComponent->getTransform()->rotateBy(rotationStep, axis);
@@ -167,7 +167,7 @@ void InteractionMovementResponseSystem::processInteractionEvents(std::shared_ptr
 						glm::vec3 axis = transformComponent->getTransform()->getFowardDirection();
 
 						//	Compute the Rotation Step.
-						float rotationStep = - 1.0f /4.0f * glm::pi<float>();
+						float rotationStep = -movementResponseComponent->getRollCoefficient();
 
 						//	Translate the Transform Component.
 						transformComponent->getTransform()->rotateBy(rotationStep, axis);
@@ -181,7 +181,7 @@ void InteractionMovementResponseSystem::processInteractionEvents(std::shared_ptr
 						glm::vec3 axis = transformComponent->getTransform()->getRightVector();
 
 						//	Compute the Rotation Step.
-						float rotationStep = 1.0f / 4.0f * glm::pi<float>();
+						float rotationStep = movementResponseComponent->getPitchCoefficient();
 
 						//	Translate the Transform Component.
 						transformComponent->getTransform()->rotateBy(rotationStep, axis);
@@ -195,7 +195,7 @@ void InteractionMovementResponseSystem::processInteractionEvents(std::shared_ptr
 						glm::vec3 axis = transformComponent->getTransform()->getRightVector();
 
 						//	Compute the Rotation Step.
-						float rotationStep = -1.0f / 4.0f * glm::pi<float>();
+						float rotationStep = -movementResponseComponent->getPitchCoefficient();
 
 						//	Translate the Transform Component.
 						transformComponent->getTransform()->rotateBy(rotationStep, axis);
@@ -209,7 +209,7 @@ void InteractionMovementResponseSystem::processInteractionEvents(std::shared_ptr
 						glm::vec3 axis = transformComponent->getTransform()->getUpVector();
 
 						//	Compute the Rotation Step.
-						float rotationStep = 1.0f / 4.0f * glm::pi<float>();
+						float rotationStep = movementResponseComponent->getYawCoefficient();
 
 						//	Translate the Transform Component.
 						transformComponent->getTransform()->rotateBy(rotationStep, axis);
@@ -223,7 +223,7 @@ void InteractionMovementResponseSystem::processInteractionEvents(std::shared_ptr
 						glm::vec3 axis = transformComponent->getTransform()->getUpVector();
 
 						//	Compute the Rotation Step.
-						float rotationStep = -1.0f / 4.0f * glm::pi<float>();
+						float rotationStep = -movementResponseComponent->getYawCoefficient();
 
 						//	Translate the Transform Component.
 						transformComponent->getTransform()->rotateBy(rotationStep, axis);

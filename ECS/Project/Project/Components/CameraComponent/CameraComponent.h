@@ -8,62 +8,61 @@ struct CameraDescription
 
 };
 
-
 class CameraComponent : public Component
 {
 
 public:
 
-	//	Add Comments - TO DO
+	//	Default CameraComponent Constructor.
 	CameraComponent();
 
-	//	Add Comments - TO DO
+	//	Default CameraComponent Destructor.
 	virtual ~CameraComponent();
 
-	//	Add Comments - TO DO
+	//	Set this CameraComponent to be active.
 	void setActive();
 
-	//	Add Comments - TO DO
+	//	Set this CameraComponent to be inactive.
 	void setInactive();
 
-	//	Add Comments - TO DO
+	//	Return whether this CameraComponent is Active.
 	bool getIsActive() const;
 
-	//	Add Comments - TO DO
+	//	Return the Near Clip of this CameraComponent.
 	float getNearClip() const;
-	//	Add Comments - TO DO
+	//	Set the Near Clip of this CameraComponent.
 	void setNearClip(float newNearClip);
 
-	//	Add Comments - TO DO
+	//	Return the Far Clip of the CameraComponent.
 	float getFarClip() const;
-	//	Add Comments - TO DO
+	//	Set the Far Clip of this CameraComponent.
 	void setFarClip(float newFarClip);
 
-	//	Add Comments - TO DO
+	//	Return the Field of View of this CameraComponent.
 	float getFOV() const;
-	//	Add Comments - TO DO
+	//	Set the Field of View of this CameraComponent.
 	void setFOV(float newFOV);
 
-	//	Add Comments - TO DO
+	//	Return the Aspect Ration of this CameraComponent.
 	float getAspectRatio() const;
-	//	Add Comments - TO DO
+	//	Set the Aspect Ratio of this CameraComponent.
 	void setAspectRatio(float newAspectRatio);
 	
 
 
 private:
 
-	//	Add Comments- TO DO.
+	//	Whether this CameraComponent is Active.
 	bool isActive;
 
-	//	Add Comments- TO DO.
+	//	The Near Clip of this Camera Component.
 	float nearClip;
-	//	Add Comments- TO DO.
+	//	The Far Clip of this Camera Component.
 	float farClip;
-	
-	//	Add Comments- TO DO.
+
+	//	The Field of View of this Camera Component.
 	float FOV;
-	//	Add Comments- TO DO.
+	//	The Aspect Ratio of this Camera Component.
 	float aspectRatio;
 };
 

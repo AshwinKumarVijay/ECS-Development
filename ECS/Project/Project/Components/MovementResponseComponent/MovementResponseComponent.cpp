@@ -9,9 +9,9 @@ MovementResponseComponent::MovementResponseComponent()
 	backwardMovementCoefficient = 1.0f;
 	leftMovementCoefficient = 1.0f;
 	rightMovementCoefficient = 1.0f;
-	rollCoefficient = 0.010f;
-	pitchCoefficient = 0.01f;
-	yawCoefficient = 0.01f;
+	rollCoefficient = 0.1f;
+	pitchCoefficient = 0.1f;
+	yawCoefficient = 0.1f;
 	active = true;
 }
 

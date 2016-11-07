@@ -4,9 +4,12 @@
 //	Default Transform Constructor
 Transform::Transform()
 {
+	//	Initialize the Position, the Scale and the Rotation to basic default values.
 	transformPosition = glm::vec3(0.0);
 	transformScale = glm::vec3(1.0);
 	transformRotation = glm::quat();
+
+	//	Initialize the Transform Matrix and the Hierarchy Transform Matrix to the Identity Matrix.
 	transformMatrix = std::make_shared<glm::mat4x4>(1.0f);
 	hierarchyTransformMatrix = std::make_shared<glm::mat4>(1.0f);
 	dirtyMatrixFlag = true;
@@ -99,31 +102,34 @@ glm::quat Transform::getRotation() const
 	return transformRotation;
 }
 
-//	Return the vector representing the direction of the transform.
+//	Return the vector representing the foward direction of the transform.
 glm::vec3 Transform::getFowardDirection() const
 {
-	return glm::normalize(glm::vec3(glm::mat4_cast(transformRotation) * glm::vec4(0.0, 0.0, -1.0, 0.0))); // bug fixed: should NOT be (0,0,1,0)
+	//	Construct the new foward vector by rotating from the default forward direction.	
+	return glm::normalize(glm::vec3(glm::mat4_cast(transformRotation) * glm::vec4(0.0, 0.0, -1.0, 0.0)));
 }
 
 //	Return the vector representing the right of the transform.
 glm::vec3 Transform::getRightVector() const
 {
-
+	//	Construct the new right direction by rotating from the default right direciton.
 	return glm::normalize(glm::vec3(glm::mat4_cast(transformRotation) * glm::vec4(1.0, 0.0, 0.0, 0.0)));
 }
 
 //	Return the vector representing the upward direction of the transform.
 glm::vec3 Transform::getUpVector() const
 {
+	//	Construct the new up direction by rotating from the default up direciton.
 	return glm::normalize(glm::vec3(glm::mat4_cast(transformRotation) * glm::vec4(0.0, 1.0, 0.0, 0.0)));
 }
 
-//	Return a pointer to the transform matrix.
+//	Return a pointer to the Transform Matrix.
 std::shared_ptr<glm::mat4x4> Transform::getTransformMatrix() const
 {
 	return transformMatrix;
 }
 
+//	Return a pointer to the Hierarchical Transform Matrix.
 std::shared_ptr<glm::mat4x4> Transform::getHierarchyTransformMatrix() const
 {
 	return hierarchyTransformMatrix;
