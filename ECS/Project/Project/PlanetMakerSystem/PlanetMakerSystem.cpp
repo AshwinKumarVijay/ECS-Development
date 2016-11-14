@@ -85,9 +85,9 @@ long int PlanetMakerSystem::createPlanet()
 	newPlanet.planetaryRotation = 0.01f;
 
 	//	
-	int ringCount = RNGs::intRand(0, 4);
+	int ringCount = RNGs::intRand(0, 100);
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < ringCount; i++)
 	{
 		PlanetRingEntity newPlanetRingEntity;
 		

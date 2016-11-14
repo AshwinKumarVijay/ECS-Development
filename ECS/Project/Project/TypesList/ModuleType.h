@@ -58,6 +58,9 @@ enum class ModuleType : long int
 	INTERACTION_MOVEMENT_RESPONSE_SYSTEM = 18,
 
 	//	The Planet Maker System.
-	PLANET_MAKER_SYSTEM = 19
+	PLANET_MAKER_SYSTEM = 19,
+
+	//	The Star System
+	STAR_SYSTEM = 20
 
 };

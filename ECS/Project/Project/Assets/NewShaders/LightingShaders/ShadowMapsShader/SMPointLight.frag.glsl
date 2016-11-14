@@ -46,8 +46,5 @@ void main(void)
 
 	//	Output the Light Distance.	
 	o_baseOutputColor = vec4(lightDistance, lightDistance, lightDistance, 1.0);
-
-	//	Out the Fragment Depth.
-	gl_FragDepth = lightDistance;
 }
 

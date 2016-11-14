@@ -72,6 +72,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <CodeAnalysisRuleSet>D:\Visual Studio - 2015\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -103,6 +105,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -220,6 +223,7 @@
     <ClCompile Include="Renderers\BasicRenderer\BasicRenderer.cpp" />
     <ClCompile Include="DemoECS\DemoECS.cpp" />
     <ClCompile Include="Triangle\Triangle.cpp" />
+    <ClCompile Include="StarSystem\StarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\SpeedComponent\SpeedComponent.h" />
@@ -277,6 +281,7 @@
     <ClInclude Include="TypesList\InteractionTypes.h" />
     <ClInclude Include="TypesList\ModuleType.h" />
     <ClInclude Include="TypesList\ResourceTypes.h" />
+    <ClInclude Include="StarSystem\StarSystem.h" />
     <ClInclude Include="Vertex\Vertex.h" />
     <ClInclude Include="Resources\ResourceManager\GeometryResourceManager\GeometryResourceManager.h" />
     <ClInclude Include="GeometryGeneratorSelector\GeometryGeneratorSelector.h" />

@@ -105,5 +105,5 @@ void main(void)
 	occlusion =	1.0 - (occlusion / (float(SAMPLES)));
 	
 	//	OUTPUT COLOR 
-	o_baseOutputColor = vec4(texture(pp_inputTextureFive, v_vertexPosition.xy).xyz * occlusion, 1.0);
+	o_baseOutputColor = vec4(texture(pp_inputTextureFive, v_vertexPosition.xy).xyz, 1.0);
 }

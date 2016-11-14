@@ -78,6 +78,7 @@
     <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
     <ClCompile Include="PlanetMakerSystem\PlanetMakerSystem.cpp" />
     <ClCompile Include="Systems\TransformSystem\TransformSystem.cpp" />
+    <ClCompile Include="StarSystem\StarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -164,6 +165,7 @@
     <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
     <ClInclude Include="PlanetMakerSystem\PlanetMakerSystem.h" />
     <ClInclude Include="Systems\TransformSystem\TransformSystem.h" />
+    <ClInclude Include="StarSystem\StarSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />

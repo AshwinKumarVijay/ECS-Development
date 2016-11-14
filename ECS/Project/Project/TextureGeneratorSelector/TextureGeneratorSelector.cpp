@@ -12,8 +12,6 @@ TextureGeneratorSelector::TextureGeneratorSelector()
 	{
 		// Run the Initialization functions.
 		ilInit();
-		iluInit();
-		ilutInit();
 
 		// Check if an error flag was raised.
 		ILuint devilError;
@@ -28,7 +26,6 @@ TextureGeneratorSelector::TextureGeneratorSelector()
 		//	Set the associated renderer - we probably will not be using this.
 		ilEnable(IL_FORMAT_SET);
 		ilFormatFunc(IL_RGBA);
-		ilutRenderer(ILUT_OPENGL);
 
 		//	Complete the Initialization of te DevIL Library, and make sure it is not called.
 		DevILInitializationComplete = true;

@@ -68,7 +68,7 @@ float computeShadowingFactor()
 	vec3 worldspace_vertexToLight = worldspace_vertexPosition - worldspace_lightPosition;
 
 	//	Find the Closest Depth of the Light.
-	float closestDepth = texture(lightDepthCubeMap, normalize(worldspace_vertexToLight)).x;
+	float closestDepth = texture(lightColorCubeMap, normalize(worldspace_vertexToLight)).x;
 
 	//	Compute the Current Depth.
 	float currentDepth = length(worldspace_vertexToLight) / u_cameraNearFarPlaneDistance[1];

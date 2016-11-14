@@ -2,7 +2,7 @@
 
 Camera::Camera()
 {
-	cameraPosition = glm::vec3(50.0f, 40.0f, 50.0f);
+	cameraPosition = glm::vec3(70.0f, 70.0f, 70.0f);
 
 	lookAtPoint = glm::vec3(0.0, 0.0, 0.0);
 
@@ -10,7 +10,7 @@ Camera::Camera()
 
 	nearClip = 0.01f;
 
-	farClip = 500.0f;
+	farClip = 1000.0f;
 	
 	aspectRatio = 1920.0f / 1080.0f;
 

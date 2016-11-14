@@ -27,7 +27,9 @@ class InputSystem;
 class InteractionMovementResponseSystem;
 class MovementSystem;
 class DebugSystem;
-class PlanetMakerSystem;
+
+
+
 
 class GeometryGeneratorSelector;
 class TextureGeneratorSelector;
@@ -43,6 +45,9 @@ class TextureData;
 class LightData;
 class GeometryData;
 class ShaderData;
+
+class PlanetMakerSystem;
+class StarSystem;
 
 
 class PlanetMakerECS : public ECS
@@ -97,6 +102,7 @@ private:
 
 	//	The PlanetMaker System associated with the PlanetMakerECS.
 	std::shared_ptr<PlanetMakerSystem> planetMakerSystem;
+	std::shared_ptr<StarSystem> starSystem;
 
 	//	The Transform System associated with the PlanetMakerECS.
 	std::shared_ptr<TransformSystem> transformSystem;

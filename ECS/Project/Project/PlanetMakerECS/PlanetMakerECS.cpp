@@ -13,7 +13,9 @@
 #include "../Systems/InputSystem/InputSystem.h"
 #include "../Systems/InteractionMovementResponseSystem/InteractionMovementResponseSystem.h"
 #include "../Systems/DebugSystem/DebugSystem.h"
+
 #include "../PlanetMakerSystem/PlanetMakerSystem.h"
+#include "../StarSystem/StarSystem.h"
 
 #include "../Components/HierarchyComponent/HierarchyComponent.h"
 #include "../Components/GeometryComponent/GeometryComponent.h"
@@ -74,6 +76,10 @@ void PlanetMakerECS::initializePlanetMakerECS()
 	planetMakerSystem = std::make_shared<PlanetMakerSystem>(getEntityManager(), getEventQueue());
 	planetMakerSystem->initializeSystem();
 
+	//	Initialize the Star System.
+	starSystem = std::make_shared<StarSystem>(planetMakerSystem, getEntityManager(), getEventQueue());
+	starSystem->initializeSystem();
+
 	//	Initialize the Transform System.
 	transformSystem = std::make_shared<TransformSystem>(getEntityManager(), getEventQueue());
 	transformSystem->initializeSystem();
@@ -98,6 +104,7 @@ void PlanetMakerECS::initializePlanetMakerECS()
 	ECS::registerSystem(inputSystem);
 	ECS::registerSystem(interactionMovementResponseSystem);
 	ECS::registerSystem(planetMakerSystem);
+	ECS::registerSystem(starSystem);
 	ECS::registerSystem(transformSystem);
 	ECS::registerSystem(cameraSystem);
 	ECS::registerSystem(renderingSystem);
@@ -122,7 +129,7 @@ void PlanetMakerECS::initializeScene()
 	getEntityManager()->addComponentToEntity(cameraEntity, ComponentType::MOVEMENT_RESPONSE_COMPONENT);
 
 	//	Create the Planet.
-	planetMakerSystem->createPlanet();
+	starSystem->createStarSystem();
 }
 
 //	Load the Resources From File.
