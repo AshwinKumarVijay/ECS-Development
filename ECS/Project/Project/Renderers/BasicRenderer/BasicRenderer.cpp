@@ -319,37 +319,37 @@ void BasicRenderer::initializeBackgroundEnvironment()
 //	Create a Renderable and return the Renderable ID.
 long int BasicRenderer::createRenderable()
 {
-	return renderableManager.createRenderable();
+	return renderableAnalyzer.createRenderable();
 }
 
 //	View the Renderable associated with the specified Renderable ID.
 std::shared_ptr<const Renderable> BasicRenderer::viewRenderable(const long int & renderableID) const
 {
-	return renderableManager.viewRenderable(renderableID);
+	return renderableAnalyzer.viewRenderable(renderableID);
 }
 
 //	Update the Shader Type associated with the specified RenderableID.
-void BasicRenderer::updateShadingType(const long int & renderableID, ShadingTypes::ShadingType newShadingType)
+void BasicRenderer::updateShadingType(const long int & renderableID, const std::string & newShaderType)
 {
-	renderableManager.updateShadingType(renderableID, newShadingType);
+	renderableAnalyzer.updateShadingType(renderableID, newShaderType);
 }
 
 //	Update the Geometry Type associated with the specified RenderableID.
 void BasicRenderer::updateGeometryType(const long int & renderableID, const std::string & newGeometryType)
 {
-	renderableManager.updateGeometryType(renderableID, newGeometryType);
+	renderableAnalyzer.updateGeometryType(renderableID, newGeometryType);
 }
 
 //	Update the Material Type associated with the specified RenderableID.
 void BasicRenderer::updateMaterialType(const long int & renderableID, const std::string & newMaterialType)
 {
-	renderableManager.updateMaterialType(renderableID, newMaterialType);
+	renderableAnalyzer.updateMaterialType(renderableID, newMaterialType);
 }
 
 //	Update the Transform Matrix associated with the specified RenderableID.
 void BasicRenderer::updateTransformMatrix(const long int & renderableID, const glm::mat4 & newModelMatrix)
 {
-	renderableManager.updateTransformMatrix(renderableID, newModelMatrix);
+	renderableAnalyzer.updateTransformMatrix(renderableID, newModelMatrix);
 }
 
 //	Update the Camera.
@@ -443,7 +443,7 @@ void BasicRenderer::renderRenderablesOfShaderType(const RendererShaderData & ren
 //	Remove the Renderable specified by renderable ID.
 void BasicRenderer::removeRenderable(const long int & renderableID)
 {
-	renderableManager.removeRenderable(renderableID);
+	renderableAnalyzer.removeRenderable(renderableID);
 }
 
 //	Clean up the Renderer, especially the VRRendering Portion.

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Renderer/Renderer.h"
-#include "../RenderableManager/RenderableManager.h"
+#include "../RenderableAnalyzer/RenderableAnalyzer.h"
 #include "../VAOManager/VAOManager.h"
 #include "../Sampler/Sampler.h"
 #include "../RNGs/RNGs.h"
@@ -42,7 +42,7 @@ public:
 	virtual std::shared_ptr<const Renderable> viewRenderable(const long int & renderableID) const;
 
 	//	Update the Renderable Shader Type.
-	virtual void updateShadingType(const long int & renderableID, ShadingTypes::ShadingType newShadingType);
+	virtual void updateShadingType(const long int & renderableID, const std::string & newShaderType);
 	//	Update the Renderable Geometry Type.
 	virtual void updateGeometryType(const long int & renderableID, const std::string & newGeometryName);
 	//	Update the Renderable Material Type.
@@ -162,10 +162,10 @@ private:
 	virtual void renderGaussianBlur(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, GLuint textureID, int blurAmount);
 
 	//	Render the Renderables of the Shader Type.
-	virtual void renderRenderablesOfShadingType(ShadingTypes::ShadingType shadingType, const RendererShaderData & rendererShaderData, const glm::mat4 & currentViewMatrix, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
+	virtual void renderRenderablesOfShaderType(const std::string & shaderType, const RendererShaderData & rendererShaderData, const glm::mat4 & currentViewMatrix, const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime);
 
 	//	Return the RendererShaderData for the Shading Type.
-	virtual std::shared_ptr<const RendererShaderData> getRendererShaderDataForRenderableShadingType(ShadingTypes::ShadingType shadingType);
+	virtual std::shared_ptr<const RendererShaderData> getRendererShaderDataForRenderableShadingType(const std::string & shaderType);
 
 	//	Bind the Environment Maps.
 	virtual void uploadBackgroundEnviroment(const RendererShaderData & rendererShaderData);
@@ -221,7 +221,7 @@ private:
 	PointLightDepthCubeMapDescription pointLightDepthCubeMaps;
 
 	//	The Renderable Storage associated with the Renderer.
-	RenderableManager renderableManager;
+	RenderableAnalyzer renderableAnalzyer;
 
 	//	The VAOManager.
 	VAOManager vaoManager;

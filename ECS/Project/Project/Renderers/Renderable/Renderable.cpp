@@ -4,9 +4,9 @@
 //	Default Renderable Constructor
 Renderable::Renderable(const long int & newRenderableID)
 {
-	geometryType = "DEFAULT GEOMETRY";
-	materialType = "DEFAULT MATERIAL";
-	shadingType = ShadingTypes::OPAQUE_BASIC;
+	geometryType = "DEFAULT GEOMETRY TYPE";
+	materialType = "DEFAULT MATERIAL TYPE";
+	shaderType = "DEFAULT SHADER TYPE";
 	activeFlag = true;
 	renderableID = newRenderableID;
 }
@@ -72,15 +72,15 @@ std::string Renderable::getMaterialType() const
 }
 
 //	Set the Shading Type.
-void Renderable::setShadingType(ShadingTypes::ShadingType newShadingType)
+void Renderable::setShaderType(const std::string & newShaderType)
 {
-	shadingType = newShadingType;
+	shaderType = newShaderType;
 }
 
 //	Return the Shading Type.
-ShadingTypes::ShadingType Renderable::getShadingType() const
+std::string Renderable::getShaderType() const
 {
-	return shadingType;
+	return shaderType;
 }
 
 //	Return the Model Matrix.

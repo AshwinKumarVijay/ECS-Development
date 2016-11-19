@@ -1,10 +1,11 @@
-﻿  DeferredRenderer.cpp
-C:\Program Files (x86)\Windows Kits\8.1\Include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
-  D:\Github\ECS-Development\ECS\Project\Project\include\GLFW\glfw3.h(85): note: see previous definition of 'APIENTRY'
-  Generating code
-  75 of 9705 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    28 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Release\Project.exe
-  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Release\Project.pdb (Full PDB)
+﻿  GeometryTypeBatch.cpp
+Renderers\RendererBackend\GeometryTypeBatch\GeometryTypeBatch.cpp(36): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  MaterialTypeBatch.cpp
+  RendererBackend.cpp
+Renderers\RendererBackend\RendererBackend.cpp(27): warning C4267: 'initializing': conversion from 'size_t' to 'long', possible loss of data
+  ShaderTypeBatch.cpp
+Renderers\RendererBackend\ShaderTypeBatch\ShaderTypeBatch.cpp(22): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+RendererBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl RendererBackend::removeGeometryType(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?removeGeometryType@RendererBackend@@UEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+RendererBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl RendererBackend::addGeometryType(class std::shared_ptr<struct RendererGeometryData>)" (?addGeometryType@RendererBackend@@UEAAXV?$shared_ptr@URendererGeometryData@@@std@@@Z)
+RendererBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl RendererBackend::updateGeometryType(class std::shared_ptr<struct RendererGeometryData>)" (?updateGeometryType@RendererBackend@@UEAAXV?$shared_ptr@URendererGeometryData@@@std@@@Z)
+D:\Github\ECS-Development\ECS\Project\x64\Release\Project.exe : fatal error LNK1120: 3 unresolved externals

@@ -212,7 +212,7 @@ public:
 	virtual std::shared_ptr<const RendererShaderData> viewShaderData(const std::string & requestedShaderName) const;
 
 	// Return the Shader Geometry Description Representation - The Type of the Geometry = 0 - NO VERTEX INFORMATION, 1 - VERTEX BASIC DATA, 2 - VERTEX TANGENT BITANGENT DATA, 4 - VERTEX TEXTURE COORDINATES.
-	int getShaderGeometryDescriptionRepresentation(const std::string & requestedShader) const;
+	int getGeometryVertexRequirementsForShader(const std::string & requestedShader) const;
 
 	//	Delete the Shader with the specified name.
 	virtual void deleteShader(const std::string & deadShader);

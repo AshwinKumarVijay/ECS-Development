@@ -79,7 +79,7 @@ long int PlanetMakerSystem::createPlanet()
 	//	Set the Rendering Types of the Planetary Body.
 	std::shared_ptr<RenderingComponent> planetaryBodyRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(newPlanet.planetaryBody, ComponentType::RENDERING_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
 	planetaryBodyRenderingComponent->setMaterialType("Material-Default-4");
-	planetaryBodyRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
+	planetaryBodyRenderingComponent->setShadingType("OPAQUE_BASIC");
 
 	//	Set the rotation of the planetary body.
 	newPlanet.planetaryRotation = 0.01f;
@@ -142,7 +142,7 @@ long int PlanetMakerSystem::createPlanet()
 		//	Set the Rendering Types of the Planet Ring.
 		std::shared_ptr<RenderingComponent> subRingRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(newPlanetRingEntity.subRingEntity, ComponentType::RENDERING_COMPONENT, ModuleType::PLANET_MAKER_SYSTEM));
 		subRingRenderingComponent->setMaterialType("Material-Default-5");
-		subRingRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
+		subRingRenderingComponent->setShadingType("OPAQUE_BASIC");
 
 		//	Add the new planet ring.
 		newPlanet.planetRings.push_back(newPlanetRingEntity);

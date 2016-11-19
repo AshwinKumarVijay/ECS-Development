@@ -17,7 +17,6 @@
 
 #include "RenderingCommands.h"
 
-#include "../ShadingType.h"
 #include "../Resources/ResourceData/GeometryData/GeometryData.h"
 #include "../Resources/ResourceData/LightData/LightData.h"
 #include "../Resources/ResourceData/MaterialData/MaterialData.h"
@@ -58,7 +57,7 @@ public:
 
 
 	//	Add Comments - TO Do
-	virtual void updateShadingType(const long int & renderableID, ShadingTypes::ShadingType newShadingType) = 0;
+	virtual void updateShadingType(const long int & renderableID, const std::string & newShaderType) = 0;
 	virtual void updateGeometryType(const long int & renderableID, const std::string & newGeometryType) = 0;
 	virtual void updateMaterialType(const long int & renderableID, const std::string & newMaterialType) = 0;
 	virtual void updateTransformMatrix(const long int & renderableID, const glm::mat4 & newModelMatrix) = 0;

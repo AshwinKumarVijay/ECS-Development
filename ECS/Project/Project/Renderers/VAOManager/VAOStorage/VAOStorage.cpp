@@ -62,7 +62,7 @@ void VAOStorage::addGeometryToStorage(std::shared_ptr<RendererGeometryData> newG
 	}
 
 	geometryNames.push_back(newGeometry->geometryName);
-	rendererGeometryDatas.push_back(newGeometry);
+	geometryDatas.push_back(newGeometry);
 
 	//	Unbind All BUffers.
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -85,7 +85,7 @@ const std::vector<std::string>& VAOStorage::viewGeometryNames() const
 //	Return the Geometry Datas being stored in this VAO.
 const std::vector<std::shared_ptr<RendererGeometryData>> & VAOStorage::viewGeometryDatas() const
 {
-	return rendererGeometryDatas;
+	return geometryDatas;
 }
 
 //	Remove the Geometry from Storage.	
@@ -101,7 +101,7 @@ void VAOStorage::removeGeometryFromStorage(std::string deadGeometryName)
 			geometryNames.erase(geometryNames.begin() + i);
 
 			//	Erase the Geometry Data Associated.
-			rendererGeometryDatas.erase(rendererGeometryDatas.begin() + i);
+			geometryDatas.erase(geometryDatas.begin() + i);
 
 			//	Break.
 			break;
@@ -129,7 +129,7 @@ void VAOStorage::clearVAO()
 	while (geometryNames.size() > 0)
 	{
 		//	
-		std::shared_ptr<RendererGeometryData> deadGeometryData = rendererGeometryDatas[0];
+		std::shared_ptr<RendererGeometryData> deadGeometryData = geometryDatas[0];
 
 		glDeleteBuffers(1, &deadGeometryData->EBO);
 		glDeleteBuffers(1, &deadGeometryData->vertexVBO);
@@ -140,7 +140,7 @@ void VAOStorage::clearVAO()
 		geometryNames.erase(geometryNames.begin() + 0);
 
 		//	
-		rendererGeometryDatas.erase(rendererGeometryDatas.begin() + 0);
+		geometryDatas.erase(geometryDatas.begin() + 0);
 	}
 }
 

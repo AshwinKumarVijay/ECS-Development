@@ -5,7 +5,6 @@
 #include <memory>
 
 #include "glm\glm.hpp"
-#include "../ShadingType.h"
 
 class Renderable
 {
@@ -43,10 +42,9 @@ public:
 	virtual std::string getMaterialType() const;
 
 	//	Set the Shading Type.
-	virtual void setShadingType(ShadingTypes::ShadingType newShadingType);
+	virtual void setShaderType(const std::string & newShaderType);
 	//	Get the Shading Type.
-	virtual ShadingTypes::ShadingType getShadingType() const;
-
+	virtual std::string getShaderType() const;
 
 	//	Get the Transform Matrix.
 	virtual glm::mat4 getTransformMatrix() const;
@@ -63,7 +61,7 @@ private:
 	std::string materialType;
 
 	//	The ShadingType associated with this Renderable.
-	ShadingTypes::ShadingType shadingType;
+	std::string shaderType;
 
 	//	The Transform Matrix associated with this Renderable.
 	glm::mat4 transformMatrix;

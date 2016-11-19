@@ -6,8 +6,8 @@ RenderingComponent::RenderingComponent()
 	: Component(ComponentType::RENDERING_COMPONENT, ComponentTypeRequirement::RENDERING_COMPONENT_REQUIREMENTS)
 {
 	renderableID = -1;
-	materialType = "DEFAULT MATERIAL";
-	shadingType = ShadingTypes::OPAQUE_BASIC;
+	materialType = "DEFAULT MATERIAL TYPE";
+	shaderType = "DEFAULT SHADER TYPE";
 	activeRendering = true;
 }
 
@@ -42,15 +42,15 @@ std::string RenderingComponent::getMaterialType() const
 }
 
 //	Set the Shader Type associated with this Rendering Component.
-void RenderingComponent::setShadingType(const ShadingTypes::ShadingType newShadingType)
+void RenderingComponent::setShadingType(const std::string & newShaderType)
 {
-	shadingType = newShadingType;
+	shaderType = newShaderType;
 }
 
 //	Return the Shader Type associated with this Rendering Component.
-ShadingTypes::ShadingType RenderingComponent::getShadingType() const
+std::string RenderingComponent::getShadingType() const
 {
-	return shadingType;
+	return shaderType;
 }
 
 void RenderingComponent::setActiveRendering(const bool & newActiveRendering)

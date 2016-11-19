@@ -124,7 +124,7 @@ std::shared_ptr<const RendererShaderData> RendererShaderManager::viewShaderData(
 }
 
 //	Return the Shader Geometry Description Requirement Representation.
-int RendererShaderManager::getShaderGeometryDescriptionRepresentation(const std::string & requestedShader) const
+int RendererShaderManager::getGeometryVertexRequirementsForShader(const std::string & requestedShader) const
 {
 	//	Find the shader.
 	auto shaderIterator = mapNameToShaderData.find(activeShaderName);

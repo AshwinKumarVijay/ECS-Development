@@ -2,9 +2,7 @@
 
 #include <memory>
 #include <vector>
-
 #include "../ECS/Component/Component.h"
-#include "../Renderers/ShadingType.h"
 
 class Renderable;
 
@@ -30,12 +28,13 @@ public:
 	virtual std::string getMaterialType() const;
 
 	//	Set the Shader Type associated with this Renderable.
-	virtual void setShadingType(ShadingTypes::ShadingType newShadingType);
+	virtual void setShadingType(const std::string & newShadingType);
 	//	Return a string associated with the ShaderType.
-	virtual ShadingTypes::ShadingType getShadingType() const;
+	virtual std::string  getShadingType() const;
 
 	//	
 	virtual void setActiveRendering(const bool & newActiveRendering);
+	
 	//
 	virtual bool getActiveRendering() const;
 
@@ -45,7 +44,7 @@ private:
 	long int renderableID;
 
 	//	The ShadingType.
-	ShadingTypes::ShadingType shadingType;
+	std::string shaderType;
 
 	//	The Material associated with the Component.
 	std::string materialType;

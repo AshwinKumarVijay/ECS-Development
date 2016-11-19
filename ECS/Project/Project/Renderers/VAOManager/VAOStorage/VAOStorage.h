@@ -50,7 +50,7 @@ private:
 	std::vector<std::string> geometryNames;
 
 	//	The RendererGeometryData.
-	std::vector<std::shared_ptr<RendererGeometryData>> rendererGeometryDatas;
+	std::vector<std::shared_ptr<RendererGeometryData>> geometryDatas;
 
 	//	The VAO ID.
 	GLuint vaoID;

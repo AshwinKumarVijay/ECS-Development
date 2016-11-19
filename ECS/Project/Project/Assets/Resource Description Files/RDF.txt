@@ -192,7 +192,7 @@ Shader Name                         = Basic Deferred G Buffer Shader
 Shader Rendering Type               = Deferred Rendering
 Shader Require Camera Data          = True
 Shader Require Model Data           = True
-Shader Require Material Data        = False
+Shader Require Material Data        = True
 Shader Require Vertex Basic Data    = True
 Shader Require Vertex Tangent Bitangent Data      = False
 Shader Require Vertex Texture Coordinates Data    = False
@@ -206,6 +206,32 @@ Shader Output G Buffer              = True
 Shader Vertex Shader Source         = Assets/NewShaders/DeferredRenderingShaders/GBufferPassShaders/BasicGBufferShader/BasicGBufferShader.vert.glsl
 Shader Fragment Shader Source       = Assets/NewShaders/DeferredRenderingShaders/GBufferPassShaders/BasicGBufferShader/BasicGBufferShader.frag.glsl
 #end Resource
+
+
+#define Resource 
+Resource Name    = Instanced Basic Deferred G Buffer Shader
+Resource Type    = OpenGL Shader
+Shader Name                         = Basic Deferred G Buffer Shader
+Shader Rendering Type               = Deferred Rendering
+Shader Require Camera Data          = True
+Shader Require Model Data           = True
+Shader Require Material Data        = True
+Shader Require Vertex Basic Data    = True
+Shader Require Vertex Tangent Bitangent Data      = False
+Shader Require Vertex Texture Coordinates Data    = False
+Shader Require Lights Data          = False
+Shader Require Environment Data     = False
+Shader Require Material Texture Data              = False 
+Shader Require G Buffer Data        = False
+Shader Output Base Color            = False
+Shader Output Opacity               = False
+Shader Output G Buffer              = True
+Shader Vertex Shader Source         = Assets/NewShaders/DeferredRenderingShaders/GBufferPassShaders/InstancedBasicGBufferShader/InstancedBasicGBufferShader.vert.glsl
+Shader Fragment Shader Source       = Assets/NewShaders/DeferredRenderingShaders/GBufferPassShaders/InstancedBasicGBufferShader/InstancedBasicGBufferShader.frag.glsl
+#end Resource
+
+
+
 
 #define Resource 
 Resource Name    = Basic Deferred Lighting Pass Shader

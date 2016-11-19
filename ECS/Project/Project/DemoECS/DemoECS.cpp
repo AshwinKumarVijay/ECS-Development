@@ -121,7 +121,7 @@ void DemoECS::initializeScene()
 
 	std::shared_ptr<RenderingComponent> planetRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(planetEntity, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
 	planetRenderingComponent->setMaterialType("Material-Default-2");
-	planetRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
+	planetRenderingComponent->setShadingType("OPAQUE_BASIC");
 
 	std::shared_ptr<TransformComponent> planetTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(planetEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
 	planetTransformComponent->getTransform()->setScale(glm::vec3(10.0, 10.0, 10.0));
@@ -140,7 +140,7 @@ void DemoECS::initializeScene()
 
 	std::shared_ptr<RenderingComponent> planetRingRenderingComponent = std::dynamic_pointer_cast<RenderingComponent>(getEntityManager()->getComponentOfEntity(ringEntity, ComponentType::RENDERING_COMPONENT, ModuleType::NO_MODULE));
 	planetRingRenderingComponent->setMaterialType("Material-Default-1");
-	planetRingRenderingComponent->setShadingType(ShadingTypes::OPAQUE_BASIC);
+	planetRingRenderingComponent->setShadingType("OPAQUE_BASIC");
 
 	std::shared_ptr<TransformComponent> planetRingTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(ringEntity, ComponentType::TRANSFORM_COMPONENT, ModuleType::NO_MODULE));
 	planetRingTransformComponent->getTransform()->setScale(glm::vec3(2.0, 2.0, 2.0));

@@ -11,7 +11,7 @@
 #include "glm\gtc\matrix_inverse.hpp"
 
 #include "../Renderer/Renderer.h"
-#include "../RenderableManager/RenderableManager.h"
+#include "../RenderableAnalyzer/RenderableAnalyzer.h"
 #include "../VAOManager/VAOManager.h"
 
 
@@ -36,7 +36,7 @@ public:
 	virtual std::shared_ptr<const Renderable> viewRenderable(const long int & renderableID) const;
 
 	//	Update the Shader Type associated with the specified RenderableID.
-	virtual void updateShadingType(const long int & renderableID, ShadingTypes::ShadingType newShadingType);
+	virtual void updateShadingType(const long int & renderableID, const std::string & newShaderType);
 	//	Update the Geometry Type associated with the specified RenderableID.
 	virtual void updateGeometryType(const long int & renderableID, const std::string & newGeometryType);	
 	//	Update the Material Type associated with the specified RenderableID.
@@ -135,7 +135,7 @@ private:
 	std::vector<std::string> activeLights;
 
 	//	The Renderable Storage associated with the Renderer.
-	RenderableManager renderableManager;
+	RenderableAnalyzer renderableAnalyzer;
 
 	//	The Environment Cube Map Data.
 	BackgroundEnvironmentData backgroundEnvironmentData;

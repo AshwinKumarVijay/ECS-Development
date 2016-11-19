@@ -57,9 +57,9 @@ int initializeGLFW()
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
-	window = glfwCreateWindow(1280, 720, "System Of Planets", NULL, NULL);
-	glfwSetWindowPos(window, 320, 180);
-	glfwSwapInterval(2);
+	window = glfwCreateWindow(1600, 900, "System Of Planets", NULL, NULL);
+	glfwSetWindowPos(window, 160, 90);
+//	glfwSwapInterval(2);
 	glfwSetKeyCallback(window, key_callback);
 
 
