@@ -28,27 +28,26 @@ public:
 	//	Default GeometryTypeBatch Destructor.
 	virtual ~GeometryTypeBatch();
 
-	//	Update the Transform Matrix of the Renderable.
-	virtual void updateTransformMatrix(std::shared_ptr<RenderableMetaData> updatedRenderable);
-
-	//	Return the Number of Material Type Batches.
-	virtual int getMaterialTypeBatchesCount();
-
 	//	Return the ShaderTypeBatch this a part of.
 	std::weak_ptr<ShaderTypeBatch> getShaderTypeBatch();
 
 	//	Return the Geometry Type Meta Data this is a part of.
 	std::weak_ptr<GeometryTypeMetaData> getGeometryTypeMetaData();
 
-	//	Return the Material Type Batch corresponding to the requested Material Type.
-	std::shared_ptr<MaterialTypeBatch> getMaterialTypeBatch(const std::string & requestedMaterialType);
-
 	//	Create the Material Type Batch for the provided Material Type.
 	std::shared_ptr<MaterialTypeBatch> createMaterialTypeBatch(const std::string & newMaterialType);
 
-	//	Erase the Material Type Batch.
-	virtual void eraseMaterialTypeBatch(const std::string & deadMaterialType);	
+	//	Return the Number of Material Type Batches.
+	virtual int getMaterialTypeBatchesCount();
 
+	//	Return the Material Type Batch corresponding to the requested Material Type.
+	std::shared_ptr<MaterialTypeBatch> getMaterialTypeBatch(const std::string & requestedMaterialType);
+
+	//	Update the Transform Matrix of the Renderable.
+	virtual void updateTransformMatrix(std::shared_ptr<RenderableMetaData> updatedRenderable);
+
+	//	Erase the Material Type Batch.
+	virtual void eraseMaterialTypeBatch(const std::string & deadMaterialType);
 
 private:
 

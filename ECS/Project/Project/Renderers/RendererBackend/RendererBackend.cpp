@@ -1,5 +1,6 @@
 #include "RendererBackend.h"
 #include "../Renderable/Renderable.h"
+#include "../RendererResourceManagers/RendererGeometryManager/RendererGeometryManager.h"
 #include "ShaderTypeBatch\ShaderTypeBatch.h"
 #include "GeometryTypeBatch\GeometryTypeBatch.h"
 #include "MaterialTypeBatch\MaterialTypeBatch.h"
@@ -51,11 +52,10 @@ long int RendererBackend::createRenderable()
 	}
 }
 
-
-
 //	Add the Renderable.
 void RendererBackend::addRenderable(const long int & currentRenderableID)
 {
+	//	Create the Renderable with the Renderable ID.
 	std::shared_ptr<Renderable> newRenderable = std::make_shared<Renderable>(currentRenderableID);
 
 	//	Set the Default ShaderType.
@@ -76,7 +76,7 @@ void RendererBackend::addRenderable(const long int & currentRenderableID)
 	//	Assign the Renderable type.
 	newRenderableMetaData->renderableType = std::make_shared<RenderableType>(newRenderable->getShaderType(), newRenderable->getGeometryType(), newRenderable->getMaterialType());
 
-	//	
+	//	Add the Renderable Meta Data.
 	addRenderableMetaData(newRenderableMetaData);
 }
 
@@ -99,6 +99,7 @@ std::shared_ptr<const Renderable> RendererBackend::viewRenderable(const long int
 	}
 }
 
+//	Return the const RenderablesOfType associated with the specified RenderableType.
 std::shared_ptr<const RenderablesOfType> RendererBackend::viewRenderablesOfType(const RenderableType & renderableTypeKeys) const
 {
 	//	Get the RenderableMetaData.
@@ -139,21 +140,90 @@ std::shared_ptr<const ShaderTypeBatch> RendererBackend::viewShaderTypeBatch(cons
 //	Update the Shading Type associated with the specified Renderable ID.
 void RendererBackend::updateShadingType(const long int & currentRenderableID, const std::string & newShadingType)
 {
+
 }
 
 //	Update the Geometry Type associated with the specified Renderable ID.
 void RendererBackend::updateGeometryType(const long int & currentRenderableID, const std::string & newGeometryType)
 {
+
 }
 
 //	Update the Material Type associated with the specified Renderable ID.
 void RendererBackend::updateMaterialType(const long int & currentRenderableID, const std::string & newMaterialType)
 {
+	//	Update the Material Type.
+	auto renderableEntry = mapRenderableIDToRenderableMetaData.find(currentRenderableID);
+
+	//	Check if it exists.
+	if (renderableEntry != mapRenderableIDToRenderableMetaData.end())
+	{
+		//	Get the ShaderTypeBatch.
+		auto shaderTypeBatch = mapShaderTypesToShaderTypeBatch.find(renderableEntry->second->renderableType->shaderType);
+
+		//	Check if the Shader Type Batch exists.
+		if (shaderTypeBatch != mapShaderTypesToShaderTypeBatch.end())
+		{
+			//	Get the Geometry Type Batch.
+			auto geometryTypeBatch = shaderTypeBatch->second->getGeometryTypeBatch(renderableEntry->second->renderableType->geometryType);
+			
+			//	Check if the Geometry Type Batch exists.
+			if (geometryTypeBatch != NULL)
+			{
+				//	Get the old Material Type Batch.
+				std::shared_ptr<MaterialTypeBatch> oldMaterialTypeBatch = geometryTypeBatch->getMaterialTypeBatch(renderableEntry->second->renderableType->materialType);
+
+				//	Check if it exists Material Type Batch.
+				if (oldMaterialTypeBatch != NULL)
+				{
+					oldMaterialTypeBatch->removeRenderable(renderableEntry->second);
+
+					if (oldMaterialTypeBatch->getRenderablesOfType()->getRenderablesofTypeCount() == 0)
+					{
+						geometryTypeBatch->eraseMaterialTypeBatch(renderableEntry->second->renderableType->materialType);
+					}
+				}
+
+				//	Update the renderable and the metadata.
+				renderableEntry->second->renderableType->materialType = newMaterialType;
+
+				//	Get the new Material Type Batch.
+				std::shared_ptr<MaterialTypeBatch> newMaterialTypeBatch = geometryTypeBatch->getMaterialTypeBatch(renderableEntry->second->renderableType->materialType);
+				
+				//	Check if the Material Type Batch.	
+				if (newMaterialTypeBatch != NULL)
+				{
+					//	Create the Material Type Batch.
+					newMaterialTypeBatch = geometryTypeBatch->createMaterialTypeBatch(renderableEntry->second->renderableType->materialType);
+					mapRenderableTypeToRenderables[*(renderableEntry->second->renderableType)] = newMaterialTypeBatch->getRenderablesOfType();
+				}
+
+				//	Add the new Material Type.
+				newMaterialTypeBatch->addRenderable(renderableEntry->second);
+			}
+		}
+	}
 }
 
 //	Update the Transform Matrix associated with the specified Renderable ID.
 void RendererBackend::updateTransformMatrix(const long int & currentRenderableID, const glm::mat4 & newTransformMatrix)
 {
+	//	Find the Renderable Meta Data.
+	auto renderableEntry = mapRenderableIDToRenderableMetaData.find(currentRenderableID);
+
+	//	Check if it exists.
+	if (renderableEntry != mapRenderableIDToRenderableMetaData.end())
+	{
+		//	Find the Renderables.
+		auto renderables = mapRenderableTypeToRenderables.find(*(renderableEntry->second->renderableType));
+
+		//	Check if it exists.
+		if (renderables != mapRenderableTypeToRenderables.end())
+		{
+			//	Update the Transform Matrix of the Renderable.
+			renderables->second->updateTransformMatrix(renderableEntry->second);
+		}
+	}
 }
 
 //	Add the RenderableMetaData.
@@ -239,16 +309,19 @@ void RendererBackend::addRenderableMetaData(std::shared_ptr<RenderableMetaData> 
 
 }
 
-
 //	Remove the Renderable.
 void RendererBackend::removeRenderable(const long int & deadRenderable)
 {
+	//	
 	auto renderable = mapRenderableIDToRenderableMetaData.find(deadRenderable);
 
+	//	
 	if (renderable != mapRenderableIDToRenderableMetaData.end())
 	{
+		//
 		removeRenderableMetaData(deadRenderable);
 
+		//	
 		for (int i = 0; i < activeRenderables.size(); i++)
 		{
 			if (activeRenderables[i] == deadRenderable)
@@ -259,8 +332,10 @@ void RendererBackend::removeRenderable(const long int & deadRenderable)
 			}
 		}
 			
+		//
 		inactiveRenderables.push_back(deadRenderable);
 
+		//
 		mapRenderableIDToRenderableMetaData.erase(renderable);
 	}
 }
@@ -283,27 +358,40 @@ void RendererBackend::removeGeometryType(std::string deadGeometryType)
 
 }
 
-//	
+//	Return the VAO associated with this Geometry Type.
 int RendererBackend::getGeometryTypeVAOID(const std::string & requestedGeometryType) const
 {
+	//	
 	int VAOID = 0;
+
+	//
 	getGeometryTypeVAOIDAndGeometryTypeMetaData(requestedGeometryType, VAOID);
+
+	//	
 	return VAOID;
 }
 
-//
+//	Return the Geometry Type Meta Data, and the VAO ID associated with the Geometry Type.d
 std::shared_ptr<GeometryTypeMetaData> RendererBackend::getGeometryTypeVAOIDAndGeometryTypeMetaData(const std::string & requestedGeometryType, int & VAOID) const
 {
+	//	
 	auto geometryMetaData = mapGeometryTypeToGeometryMetaData.find(requestedGeometryType);
 
+	//	
 	if (geometryMetaData != mapGeometryTypeToGeometryMetaData.end())
 	{
+		//	
 		VAOID = geometryMetaData->second->vaoMetaData.lock()->vaoID;
+
+		//	
 		return (geometryMetaData->second);
 	}
 	else
 	{
+		//
 		VAOID = 0;
+		
+		//
 		return NULL;
 	}
 }
@@ -311,8 +399,10 @@ std::shared_ptr<GeometryTypeMetaData> RendererBackend::getGeometryTypeVAOIDAndGe
 //	Remove the RenderableMetaData.
 void RendererBackend::removeRenderableMetaData(const long int & currentRenderableID)
 {
+	//	Find the Renderable Meta Data.
 	auto renderableMetaDataEntry = mapRenderableIDToRenderableMetaData.find(currentRenderableID);
 
+	//	Check if it exists.
 	if (renderableMetaDataEntry != mapRenderableIDToRenderableMetaData.end())
 	{
 		//	Find the appropriate Shader Type Batch.
@@ -333,23 +423,33 @@ void RendererBackend::removeRenderableMetaData(const long int & currentRenderabl
 					//	Remove the Renderable from the Batch, appropriately updating the GPU buffer data.
 					materialTypeBatch->removeRenderable(renderableMetaDataEntry->second);
 
+					//	Check if the number of the Renderables of Type. 
 					if (materialTypeBatch->getRenderablesOfType()->getRenderablesofTypeCount() == 0)
 					{
+						//	
 						materialTypeBatch = NULL;
+
+						//
 						geometryTypeBatch->eraseMaterialTypeBatch(renderableMetaDataEntry->second->renderableType->materialType);
+						
+						//
 						mapRenderableTypeToRenderables.erase(*(renderableMetaDataEntry->second->renderableType));
 					}
 
+					//	Get the Number of Material Type Batches in the Geometry we just removed.
 					if (geometryTypeBatch->getMaterialTypeBatchesCount() == 0)
 					{
+						//	Erase the Geometry Type Batch from the Shader Type Batch.
 						shaderTypeBatch->eraseGeometryTypeBatch(renderableMetaDataEntry->second->renderableType->geometryType);
 					}
 
+					//	Get the Number of Geometry Type Batches.
 					if (shaderTypeBatch->getGeometryTypeBatchesCount() == 0)
 					{
 						mapShaderTypesToShaderTypeBatch.erase(renderableMetaDataEntry->second->renderableType->shaderType);
 					}
 
+					//	Erase.
 					mapRenderableIDToRenderableMetaData.erase(renderableMetaDataEntry);
 				}
 			}

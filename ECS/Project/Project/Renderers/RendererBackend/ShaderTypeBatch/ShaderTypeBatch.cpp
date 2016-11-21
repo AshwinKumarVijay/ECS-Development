@@ -19,17 +19,17 @@ ShaderTypeBatch::~ShaderTypeBatch()
 //	Return the number of Geometry Types this Shader has.
 int ShaderTypeBatch::getGeometryTypeBatchesCount()
 {
-	return mapNamesToVaoIDGeometryTypeKeys.size();
+	return mapGeometryNamesToVaoIDGeometryTypeKeys.size();
 }
 
 //	Return the specified Geometry Type Meta Data, that is associated with this Shader Data, in a const form.
 std::shared_ptr<const GeometryTypeBatch> ShaderTypeBatch::viewGeometryTypeMetaData(const std::string & requestedGeometryType) const
 {
 	//	Find the Key with this Geometry Type.
-	auto currentVAOIDGeometryTypeKey = mapNamesToVaoIDGeometryTypeKeys.find(requestedGeometryType);
+	auto currentVAOIDGeometryTypeKey = mapGeometryNamesToVaoIDGeometryTypeKeys.find(requestedGeometryType);
 
 	//	Check if it exists.
-	if (currentVAOIDGeometryTypeKey != mapNamesToVaoIDGeometryTypeKeys.end())
+	if (currentVAOIDGeometryTypeKey != mapGeometryNamesToVaoIDGeometryTypeKeys.end())
 	{
 		//	Find the Shader Type Sub Geometry Type Meta Data.
 		auto currentGeometryTypeBatch = mapVAOIDsAndGeometryKeysToGeometryTypeBatches.find(currentVAOIDGeometryTypeKey->second);
@@ -57,10 +57,10 @@ std::shared_ptr<const GeometryTypeBatch> ShaderTypeBatch::viewGeometryTypeMetaDa
 std::shared_ptr<GeometryTypeBatch> ShaderTypeBatch::getGeometryTypeBatch(const std::string & requestedGeometryType)
 {
 	//	Find the Key with this Geometry Type.
-	auto currentVAOIDGeometryTypeKey = mapNamesToVaoIDGeometryTypeKeys.find(requestedGeometryType);
+	auto currentVAOIDGeometryTypeKey = mapGeometryNamesToVaoIDGeometryTypeKeys.find(requestedGeometryType);
 
 	//	Check if it exists.
-	if (currentVAOIDGeometryTypeKey != mapNamesToVaoIDGeometryTypeKeys.end())
+	if (currentVAOIDGeometryTypeKey != mapGeometryNamesToVaoIDGeometryTypeKeys.end())
 	{
 		//	Find the Shader Type Sub Geometry Type Meta Data.
 		auto currentGeometryTypeBatch = mapVAOIDsAndGeometryKeysToGeometryTypeBatches.find(currentVAOIDGeometryTypeKey->second);
@@ -119,7 +119,7 @@ std::shared_ptr<GeometryTypeBatch> ShaderTypeBatch::createGeometryTypeBatch(cons
 			mapVAOIDsAndGeometryKeysToGeometryTypeBatches[newKey] = newGeometryTypeBatch;
 			
 			//	
-			mapNamesToVaoIDGeometryTypeKeys[requestedGeometryType] = newKey;
+			mapGeometryNamesToVaoIDGeometryTypeKeys[requestedGeometryType] = newKey;
 
 			//	
 			return newGeometryTypeBatch;
@@ -136,10 +136,10 @@ std::shared_ptr<GeometryTypeBatch> ShaderTypeBatch::createGeometryTypeBatch(cons
 void ShaderTypeBatch::eraseGeometryTypeBatch(const std::string & deadGeometryTypeBatch)
 {
 	//	Find the Key with this Geometry Type.
-	auto currentVAOIDGeometryTypeKey = mapNamesToVaoIDGeometryTypeKeys.find(deadGeometryTypeBatch);
+	auto currentVAOIDGeometryTypeKey = mapGeometryNamesToVaoIDGeometryTypeKeys.find(deadGeometryTypeBatch);
 
 	//	Check if it exists.
-	if (currentVAOIDGeometryTypeKey != mapNamesToVaoIDGeometryTypeKeys.end())
+	if (currentVAOIDGeometryTypeKey != mapGeometryNamesToVaoIDGeometryTypeKeys.end())
 	{
 		//	Find the Shader Type Sub Geometry Type Meta Data.
 		auto currentGeometryTypeBatch = mapVAOIDsAndGeometryKeysToGeometryTypeBatches.find(currentVAOIDGeometryTypeKey->second);
@@ -150,7 +150,7 @@ void ShaderTypeBatch::eraseGeometryTypeBatch(const std::string & deadGeometryTyp
 			if (currentGeometryTypeBatch->second->getMaterialTypeBatchesCount() == 0)
 			{
 				mapVAOIDsAndGeometryKeysToGeometryTypeBatches.erase(currentGeometryTypeBatch);
-				mapNamesToVaoIDGeometryTypeKeys.erase(currentVAOIDGeometryTypeKey);
+				mapGeometryNamesToVaoIDGeometryTypeKeys.erase(currentVAOIDGeometryTypeKey);
 			}
 		}
 	}

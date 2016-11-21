@@ -84,6 +84,7 @@
     <ClCompile Include="Renderers\RendererBackend\GeometryTypeBatch\GeometryTypeBatch.cpp" />
     <ClCompile Include="Renderers\RendererBackend\MaterialTypeBatch\MaterialTypeBatch.cpp" />
     <ClCompile Include="Renderers\RendererBackend\RenderablesOfType\RenderablesOfType.cpp" />
+    <ClCompile Include="Renderers\RendererBackend\VAOBackend\VAOBackend.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -176,6 +177,7 @@
     <ClInclude Include="Renderers\RendererBackend\GeometryTypeBatch\GeometryTypeBatch.h" />
     <ClInclude Include="Renderers\RendererBackend\MaterialTypeBatch\MaterialTypeBatch.h" />
     <ClInclude Include="Renderers\RendererBackend\RenderablesOfType\RenderablesOfType.h" />
+    <ClInclude Include="Renderers\RendererBackend\VAOBackend\VAOBackend.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />

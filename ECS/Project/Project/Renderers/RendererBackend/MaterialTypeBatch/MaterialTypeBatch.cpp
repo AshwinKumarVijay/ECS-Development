@@ -38,6 +38,7 @@ void MaterialTypeBatch::updateTransformMatrix(std::shared_ptr<RenderableMetaData
 	}
 }
 
+//	Return the Renderables.
 std::shared_ptr<RenderablesOfType> MaterialTypeBatch::getRenderablesOfType()
 {
 	return renderablesOfType;

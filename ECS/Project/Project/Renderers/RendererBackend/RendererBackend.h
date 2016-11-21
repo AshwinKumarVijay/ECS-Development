@@ -54,8 +54,7 @@ public:
 	//	Remove the Renderable specified by the Renderable ID.
 	virtual void removeRenderable(const long int & deadRenderable);
 
-
-	//	Add the Geometry Type.
+		//	Add the Geometry Type.
 	virtual void addGeometryType(std::shared_ptr<RendererGeometryData> newGeometryData);
 
 	//	Update the Geometry Type.
@@ -63,7 +62,6 @@ public:
 
 	//	Remove the Geometry Type.
 	virtual void removeGeometryType(std::string deadGeometryType);
-
 
 	//	Get the VAOID asssociated with the requested Geometry Type.
 	virtual int getGeometryTypeVAOID(const std::string& requestedGeometryType) const;

@@ -103,7 +103,6 @@ struct RenderableType
 	std::string materialType;
 };
 
-
 //	RenderableMetaData.
 struct RenderableMetaData
 {
@@ -181,15 +180,14 @@ struct GeometryTypeMetaData
 	std::shared_ptr<RendererGeometryData> rendererGeometryData;
 };
 
-
 //	Renderables of the Specified Type of Shader Type, Geometry Type and Material Type.
 struct RenderablesOfSpecifiedType
 {
-
 	std::shared_ptr<RenderablesOfType> renderables;
 
 };
 
+//	
 struct VAOIDGeometryTypeKey
 {
 	//	Comparison for the 

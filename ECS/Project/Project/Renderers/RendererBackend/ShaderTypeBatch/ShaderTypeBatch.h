@@ -50,7 +50,9 @@ private :
 
 	//	The list of the Geometry Meta Datas that the Shader uses, ordered by VAO ID, and then by Name.
 	std::map<VAOIDGeometryTypeKey, std::shared_ptr<GeometryTypeBatch>> mapVAOIDsAndGeometryKeysToGeometryTypeBatches;
-	std::map<std::string, VAOIDGeometryTypeKey> mapNamesToVaoIDGeometryTypeKeys;
+
+	//	Map the Type of the Geometry to the VAO it uses and the Geometry it uses.
+	std::map<std::string, VAOIDGeometryTypeKey> mapGeometryNamesToVaoIDGeometryTypeKeys;
 
 	//	The Renderer Backed this Batch is a part of.
 	std::weak_ptr<RendererBackend> rendererBackend;

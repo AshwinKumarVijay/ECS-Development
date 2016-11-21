@@ -1,11 +1,4 @@
-﻿  GeometryTypeBatch.cpp
-Renderers\RendererBackend\GeometryTypeBatch\GeometryTypeBatch.cpp(36): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  MaterialTypeBatch.cpp
-  RendererBackend.cpp
-Renderers\RendererBackend\RendererBackend.cpp(27): warning C4267: 'initializing': conversion from 'size_t' to 'long', possible loss of data
-  ShaderTypeBatch.cpp
-Renderers\RendererBackend\ShaderTypeBatch\ShaderTypeBatch.cpp(22): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-RendererBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl RendererBackend::removeGeometryType(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?removeGeometryType@RendererBackend@@UEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
-RendererBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl RendererBackend::addGeometryType(class std::shared_ptr<struct RendererGeometryData>)" (?addGeometryType@RendererBackend@@UEAAXV?$shared_ptr@URendererGeometryData@@@std@@@Z)
-RendererBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl RendererBackend::updateGeometryType(class std::shared_ptr<struct RendererGeometryData>)" (?updateGeometryType@RendererBackend@@UEAAXV?$shared_ptr@URendererGeometryData@@@std@@@Z)
-D:\Github\ECS-Development\ECS\Project\x64\Release\Project.exe : fatal error LNK1120: 3 unresolved externals
+﻿  VAOBackend.cpp
+VAOBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl VAOBackend::deleteGeometryType(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?deleteGeometryType@VAOBackend@@UEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+VAOBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl VAOBackend::updateGeometryType(class std::shared_ptr<struct RendererGeometryData>)" (?updateGeometryType@VAOBackend@@UEAAXV?$shared_ptr@URendererGeometryData@@@std@@@Z)
+C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Release\Project.exe : fatal error LNK1120: 2 unresolved externals
