@@ -9,7 +9,7 @@
 #include "glm\glm.hpp"
 
 #include "../RenderablesMetaData.h"
-
+#include "VAOBackend\VAOBackend.h"
 
 class ShaderTypeBatch;
 class GeometryTypeBatch;
@@ -55,19 +55,22 @@ public:
 	virtual void removeRenderable(const long int & deadRenderable);
 
 		//	Add the Geometry Type.
-	virtual void addGeometryType(std::shared_ptr<RendererGeometryData> newGeometryData);
+	virtual void addGeometryType(std::shared_ptr<RendererGeometryData> newGeometryType);
 
 	//	Update the Geometry Type.
 	virtual void updateGeometryType(std::shared_ptr<RendererGeometryData> updatedGeometryData);
 
 	//	Remove the Geometry Type.
-	virtual void removeGeometryType(std::string deadGeometryType);
+	virtual void removeGeometryType(std::shared_ptr<RendererGeometryData> deadGeometryType);
 
 	//	Get the VAOID asssociated with the requested Geometry Type.
 	virtual int getGeometryTypeVAOID(const std::string& requestedGeometryType) const;
 
 	//	Get the MetaData, and the VAOID.
 	virtual std::shared_ptr<GeometryTypeMetaData> getGeometryTypeVAOIDAndGeometryTypeMetaData(const std::string& requestedGeometryType, int & VAOID) const;
+
+	//	Return the Map of the Shader Types to the Batches.
+	const std::map<std::string, std::shared_ptr<ShaderTypeBatch>> & getShaderTypeBatches();
 
 private:
 
@@ -100,6 +103,9 @@ private:
 
 	//	The list of inactive renderable IDs.
 	std::vector<long int> inactiveRenderables;
+
+	//	The VAO Backend.
+	VAOBackend vaoBackend;
 
 	//	The default initialization values for the Shader, Geometry and Material Types.
 	std::string defaultShaderType;

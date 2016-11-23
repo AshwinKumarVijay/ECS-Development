@@ -1,2 +1,4 @@
-﻿  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.exe
+﻿  ShaderTypeBatch.cpp
+d:\github\ecs-development\ecs\project\project\renderers\rendererbackend\shadertypebatch\shadertypebatch.cpp(22): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.exe
   Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)

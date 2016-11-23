@@ -5,7 +5,7 @@
 #include "../VAOManager/VAOManager.h"
 #include "../Sampler/Sampler.h"
 #include "../RNGs/RNGs.h"
-
+#include "../RendererBackend/RendererBackend.h"
 
 struct LightShadowMapDescription
 {
@@ -220,12 +220,9 @@ private:
 	//	Point Light Depth CubeMaps.
 	PointLightDepthCubeMapDescription pointLightDepthCubeMaps;
 
-	//	The Renderable Storage associated with the Renderer.
-	RenderableAnalyzer renderableAnalzyer;
+	//	The RendererBackend.
+	std::shared_ptr<RendererBackend> backend;
 
-	//	The VAOManager.
-	VAOManager vaoManager;
-	
 	//	The Sampler.
 	std::shared_ptr<Sampler> sampler;
 

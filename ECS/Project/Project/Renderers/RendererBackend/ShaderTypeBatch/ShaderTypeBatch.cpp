@@ -101,7 +101,7 @@ std::shared_ptr<GeometryTypeBatch> ShaderTypeBatch::createGeometryTypeBatch(cons
 		//	Get the Geometry VAO ID, and the Meta Data of the Requested Geometry.
 		auto activeRendererBackend = rendererBackend.lock();
 
-		int VAOID = -1;
+		int VAOID = 0;
 		std::shared_ptr<GeometryTypeMetaData> geometryTypeMetaData = activeRendererBackend->getGeometryTypeVAOIDAndGeometryTypeMetaData(requestedGeometryType, VAOID);
 
 		//	Check if this is a valid VAOID.

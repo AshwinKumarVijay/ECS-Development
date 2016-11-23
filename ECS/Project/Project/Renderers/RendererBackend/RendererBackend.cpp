@@ -9,7 +9,9 @@
 //	Default RendererBackend Constructor.
 RendererBackend::RendererBackend()
 {
-
+	defaultGeometryType = "NO_GEOMETRY";
+	defaultMaterialType = "NO_MATERIAL";
+	defaultShaderType = "NO_SHADER";
 }
 
 //	Default RendererBackend Destructor.
@@ -343,7 +345,20 @@ void RendererBackend::removeRenderable(const long int & deadRenderable)
 //	Add a Geometry Type, using the provided data.
 void RendererBackend::addGeometryType(std::shared_ptr<RendererGeometryData> newGeometryData)
 {
+	//	Create the new meta data.
+	std::shared_ptr<GeometryTypeMetaData> newGeometryType = std::make_shared<GeometryTypeMetaData>();
+	
+	//	Associate the Meta Data with the provided Geometry Data.
+	newGeometryType->rendererGeometryData = newGeometryData;
+	
+	//	Associate the Geometry Type.
+	newGeometryType->geometryType = newGeometryData->geometryName;
 
+	//	Add it to the VAO Backend.
+	vaoBackend.addGeometryType(newGeometryType);
+
+	//	Add it to the Map.
+	mapGeometryTypeToGeometryMetaData[newGeometryType->geometryType] = newGeometryType;
 }
 
 //	Update the Geometry Type, using the provided data.
@@ -353,11 +368,17 @@ void RendererBackend::updateGeometryType(std::shared_ptr<RendererGeometryData> u
 }
 
 //	Remove the Geometry Type, using the provided data.
-void RendererBackend::removeGeometryType(std::string deadGeometryType)
+void RendererBackend::removeGeometryType(std::shared_ptr<RendererGeometryData> deadGeometryType)
 {
+	//	Find the Geometry Type Entry.
+	auto geometryTypeEntry = mapGeometryTypeToGeometryMetaData.find(deadGeometryType->geometryName);
 
+	//	Remove it from the VAO.	
+	vaoBackend.deleteGeometryType(geometryTypeEntry->second);
+
+	//	Remove the Geometry Type.
+	mapGeometryTypeToGeometryMetaData.erase(geometryTypeEntry);
 }
-
 //	Return the VAO associated with this Geometry Type.
 int RendererBackend::getGeometryTypeVAOID(const std::string & requestedGeometryType) const
 {
@@ -394,6 +415,12 @@ std::shared_ptr<GeometryTypeMetaData> RendererBackend::getGeometryTypeVAOIDAndGe
 		//
 		return NULL;
 	}
+}
+
+//	Return the Map of the Shader Types to the Batches.
+const std::map<std::string, std::shared_ptr<ShaderTypeBatch>>& RendererBackend::getShaderTypeBatches()
+{
+	return mapShaderTypesToShaderTypeBatch;
 }
 
 //	Remove the RenderableMetaData.

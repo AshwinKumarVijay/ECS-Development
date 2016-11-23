@@ -1,4 +1,2 @@
-﻿  VAOBackend.cpp
-VAOBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl VAOBackend::deleteGeometryType(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?deleteGeometryType@VAOBackend@@UEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
-VAOBackend.obj : error LNK2001: unresolved external symbol "public: virtual void __cdecl VAOBackend::updateGeometryType(class std::shared_ptr<struct RendererGeometryData>)" (?updateGeometryType@VAOBackend@@UEAAXV?$shared_ptr@URendererGeometryData@@@std@@@Z)
-C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Release\Project.exe : fatal error LNK1120: 2 unresolved externals
+﻿  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Release\Project.exe
+  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Release\Project.pdb (Full PDB)
