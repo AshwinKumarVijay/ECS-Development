@@ -1,11 +1,10 @@
 #pragma once
 
 #include "../Renderer/Renderer.h"
-#include "../RenderableAnalyzer/RenderableAnalyzer.h"
-#include "../VAOManager/VAOManager.h"
 #include "../Sampler/Sampler.h"
 #include "../RNGs/RNGs.h"
-#include "../RendererBackend/RendererBackend.h"
+
+class RenderableManager;
 
 struct LightShadowMapDescription
 {
@@ -50,7 +49,6 @@ public:
 	//	Update the Renderable Transform Matrix.
 	virtual void updateTransformMatrix(const long int & renderableID, const glm::mat4 & newModelMatrix);
 
-
 	//	Render.
 	virtual void render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
@@ -75,7 +73,7 @@ public:
 	virtual void deleteGeometry(std::string deadGeometryName);
 
 	//	Add Shader to the Renderer.
-	virtual void addShader(std::shared_ptr<ShaderData> newShaderData);
+	virtual void addShader(std::shared_ptr<const ShaderData> newShaderData);
 	//	Delete the Shader in the Renderer.
 	virtual void deleteShader(std::string deadShaderName);
 
@@ -221,7 +219,7 @@ private:
 	PointLightDepthCubeMapDescription pointLightDepthCubeMaps;
 
 	//	The RendererBackend.
-	std::shared_ptr<RendererBackend> backend;
+	std::shared_ptr<RenderableManager> renderableManager;
 
 	//	The Sampler.
 	std::shared_ptr<Sampler> sampler;

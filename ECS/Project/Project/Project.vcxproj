@@ -156,13 +156,9 @@
     <ClCompile Include="Components\SpeedComponent\SpeedComponent.cpp" />
     <ClCompile Include="Components\SelectionComponent\SelectionComponent.cpp" />
     <ClCompile Include="Components\MovementResponseComponent\MovementResponseComponent.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\RenderablesOfType\RenderablesOfType.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\MaterialTypeBatch\MaterialTypeBatch.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\GeometryTypeBatch\GeometryTypeBatch.cpp" />
+    <ClCompile Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.cpp" />
+    <ClCompile Include="Renderers\RenderableManager\RenderableManager.cpp" />
     <ClCompile Include="PlanetMakerSystem\PlanetMakerSystem.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\RendererBackend.cpp" />
-    <ClCompile Include="Renderers\RenderableAnalyzer\RenderableAnalyzer.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\ShaderTypeBatch\ShaderTypeBatch.cpp" />
     <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
@@ -222,27 +218,21 @@
     <ClCompile Include="Renderers\RendererResourceManagers\RendererMaterialManager\RendererMaterialManager.cpp" />
     <ClCompile Include="Renderers\RendererResourceManagers\RendererShaderManager\RendererShaderManager.cpp" />
     <ClCompile Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.cpp" />
-    <ClCompile Include="Renderers\VAOManager\VAOManager.cpp" />
-    <ClCompile Include="Renderers\VAOManager\VAOStorage\VAOStorage.cpp" />
     <ClCompile Include="Resources\ResourceData\ResourceData.cpp" />
     <ClCompile Include="Renderers\BasicRenderer\BasicRenderer.cpp" />
     <ClCompile Include="DemoECS\DemoECS.cpp" />
     <ClCompile Include="Triangle\Triangle.cpp" />
     <ClCompile Include="StarSystem\StarSystem.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\VAOBackend\VAOBackend.cpp" />
+    <ClCompile Include="Renderers\VAOStorage\VAOStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\SpeedComponent\SpeedComponent.h" />
     <ClInclude Include="Components\SelectionComponent\SelectionComponent.h" />
     <ClInclude Include="Components\MovementResponseComponent\MovementResponseComponent.h" />
-    <ClInclude Include="Renderers\RendererBackend\RenderablesOfType\RenderablesOfType.h" />
-    <ClInclude Include="Renderers\RendererBackend\MaterialTypeBatch\MaterialTypeBatch.h" />
-    <ClInclude Include="Renderers\RendererBackend\GeometryTypeBatch\GeometryTypeBatch.h" />
+    <ClInclude Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.h" />
+    <ClInclude Include="Renderers\RenderableManager\RenderableManager.h" />
     <ClInclude Include="PlanetMakerSystem\PlanetMakerSystem.h" />
-    <ClInclude Include="Renderers\RendererBackend\RendererBackend.h" />
-    <ClInclude Include="Renderers\RenderableAnalyzer\RenderableAnalyzer.h" />
     <ClInclude Include="Renderers\RenderablesMetaData.h" />
-    <ClInclude Include="Renderers\RendererBackend\ShaderTypeBatch\ShaderTypeBatch.h" />
     <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />
@@ -294,7 +284,7 @@
     <ClInclude Include="TypesList\ModuleType.h" />
     <ClInclude Include="TypesList\ResourceTypes.h" />
     <ClInclude Include="StarSystem\StarSystem.h" />
-    <ClInclude Include="Renderers\RendererBackend\VAOBackend\VAOBackend.h" />
+    <ClInclude Include="Renderers\VAOStorage\VAOStorage.h" />
     <ClInclude Include="Vertex\Vertex.h" />
     <ClInclude Include="Resources\ResourceManager\GeometryResourceManager\GeometryResourceManager.h" />
     <ClInclude Include="GeometryGeneratorSelector\GeometryGeneratorSelector.h" />
@@ -316,8 +306,6 @@
     <ClInclude Include="Renderers\RendererResourceManagers\RendererMaterialManager\RendererMaterialManager.h" />
     <ClInclude Include="Renderers\RendererResourceManagers\RendererShaderManager\RendererShaderManager.h" />
     <ClInclude Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.h" />
-    <ClInclude Include="Renderers\VAOManager\VAOManager.h" />
-    <ClInclude Include="Renderers\VAOManager\VAOStorage\VAOStorage.h" />
     <ClInclude Include="Resources\ResourceData\ResourceData.h" />
     <ClInclude Include="Renderers\BasicRenderer\BasicRenderer.h" />
     <ClInclude Include="DemoECS\DemoECS.h" />

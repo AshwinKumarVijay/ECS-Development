@@ -167,6 +167,7 @@ Material Occlusion Map       = None
 #define Resource 
 Resource Name    = Environment Cube Map Shader
 Resource Type    = OpenGL Shader
+Shader Name							 = Environment Cube Map Shader
 Shader Rendering Type                = Environment Rendering
 Shader Require Camera Data           = True
 Shader Require Model Data            = True

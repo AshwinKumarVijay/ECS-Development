@@ -31,7 +31,7 @@ void RendererGeometryManager::addGeometry(std::string newGeometryName, std::shar
 		std::shared_ptr<RendererGeometryData> newRendererGeometryData = std::make_shared<RendererGeometryData>();
 
 		//	Copy over the Geometry Name.
-		newRendererGeometryData->geometryName = newGeometryName;
+		newRendererGeometryData->geometryType = newGeometryName;
 
 		//	Copy over the Geometry Description Representation.
 		newRendererGeometryData->geometryDescriptionRepresentation = newGeometryData->getGeometryDescriptionRepresentation();
@@ -69,7 +69,7 @@ void RendererGeometryManager::updateGeometry(std::string requestedGeometryName, 
 		std::shared_ptr<RendererGeometryData> newRendererGeometryData = std::make_shared<RendererGeometryData>();
 
 		//	Copy over the Geometry Name.
-		newRendererGeometryData->geometryName = requestedGeometryName;
+		newRendererGeometryData->geometryType = requestedGeometryName;
 
 		//	Copy over the Geometry Draw Type.
 		newRendererGeometryData->geometryDrawType = newGeometryData->getGeometryDrawType();

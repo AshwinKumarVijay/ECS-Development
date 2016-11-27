@@ -11,8 +11,6 @@
 #include "glm\gtc\matrix_inverse.hpp"
 
 #include "../Renderer/Renderer.h"
-#include "../RenderableAnalyzer/RenderableAnalyzer.h"
-#include "../VAOManager/VAOManager.h"
 
 
 class BasicRenderer : public Renderer
@@ -134,14 +132,8 @@ private:
 	//	The list of Active Lights.
 	std::vector<std::string> activeLights;
 
-	//	The Renderable Storage associated with the Renderer.
-	RenderableAnalyzer renderableAnalyzer;
-
 	//	The Environment Cube Map Data.
 	BackgroundEnvironmentData backgroundEnvironmentData;
-
-	//	VAOManager.
-	VAOManager vaoManager;
 
 	//	The Camera used for Rendering.
 	std::shared_ptr<Camera> activeCamera;

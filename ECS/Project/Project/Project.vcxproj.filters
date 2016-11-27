@@ -54,8 +54,6 @@
     <ClCompile Include="Renderers\DeferredRenderer\DeferredRenderer.cpp" />
     <ClCompile Include="Renderers\Renderable\Renderable.cpp" />
     <ClCompile Include="Renderers\Renderer\Renderer.cpp" />
-    <ClCompile Include="Renderers\VAOManager\VAOStorage\VAOStorage.cpp" />
-    <ClCompile Include="Renderers\VAOManager\VAOManager.cpp" />
     <ClCompile Include="Systems\InputSystem\InputSystem.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
@@ -78,13 +76,9 @@
     <ClCompile Include="PlanetMakerSystem\PlanetMakerSystem.cpp" />
     <ClCompile Include="Systems\TransformSystem\TransformSystem.cpp" />
     <ClCompile Include="StarSystem\StarSystem.cpp" />
-    <ClCompile Include="Renderers\RenderableAnalyzer\RenderableAnalyzer.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\RendererBackend.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\ShaderTypeBatch\ShaderTypeBatch.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\GeometryTypeBatch\GeometryTypeBatch.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\MaterialTypeBatch\MaterialTypeBatch.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\RenderablesOfType\RenderablesOfType.cpp" />
-    <ClCompile Include="Renderers\RendererBackend\VAOBackend\VAOBackend.cpp" />
+    <ClCompile Include="Renderers\RenderableManager\RenderableManager.cpp" />
+    <ClCompile Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.cpp" />
+    <ClCompile Include="Renderers\VAOStorage\VAOStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -145,8 +139,6 @@
     <ClInclude Include="Renderers\Renderable\Renderable.h" />
     <ClInclude Include="Renderers\Renderer\Renderer.h" />
     <ClInclude Include="Renderers\Renderer\RenderingCommands.h" />
-    <ClInclude Include="Renderers\VAOManager\VAOStorage\VAOStorage.h" />
-    <ClInclude Include="Renderers\VAOManager\VAOManager.h" />
     <ClInclude Include="Systems\InputSystem\InputSystem.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />
@@ -170,14 +162,10 @@
     <ClInclude Include="PlanetMakerSystem\PlanetMakerSystem.h" />
     <ClInclude Include="Systems\TransformSystem\TransformSystem.h" />
     <ClInclude Include="StarSystem\StarSystem.h" />
-    <ClInclude Include="Renderers\RenderableAnalyzer\RenderableAnalyzer.h" />
-    <ClInclude Include="Renderers\RendererBackend\RendererBackend.h" />
     <ClInclude Include="Renderers\RenderablesMetaData.h" />
-    <ClInclude Include="Renderers\RendererBackend\ShaderTypeBatch\ShaderTypeBatch.h" />
-    <ClInclude Include="Renderers\RendererBackend\GeometryTypeBatch\GeometryTypeBatch.h" />
-    <ClInclude Include="Renderers\RendererBackend\MaterialTypeBatch\MaterialTypeBatch.h" />
-    <ClInclude Include="Renderers\RendererBackend\RenderablesOfType\RenderablesOfType.h" />
-    <ClInclude Include="Renderers\RendererBackend\VAOBackend\VAOBackend.h" />
+    <ClInclude Include="Renderers\RenderableManager\RenderableManager.h" />
+    <ClInclude Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.h" />
+    <ClInclude Include="Renderers\VAOStorage\VAOStorage.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />

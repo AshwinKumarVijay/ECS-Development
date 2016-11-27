@@ -1,4 +1,4 @@
-﻿  ShaderTypeBatch.cpp
-d:\github\ecs-development\ecs\project\project\renderers\rendererbackend\shadertypebatch\shadertypebatch.cpp(22): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.exe
-  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)
+﻿  RenderableManager.cpp
+c:\users\ashwin\documents\github\ecs-development\ecs\project\project\renderers\renderablemanager\renderablemanager.cpp(63): warning C4267: 'initializing': conversion from 'size_t' to 'long', possible loss of data
+  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.exe
+  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)

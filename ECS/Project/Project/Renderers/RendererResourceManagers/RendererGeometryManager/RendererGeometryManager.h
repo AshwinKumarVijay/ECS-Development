@@ -17,7 +17,7 @@ class GeometryData;
 struct RendererGeometryData
 {
 	//	The Name of the Geometry.
-	std::string geometryName;
+	std::string geometryType;
 
 	//	The Type of the Geometry
 	//	0 - NO VERTEX INFORMATION
@@ -29,27 +29,6 @@ struct RendererGeometryData
 
 	//	The Draw Type of the Geometry.
 	GLenum geometryDrawType;
-
-	//	The VAO storing this Geometry.
-	unsigned int VAO = 0;
-
-	//	The EBO.
-	unsigned int EBO = 0;
-
-	//	The offset into the EBO.
-	unsigned int offsetEBO = 0;
-
-	//	The vertexVBO and the offset into the vertexVBO.
-	unsigned int vertexVBO = 0;
-	unsigned int offsetVertexVBO = 0;
-
-	//	The vertexNormalVBO and the offset into the vertexNormalVBO.
-	unsigned int vertexNormalVBO = 0;
-	unsigned int offsetVertexNormalVBO = 0;
-
-	//	The vertexTextureVBO and the offset into the vertexVBO.
-	unsigned int vertexTextureVBO = 0;
-	unsigned int offsetVertexTextureVBO = 0;
 
 	//	The array of indices.
 	std::vector<int> indicesArray;

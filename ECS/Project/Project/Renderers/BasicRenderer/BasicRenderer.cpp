@@ -319,37 +319,33 @@ void BasicRenderer::initializeBackgroundEnvironment()
 //	Create a Renderable and return the Renderable ID.
 long int BasicRenderer::createRenderable()
 {
-	return renderableAnalyzer.createRenderable();
+	return 0;
 }
 
 //	View the Renderable associated with the specified Renderable ID.
 std::shared_ptr<const Renderable> BasicRenderer::viewRenderable(const long int & renderableID) const
 {
-	return renderableAnalyzer.viewRenderable(renderableID);
+	return NULL;
 }
 
 //	Update the Shader Type associated with the specified RenderableID.
 void BasicRenderer::updateShadingType(const long int & renderableID, const std::string & newShaderType)
 {
-	renderableAnalyzer.updateShadingType(renderableID, newShaderType);
 }
 
 //	Update the Geometry Type associated with the specified RenderableID.
 void BasicRenderer::updateGeometryType(const long int & renderableID, const std::string & newGeometryType)
 {
-	renderableAnalyzer.updateGeometryType(renderableID, newGeometryType);
 }
 
 //	Update the Material Type associated with the specified RenderableID.
 void BasicRenderer::updateMaterialType(const long int & renderableID, const std::string & newMaterialType)
 {
-	renderableAnalyzer.updateMaterialType(renderableID, newMaterialType);
 }
 
 //	Update the Transform Matrix associated with the specified RenderableID.
 void BasicRenderer::updateTransformMatrix(const long int & renderableID, const glm::mat4 & newModelMatrix)
 {
-	renderableAnalyzer.updateTransformMatrix(renderableID, newModelMatrix);
 }
 
 //	Update the Camera.
@@ -443,7 +439,6 @@ void BasicRenderer::renderRenderablesOfShaderType(const RendererShaderData & ren
 //	Remove the Renderable specified by renderable ID.
 void BasicRenderer::removeRenderable(const long int & renderableID)
 {
-	renderableAnalyzer.removeRenderable(renderableID);
 }
 
 //	Clean up the Renderer, especially the VRRendering Portion.
@@ -503,20 +498,17 @@ void BasicRenderer::deleteMaterial(std::string deadMaterialName)
 void BasicRenderer::addGeometry(std::string newGeometryName, std::shared_ptr<const GeometryData> newGeometryData)
 {
 	Renderer::addGeometry(newGeometryName, newGeometryData);
-	vaoManager.addGeometryToVAOStorage(getGeometryManager()->getGeometry(newGeometryName));
 }
 
 //	Update the Geometry in the Renderer.
 void BasicRenderer::updateGeometry(std::string currentGeometryName, std::shared_ptr<const GeometryData> newGeometryData)
 {
 	Renderer::updateGeometry(currentGeometryName, newGeometryData);
-	vaoManager.updateGeometry(getGeometryManager()->getGeometry(currentGeometryName));
 }
 
 //	Delete the Geometry in the Renderer.
 void BasicRenderer::deleteGeometry(std::string deadGeometryName)
 {
-	vaoManager.removeGeometryFromVAOStorage(deadGeometryName);
 	Renderer::deleteGeometry(deadGeometryName);
 }
 

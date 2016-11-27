@@ -5,8 +5,7 @@
 #include "../Renderable/Renderable.h"
 #include "../Camera/Camera.h"
 #include "../RendererResourceManagers/RendererLightManager/RendererLightManager.h"
-#include "../RendererBackend/RenderablesOfType/RenderablesOfType.h"
-#include "../RendererBackend/RendererBackend.h"
+#include "../RenderableManager/RenderableManager.h"
 
 //	Default DeferredRenderer Constructor
 DeferredRenderer::DeferredRenderer()
@@ -23,8 +22,8 @@ DeferredRenderer::~DeferredRenderer()
 //	Initialize the Deferred Renderer.
 void DeferredRenderer::initializeRenderer()
 {
-	//	
-	backend = std::make_shared<RendererBackend>();
+	//	The Renderable Manager.
+	renderableManager = std::make_shared<RenderableManager>();
 
 	//	Initialize the Rendering Hints.
 	initializeRenderingHints();
@@ -60,6 +59,12 @@ void DeferredRenderer::initializeRenderer()
 //	Initialize the Rendering Hints.
 void DeferredRenderer::initializeRenderingHints()
 {
+	//	Print some details.
+	printf("%s\n", glGetString(GL_VENDOR));
+	printf("%s\n", glGetString(GL_RENDERER));
+	printf("%s\n", glGetString(GL_VERSION));
+	printf("%s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
 	//	Enable Face Culling.
 	glEnable(GL_CULL_FACE);
 
@@ -95,7 +100,7 @@ void DeferredRenderer::initializeRenderingHints()
 	glPointSize(5.0f);
 
 	//	The Shadow Map Resolution.
-	shadowMapResolution = 2048;
+	shadowMapResolution = 512;
 }
 
 //	Initialize the Background Data.
@@ -1158,37 +1163,37 @@ void DeferredRenderer::initializeLights()
 //	Create the Renderable and return the RenderableID.
 long int DeferredRenderer::createRenderable()
 {
-	return backend->createRenderable();
+	return renderableManager->createRenderable();
 }
 
 //	Return the const Renderable.
 std::shared_ptr<const Renderable> DeferredRenderer::viewRenderable(const long int & renderableID) const
 {
-	return backend->viewRenderable(renderableID);
+	return renderableManager->viewRenderable(renderableID);
 }
 
 //	Update the Renderable Shader Type.
 void DeferredRenderer::updateShadingType(const long int & renderableID, const std::string & newShaderType)
 {
-	backend->updateShadingType(renderableID, newShaderType);
+	renderableManager->updateShadingType(renderableID, newShaderType);
 }
 
 //	Update the Renderable Geometry Type.
 void DeferredRenderer::updateGeometryType(const long int & renderableID, const std::string & newGeometryName)
 {
-	backend->updateGeometryType(renderableID, newGeometryName);
+	renderableManager->updateGeometryType(renderableID, newGeometryName);
 }
 
 //	Update the Renderable Material Type.
 void DeferredRenderer::updateMaterialType(const long int & renderableID, const std::string & newMaterialName)
 {
-	backend->updateMaterialType(renderableID, newMaterialName);
+	renderableManager->updateMaterialType(renderableID, newMaterialName);
 }
 
 //	Update the Renderable Transform Matrix.
 void DeferredRenderer::updateTransformMatrix(const long int & renderableID, const glm::mat4 & newModelMatrix)
 {
-	backend->updateTransformMatrix(renderableID, newModelMatrix);
+	renderableManager->updateTransformMatrix(renderableID, newModelMatrix);
 }
 
 //	Render!
@@ -1322,33 +1327,32 @@ void DeferredRenderer::renderDeferredRenderingGBufferPass(const float & deltaFra
 	checkFramebufferStatus();
 
 	//	Get the Shading Types and the Geometry Types.
-	//	Get the Shading Types and the Geometry Types.
-	const std::map<std::string, std::shared_ptr<ShaderTypeBatch>> & shaderTypeBatches = backend->getShaderTypeBatches();
+	//	const std::map<std::string, std::shared_ptr<ShaderTypeBatch>> & shaderTypeBatches = renderableManager->getShaderTypeBatches();
 
-	//	Iterate over the Shading Types.
-	for (auto currentShadingType : shaderTypeBatches)
-	{
-			//	Get the Current Renderer Shader Data.
-			std::shared_ptr<const RendererShaderData> currentRendererShaderData = getRendererShaderDataForRenderableShadingType(currentShadingType.first);
-			getShaderManager()->setActiveShader(currentRendererShaderData->shaderType);
+	////	Iterate over the Shading Types.
+	//for (auto currentShadingType : shaderTypeBatches)
+	//{
+	//		//	Get the Current Renderer Shader Data.
+	//		std::shared_ptr<const RendererShaderData> currentRendererShaderData = getRendererShaderDataForRenderableShadingType(currentShadingType.first);
+	//		getShaderManager()->setActiveShader(currentRendererShaderData->shaderType);
 
-			//	Upload the Background, and Camera Data.
-			uploadBackgroundEnviroment(*currentRendererShaderData);
-			uploadCameraData(*currentRendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
+	//		//	Upload the Background, and Camera Data.
+	//		uploadBackgroundEnviroment(*currentRendererShaderData);
+	//		uploadCameraData(*currentRendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
 
-			auto opacityFinder = currentRendererShaderData->shaderProperties.find("Shader Output Opacity");
+	//		auto opacityFinder = currentRendererShaderData->shaderProperties.find("Shader Output Opacity");
 
-			//	Check if we have the property.
-			if (opacityFinder != currentRendererShaderData->shaderProperties.end())
-			{
-				//	Check if are outputing opacity.
-				if (opacityFinder->second != "True")
-				{
-					//	Render the Renderables that use the Shader Data specified by the Renderer.
-					renderRenderablesOfShaderType(currentShadingType.first, *currentRendererShaderData, activeCamera->getViewMatrix(), deltaFrameTime, currentFrameTime, lastFrameTime);
-				}
-			}
-	}
+	//		//	Check if we have the property.
+	//		if (opacityFinder != currentRendererShaderData->shaderProperties.end())
+	//		{
+	//			//	Check if are outputing opacity.
+	//			if (opacityFinder->second != "True")
+	//			{
+	//				//	Render the Renderables that use the Shader Data specified by the Renderer.
+	//				renderRenderablesOfShaderType(currentShadingType.first, *currentRendererShaderData, activeCamera->getViewMatrix(), deltaFrameTime, currentFrameTime, lastFrameTime);
+	//			}
+	//		}
+	//}
 
 	//	Bind the Default Framebuffer.
 	glBindFramebuffer(GL_FRAMEBUFFER, rendererPipelineFramebuffers["DEFAULT_FRAMEBUFFER"]->framebufferID);
@@ -2043,7 +2047,7 @@ void DeferredRenderer::renderRenderablesOfShaderType(const std::string & shaderT
 	//						glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, 21, PROFILE_GEOMETRY_TIME.c_str());
 
 	//						//	Get the Current Geometry Type.
-	//						std::string currentGeometryType = geometryDatas[currentGeometryTypeNumber]->geometryName;
+	//						std::string currentGeometryType = geometryDatas[currentGeometryTypeNumber]->geometryType;
 
 	//						//	Check if this Geometry Type is being used with this Shader Type.
 	//						auto geometryTypeIterator = shaderTypeIterator->second.geometryTypeAssociatedMaterialTypes.find(currentGeometryType);
@@ -2158,7 +2162,7 @@ std::shared_ptr<const RendererShaderData> DeferredRenderer::getRendererShaderDat
 //	Remove the Renderable.
 void DeferredRenderer::removeRenderable(const long int & renderableID)
 {
-	backend->removeRenderable(renderableID);
+	renderableManager->removeRenderable(renderableID);
 }
 
 //	Clean Up the Renderer.
@@ -2200,6 +2204,7 @@ void DeferredRenderer::cleanUpRenderer()
 void DeferredRenderer::addMaterial(std::string newMaterialName, std::shared_ptr<const MaterialData> newMaterialData)
 {
 	Renderer::addMaterial(newMaterialName, newMaterialData);
+	renderableManager->addMaterialType(newMaterialName);
 }
 
 //	Update the Material in the Renderer, specified by the Material Name.
@@ -2211,6 +2216,7 @@ void DeferredRenderer::updateMaterial(std::string currentMaterialName, std::shar
 //	Delete the Material in the Renderer.
 void DeferredRenderer::deleteMaterial(std::string deadMaterialName)
 {
+	renderableManager->removeMaterialType(deadMaterialName);
 	Renderer::deleteMaterial(deadMaterialName);
 }
 
@@ -2218,32 +2224,88 @@ void DeferredRenderer::deleteMaterial(std::string deadMaterialName)
 void DeferredRenderer::addGeometry(std::string newGeometryName, std::shared_ptr<const GeometryData> newGeometryData)
 {
 	Renderer::addGeometry(newGeometryName, newGeometryData);
-	backend->addGeometryType(getGeometryManager()->getGeometry(newGeometryName));
+
+	//	Check for Errors.
+	GLenum err = GL_NO_ERROR;
+	while ((err = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Post - Renderer Adding Geometry Data Error -> " << err << std::endl;
+	}
+
+	renderableManager->addGeometryType(getGeometryManager()->getGeometry(newGeometryName));
+
+	//	Check for Errors.
+	GLenum err2 = GL_NO_ERROR;
+	while ((err2 = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Post - Renderer Backend Adding Geometry Data Error -> " << err2 << std::endl;
+	}
+
 }
 
 //	Update the Geometry in the Renderer, specified by the Geometry Name.
 void DeferredRenderer::updateGeometry(std::string currentGeometryName, std::shared_ptr<const GeometryData> newGeometryData)
 {
 	Renderer::updateGeometry(currentGeometryName, newGeometryData);
-	backend->updateGeometryType(getGeometryManager()->getGeometry(currentGeometryName));
+
+	//	Check for Errors.
+	GLenum err = GL_NO_ERROR;
+	while ((err = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Post - Renderer Updating Geometry Data Error -> " << err << std::endl;
+	}
+
+
+	renderableManager->updateGeometryType(getGeometryManager()->getGeometry(currentGeometryName));
+
+	//	Check for Errors.
+	GLenum err2 = GL_NO_ERROR;
+	while ((err2 = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Post - Renderer Backend Updating Geometry Data Error -> " << err2 << std::endl;
+	}
+
 }
 
 //	Delete the Geometry.
 void DeferredRenderer::deleteGeometry(std::string deadGeometryName)
 {
-	backend->removeGeometryType(getGeometryManager()->getGeometry(deadGeometryName));
+	renderableManager->removeGeometryType(getGeometryManager()->getGeometry(deadGeometryName));
+
+	//	Check for Errors.
+	GLenum err = GL_NO_ERROR;
+	while ((err = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Post - Renderer Backend Deleting Geometry Data Error -> " << err << std::endl;
+	}
+
+
 	Renderer::deleteGeometry(deadGeometryName);
+
+	//	Check for Errors.
+	GLenum err2 = GL_NO_ERROR;
+	while ((err2 = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout << "OpenGL Post - Renderer Deleting Geometry Data Error -> " << err2 << std::endl;
+	}
+
 }
 
 //	Add Shader to the Renderer.
-void DeferredRenderer::addShader(std::shared_ptr<ShaderData> newShaderData)
+void DeferredRenderer::addShader(std::shared_ptr<const ShaderData> newShaderData)
 {
+
 	Renderer::addShader(newShaderData);
+	std::string shaderType;
+	newShaderData->findProperty("Shader Name", shaderType);
+	renderableManager->addShaderType(getShaderManager()->viewShaderData(shaderType)->shaderType);
+
 }
 
 //	Delete the Shader in the Renderer.
 void DeferredRenderer::deleteShader(std::string deadShaderName)
 {
+	renderableManager->removeShaderType(getShaderManager()->viewShaderData(deadShaderName)->shaderType);
 	Renderer::deleteShader(deadShaderName);
 }
 
