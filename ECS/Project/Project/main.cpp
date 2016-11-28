@@ -26,6 +26,7 @@ int main(int argc, char** argv)
 // Default GLEW initialization. 
 int initializeGLEW()
 {
+	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
 	{
@@ -53,13 +54,13 @@ int initializeGLFW()
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
 	glfwWindowHint(GLFW_RESIZABLE, 0);
-	glfwWindowHint(GLFW_DECORATED, 0);
+//	glfwWindowHint(GLFW_DECORATED, 0);
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	window = glfwCreateWindow(1600, 900, "System Of Planets", NULL, NULL);
 	glfwSetWindowPos(window, 160, 90);
-//	glfwSwapInterval(2);
+	glfwSwapInterval(1);
 	glfwSetKeyCallback(window, key_callback);
 
 

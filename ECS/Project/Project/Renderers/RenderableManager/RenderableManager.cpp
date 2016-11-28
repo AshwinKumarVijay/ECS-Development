@@ -132,15 +132,21 @@ std::shared_ptr<RenderableMetaData> RenderableManager::getRenderableMetaData(con
 }
 
 //	Return the Map of the RenderableID to the RenderableMetaData
-const std::map<long int, std::shared_ptr<RenderableMetaData>>& RenderableManager::getMapOfRenderableIDToRenderableMetaData()
+const std::map<long int, std::shared_ptr<RenderableMetaData>>& RenderableManager::getMapOfRenderableIDToRenderableMetaData() const
 {
 	return mapRenderableIDToRenderableMetaData;
 }
 
 //	Return the Map of the RenderableType to the RenderableTypeBatch.
-const std::map<RenderableType, std::shared_ptr<RenderableTypeBatch>>& RenderableManager::getRenderableTypeBatches()
+const std::map<RenderableType, std::shared_ptr<RenderableTypeBatch>>& RenderableManager::getRenderableTypeBatches() const
 {
 	return mapRenderableTypeToRenderableTypeBatches;
+}
+
+//	Return the Renderable Type Batch Meta Datas.
+const std::set<RenderableTypeBatchMetaData>& RenderableManager::getRenderableTypeBatchMetaDatas() const
+{
+	return renderableTypeBatchMetaDatas;
 }
 
 //	Update the Shading Type associated with the specified Renderable ID.
@@ -367,7 +373,7 @@ void RenderableManager::updateRenderableTypeBatchesWithShaderType(const std::str
 }
 
 //	Update the Renderable Type Batches with the Geometry Type, so that they hold their proper place in the list.
-void RenderableManager::updateRenderableTypeBatchesWithGeometryType(const std::string & shaderType, bool available)
+void RenderableManager::updateRenderableTypeBatchesWithGeometryType(const std::string & geometryType, bool available)
 {
 	//	
 	std::set<RenderableTypeBatchMetaData> newRenderableTypeBatchMetaDatas;
@@ -412,7 +418,7 @@ void RenderableManager::updateRenderableTypeBatchesWithGeometryType(const std::s
 }
 
 //	Update the Renderable Type Batches with the Material Type, so that they hold their proper place in the list.
-void RenderableManager::updateRenderableTypeBatchesWithMaterialType(const std::string & shaderType, bool available)
+void RenderableManager::updateRenderableTypeBatchesWithMaterialType(const std::string & materialType, bool available)
 {
 	//	
 	std::set<RenderableTypeBatchMetaData> newRenderableTypeBatchMetaDatas;

@@ -86,6 +86,7 @@ long int PlanetMakerSystem::createPlanet()
 
 	//	
 	int ringCount = RNGs::intRand(0, 100);
+	ringCount = 50;
 
 	for (int i = 0; i < ringCount; i++)
 	{

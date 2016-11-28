@@ -39,10 +39,13 @@ public:
 	virtual std::shared_ptr<RenderableMetaData> getRenderableMetaData(const long int & currentRenderableID);
 
 	//	Return the Map of the RenderableID to the RenderableMetaData
-	const std::map<long int, std::shared_ptr<RenderableMetaData>> & getMapOfRenderableIDToRenderableMetaData();
+	const std::map<long int, std::shared_ptr<RenderableMetaData>> & getMapOfRenderableIDToRenderableMetaData() const;
 
 	//	Return the Map of the RenderableType to the RenderableTypeBatch.
-	const std::map<RenderableType, std::shared_ptr<RenderableTypeBatch>> & getRenderableTypeBatches();
+	const std::map<RenderableType, std::shared_ptr<RenderableTypeBatch>> & getRenderableTypeBatches() const;
+
+	//	Return the Renderable Type Batch Meta Datas.
+	const std::set<RenderableTypeBatchMetaData> & getRenderableTypeBatchMetaDatas() const;
 
 	//	Update the Shading Type associated with the specified Renderable ID.
 	virtual void updateShadingType(const long int & currentRenderableID, const std::string & newShadingType);

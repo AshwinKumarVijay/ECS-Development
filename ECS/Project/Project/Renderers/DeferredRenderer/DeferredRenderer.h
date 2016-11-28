@@ -18,6 +18,19 @@ struct PointLightDepthCubeMapDescription
 	GLuint lightDepthCubeMap = -1;
 };
 
+
+struct LightMetaData
+{
+	//	
+	unsigned int currentViewLightColorMap = -1;
+	unsigned int currentViewLightDepthMap = -1;
+
+	//	
+	unsigned int lightFramebufferObjects[6];
+	unsigned int currentViewFramebufferObject = -1;
+};
+
+
 class BackgroundData;
 
 
@@ -112,7 +125,7 @@ private:
 	//	Initialize the Deferred Rendering G Buffer Framebuffer.
 	virtual void initializeDeferredRenderingGBufferFramebuffer();
 
-	//	
+	//	Initialize the MSAA Texture and Framebuffers.
 	virtual void initializeMSAATexturesAndFramebuffers();
 
 	//	Initialize the Post Process Textures.
@@ -129,6 +142,23 @@ private:
 
 	//	Initialize the Lights.
 	virtual void initializeLights();
+
+
+	//	Create the Framebuffer Objects and Textures for the Gaussian Blur pass.
+	virtual void createGaussianBlurFramebufferObjectsAndTextures();
+	
+	//	Create the Framebuffer Objects And Textures for the Ambient Occlusion pass.
+	virtual void createAmbientOcclusionFramebufferObjectsAndTextures();
+
+	//	Create the Framebuffer Objects And Textures for the HDR Pass
+	virtual void createHDRFrambufferObjectsAndTextures();
+
+	//	Create the Framebuffer Objects And Textures for the Bloom Pass
+	virtual void createBloomFramebufferObjectsAndTextures();
+
+	//	Create the Framebuffer Objects and Textures for the Shadow Mapping Pass.
+	virtual void createShadowMappingFramebuffersAndTextures();
+
 
 	//	Render the Shadow Maps.
 	virtual void renderShadowMaps(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
@@ -210,10 +240,7 @@ private:
 
 	//	The Active Lights.
 	std::vector<std::shared_ptr<const RendererLightData>> activeLights;
-
-	//	The Light Depth and Color Maps.
-	std::vector<GLuint> mainLightColorMaps;
-	std::vector<GLuint> mainLightDepthMaps;
+	std::vector<LightMetaData> activeLightDatas;
 
 	//	Point Light Depth CubeMaps.
 	PointLightDepthCubeMapDescription pointLightDepthCubeMaps;

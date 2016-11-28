@@ -71,7 +71,7 @@ Light Shadow     = True
 Light Type       = 1.0
 Light Color      = 1.0, 1.0, 1.0
 Light Intensity  = 1.0
-Light Position   = 0.0, 0.0, 0.0, 1.0
+Light Position   = 55.0, 0.0, 0.0, 1.0
 Light Attenuation and Distance    = 0.0, 0.0, 0.0, 0.0
 Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
 #end Resource
@@ -86,7 +86,7 @@ Light Shadow     = True
 Light Type       = 1.0
 Light Color      = 1.0, 1.0, 1.0
 Light Intensity  = 1.0
-Light Position   = 0.0, 25.0, 0.0, 1.0
+Light Position   = 25.0, 25.0, 0.0, 1.0
 Light Attenuation and Distance    = 0.0, 0.0, 0.0, 0.0
 Light SpotLight Cosine and Cutoff = 0.0, 0.0, 0.0, 0.0
 #end Resource

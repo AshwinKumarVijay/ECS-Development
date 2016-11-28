@@ -1,4 +1,6 @@
-﻿  RenderableManager.cpp
-c:\users\ashwin\documents\github\ecs-development\ecs\project\project\renderers\renderablemanager\renderablemanager.cpp(63): warning C4267: 'initializing': conversion from 'size_t' to 'long', possible loss of data
-  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.exe
-  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)
+﻿  DeferredRenderer.cpp
+c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  d:\github\ecs-development\ecs\project\project\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
+d:\github\ecs-development\ecs\project\project\renderers\deferredrenderer\deferredrenderer.cpp(2027): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.exe
+  Project.vcxproj -> D:\Github\ECS-Development\ECS\Project\x64\Debug\Project.pdb (Full PDB)

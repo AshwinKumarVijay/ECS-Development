@@ -222,7 +222,6 @@
     <ClCompile Include="Renderers\BasicRenderer\BasicRenderer.cpp" />
     <ClCompile Include="DemoECS\DemoECS.cpp" />
     <ClCompile Include="Triangle\Triangle.cpp" />
-    <ClCompile Include="StarSystem\StarSystem.cpp" />
     <ClCompile Include="Renderers\VAOStorage\VAOStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -283,7 +282,6 @@
     <ClInclude Include="TypesList\InteractionTypes.h" />
     <ClInclude Include="TypesList\ModuleType.h" />
     <ClInclude Include="TypesList\ResourceTypes.h" />
-    <ClInclude Include="StarSystem\StarSystem.h" />
     <ClInclude Include="Renderers\VAOStorage\VAOStorage.h" />
     <ClInclude Include="Vertex\Vertex.h" />
     <ClInclude Include="Resources\ResourceManager\GeometryResourceManager\GeometryResourceManager.h" />

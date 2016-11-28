@@ -75,7 +75,6 @@
     <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
     <ClCompile Include="PlanetMakerSystem\PlanetMakerSystem.cpp" />
     <ClCompile Include="Systems\TransformSystem\TransformSystem.cpp" />
-    <ClCompile Include="StarSystem\StarSystem.cpp" />
     <ClCompile Include="Renderers\RenderableManager\RenderableManager.cpp" />
     <ClCompile Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.cpp" />
     <ClCompile Include="Renderers\VAOStorage\VAOStorage.cpp" />
@@ -161,7 +160,6 @@
     <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
     <ClInclude Include="PlanetMakerSystem\PlanetMakerSystem.h" />
     <ClInclude Include="Systems\TransformSystem\TransformSystem.h" />
-    <ClInclude Include="StarSystem\StarSystem.h" />
     <ClInclude Include="Renderers\RenderablesMetaData.h" />
     <ClInclude Include="Renderers\RenderableManager\RenderableManager.h" />
     <ClInclude Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.h" />

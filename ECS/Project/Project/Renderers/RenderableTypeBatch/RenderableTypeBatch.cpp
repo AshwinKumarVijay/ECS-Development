@@ -55,7 +55,7 @@ void RenderableTypeBatch::removeRenderable(std::shared_ptr<RenderableMetaData> d
 		//	
 		(renderableMetaDatas)[renderableIndex] = (renderableMetaDatas)[renderableMetaDatas.size() - 1];
 		(renderableTransformMatrices)[renderableIndex] = (renderableTransformMatrices)[renderableTransformMatrices.size() - 1];
-
+		(renderableMetaDatas)[renderableIndex]->renderableIndex = renderableIndex;
 		//	
 		renderableMetaDatas.pop_back();
 		renderableTransformMatrices.pop_back();

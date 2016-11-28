@@ -248,7 +248,7 @@ struct RenderableTypeBatchMetaData
 	
 	}
 
-	RenderableTypeBatchMetaData(const RenderableTypeBatchMetaData & other) : renderableType(other.renderableType)
+	RenderableTypeBatchMetaData(const RenderableTypeBatchMetaData & other) : renderableType(other.renderableType.shaderType, other.renderableType.geometryType, other.renderableType.materialType)
 	{
 		shaderTypeMetaData = other.shaderTypeMetaData;
 		geometryTypeMetaData = other.geometryTypeMetaData;

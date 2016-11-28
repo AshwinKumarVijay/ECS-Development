@@ -102,8 +102,7 @@ private:
 
 	//	The PlanetMaker System associated with the PlanetMakerECS.
 	std::shared_ptr<PlanetMakerSystem> planetMakerSystem;
-	std::shared_ptr<StarSystem> starSystem;
-
+	
 	//	The Transform System associated with the PlanetMakerECS.
 	std::shared_ptr<TransformSystem> transformSystem;
 
