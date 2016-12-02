@@ -78,6 +78,11 @@
     <ClCompile Include="Renderers\RenderableManager\RenderableManager.cpp" />
     <ClCompile Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.cpp" />
     <ClCompile Include="Renderers\VAOStorage\VAOStorage.cpp" />
+    <ClCompile Include="Renderers\RendererModules\RendererModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\ShadowRendererModule\ShadowRendererModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurRendererModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -164,6 +169,11 @@
     <ClInclude Include="Renderers\RenderableManager\RenderableManager.h" />
     <ClInclude Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.h" />
     <ClInclude Include="Renderers\VAOStorage\VAOStorage.h" />
+    <ClInclude Include="Renderers\RendererModules\RendererModule.h" />
+    <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.h" />
+    <ClInclude Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.h" />
+    <ClInclude Include="Renderers\RendererModules\ShadowRendererModule\ShadowRendererModule.h" />
+    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurRendererModule.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />
