@@ -85,3 +85,5 @@ struct RendererNoiseTextures
 	GLuint noiseTextureThreeID = 0;
 	GLuint noiseTextureFourID = 0;
 };
+
+

@@ -34,7 +34,7 @@ class Renderable;
 class Transform;
 class Camera;
 
-class Renderer
+class Renderer : public std::enable_shared_from_this<Renderer>
 {
 public:
 

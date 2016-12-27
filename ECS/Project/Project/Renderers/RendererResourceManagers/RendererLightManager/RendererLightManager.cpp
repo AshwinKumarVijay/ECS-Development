@@ -4,8 +4,7 @@
 //	Default RendererLightManager Constructor
 RendererLightManager::RendererLightManager()
 {
-	ambientLightValues = glm::vec3(0.0);
-	environmentCubeMapTextureName = "NONE";
+
 }
 
 
@@ -57,6 +56,7 @@ void RendererLightManager::addLight(std::string newLightName, std::shared_ptr<co
 	}
 }
 
+//	Update the Light.
 void RendererLightManager::updateLight(std::string requestedLightName, std::shared_ptr<const LightData> newLightData)
 {
 	//	Find the Light.
@@ -98,6 +98,12 @@ void RendererLightManager::updateLight(std::string requestedLightName, std::shar
 	}
 }
 
+//	View the Names and Lights Associated with the Data.
+const std::map<std::string, std::shared_ptr<RendererLightData>>& RendererLightManager::viewMapNameToLightData()
+{
+	return mapNameToLightData;
+}
+
 //	Return a const pointer to the light.
 std::shared_ptr<const RendererLightData> RendererLightManager::viewLight(std::string requestedLightName)
 {
@@ -112,7 +118,6 @@ std::shared_ptr<const RendererLightData> RendererLightManager::viewLight(std::st
 	}
 	else
 	{
-		//	TO DO
 		//	Throw does not exist error.
 		return NULL;
 	}

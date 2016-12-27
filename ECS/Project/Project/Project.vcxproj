@@ -153,6 +153,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Renderers\RendererModules\FPassLightingModule\FPassLightingModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\DPassLightingModule\DPassLightingModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\GBufferModule\GBufferModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\LightsModule\LightsModule.cpp" />
+    <ClCompile Include="Renderers\ModuleRenderer\ModuleRenderer.cpp" />
     <ClCompile Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurRendererModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.cpp" />
@@ -163,7 +168,7 @@
     <ClCompile Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.cpp" />
     <ClCompile Include="Renderers\RenderableManager\RenderableManager.cpp" />
     <ClCompile Include="PlanetMakerSystem\PlanetMakerSystem.cpp" />
-    <ClCompile Include="Renderers\RendererModules\ShadowRendererModule\ShadowRendererModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\ShadowsModule\ShadowsModule.cpp" />
     <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
@@ -230,18 +235,26 @@
     <ClCompile Include="Renderers\VAOStorage\VAOStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Renderers\RendererModules\FPassLightingModule\FPassLightingModule.h" />
+    <ClInclude Include="Renderers\RendererModules\DPassLightingModule\DPassLightingModule.h" />
+    <ClInclude Include="Renderers\RendererModules\GBufferModule\GBufferModule.h" />
+    <ClInclude Include="Renderers\RendererModules\LightsModule\LightsModule.h" />
+    <ClInclude Include="Renderers\ModuleRenderer\ModuleRenderer.h" />
+    <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AOBS.h" />
     <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurRendererModule.h" />
     <ClInclude Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.h" />
     <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.h" />
     <ClInclude Include="Components\SpeedComponent\SpeedComponent.h" />
     <ClInclude Include="Components\SelectionComponent\SelectionComponent.h" />
     <ClInclude Include="Components\MovementResponseComponent\MovementResponseComponent.h" />
+    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurShaderSource.h" />
     <ClInclude Include="Renderers\RendererModules\RendererModule.h" />
     <ClInclude Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.h" />
     <ClInclude Include="Renderers\RenderableManager\RenderableManager.h" />
     <ClInclude Include="PlanetMakerSystem\PlanetMakerSystem.h" />
     <ClInclude Include="Renderers\RenderablesMetaData.h" />
-    <ClInclude Include="Renderers\RendererModules\ShadowRendererModule\ShadowRendererModule.h" />
+    <ClInclude Include="Renderers\RendererModules\ShadowsModule\ShadowsModule.h" />
+    <ClInclude Include="Renderers\Renderer\SceneMetaData.h" />
     <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />

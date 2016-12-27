@@ -221,8 +221,10 @@ private:
 	//	Upload the G Buffer.
 	virtual void uploadGBufferDataTextures(const RendererShaderData & rendererShaderData);
 
-	//	Upload the Post Process Textures, the primary and the secondary textures.
+	//	Upload the Primary Post Process Textures.
 	virtual void uploadPrimaryPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureOneID, GLuint postProcessTextureTwoID, GLuint postProcessTextureThreeID, GLuint postProcessTextureFourID);
+
+	//	Upload the Secondary Post Process Textures.
 	virtual void uploadSecondaryPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureFiveID, GLuint postProcessTextureSixID, GLuint postProcessTextureSevenID, GLuint postProcessTextureEightID);
 
 

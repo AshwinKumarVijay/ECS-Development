@@ -432,5 +432,3 @@ struct VAOIDGeometryTypeKey
 	//	The Geometry Type of this Key.
 	std::string geometryType;
 };
-
-

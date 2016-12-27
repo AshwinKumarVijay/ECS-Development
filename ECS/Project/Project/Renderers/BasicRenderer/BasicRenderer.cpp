@@ -392,11 +392,8 @@ void BasicRenderer::renderBackgroundEnvironment(const float & deltaFrameTime, co
 	//	-----------------------------------------------------------------------------------------------------------------------------------------------------------	//
 
 	//	Set the currently active shader to be the Environment Cubemap Shader.
-	getShaderManager()->setActiveShader("ENVIRONMENT CUBE MAP SHADER");
-
-	//	Set the currently active shader program.
-	GLuint currentShaderProgramID = getShaderManager()->getActiveShader();
-	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->viewShaderData("ENVIRONMENT CUBE MAP SHADER");
+	std::shared_ptr<const RendererShaderData> rendererShaderData = getShaderManager()->setActiveShader("ENVIRONMENT CUBE MAP SHADER");
+	GLuint currentShaderProgramID = rendererShaderData->shaderID;
 
 	//	Upload the Camera Data.
 	uploadCameraData(*rendererShaderData, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));

@@ -55,17 +55,14 @@ public:
 	//	Update a Light in the RendererLightManager.
 	virtual void updateLight(std::string requestedLightName, std::shared_ptr<const LightData> newLightData);
 
+	//	View the Names and Lights Associated with the Data.
+	virtual const std::map<std::string, std::shared_ptr<RendererLightData>> & viewMapNameToLightData();
+
 	//	Delete a Light in the RendererLightManager.
 	virtual void deleteLight(std::string deadLightName);
 
 
 private:
-
-	//	The Ambient Light.
-	glm::vec3 ambientLightValues;
-
-	//	The Environment Cube Map Texture Name.
-	std::string environmentCubeMapTextureName;
 
 	//	The Names of the Lights.
 	std::map<std::string, std::shared_ptr<RendererLightData>> mapNameToLightData;

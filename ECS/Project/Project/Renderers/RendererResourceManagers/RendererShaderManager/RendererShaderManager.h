@@ -200,13 +200,7 @@ public:
 	virtual void addShader(std::shared_ptr<const ShaderData> newShader);
 
 	//	Set the Active Shader, by name.
-	virtual void setActiveShader(const std::string & newActiveShader);
-
-	//	Get the Active Shader ID.
-	virtual GLuint getActiveShader();
-
-	//	Get the Active Shader Name.
-	virtual std::string getActiveShaderName();
+	virtual std::shared_ptr<const RendererShaderData> setActiveShader(const std::string & newActiveShader);
 
 	//	Return the RendererShaderData associated with the shaderType.
 	virtual std::shared_ptr<const RendererShaderData> viewShaderData(const std::string & requestedShaderName) const;

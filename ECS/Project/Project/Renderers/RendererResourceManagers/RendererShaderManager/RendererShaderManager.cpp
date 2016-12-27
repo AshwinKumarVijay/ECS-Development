@@ -80,7 +80,7 @@ void RendererShaderManager::addShader(std::shared_ptr<const ShaderData> newShade
 }
 
 //	Set the active shader.
-void RendererShaderManager::setActiveShader(const std::string & newActiveShader)
+std::shared_ptr<const RendererShaderData> RendererShaderManager::setActiveShader(const std::string & newActiveShader)
 {
 	//	Find the Shader specified by name.
 	auto shaderIterator = mapNameToShaderData.find(newActiveShader);
@@ -90,19 +90,16 @@ void RendererShaderManager::setActiveShader(const std::string & newActiveShader)
 	{
 		activeShaderName = newActiveShader;
 		glUseProgram(shaderIterator->second->shaderID);
+		return shaderIterator->second;
 	}
 	else
 	{
 		//	TO DO
 		//	Throw Exception if Shader is Not Found.
+		return NULL;
 	}
 }
 
-//	Return the currently active shader name.
-std::string RendererShaderManager::getActiveShaderName()
-{
-	return activeShaderName;
-}
 
 //	View the Shader Data by name.
 std::shared_ptr<const RendererShaderData> RendererShaderManager::viewShaderData(const std::string & requestedShaderName) const
@@ -167,26 +164,6 @@ int RendererShaderManager::getGeometryVertexRequirementsForShader(const std::str
 		//	
 		return shaderGeometryDescriptionRepresentation;
 
-	}
-	else
-	{
-		//	TO DO
-		//	Throw Exception if Shader is Not Found.
-		return 0;
-	}
-}
-
-//	Return the GLuint shader program ID.
-GLuint RendererShaderManager::getActiveShader()
-{
-	//	Find the shader.
-	auto shaderIterator = mapNameToShaderData.find(activeShaderName);
-
-	//	Check if the Shader exists.
-	if (shaderIterator != mapNameToShaderData.end())
-	{
-		//	Return the active shader ID.
-		return shaderIterator->second->shaderID;
 	}
 	else
 	{
