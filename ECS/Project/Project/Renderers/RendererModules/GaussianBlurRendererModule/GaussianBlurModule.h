@@ -4,16 +4,16 @@
 class ModuleRenderer;
 class RendererShaderManager;
 
-class GaussianBlurRendererModule : public RendererModule
+class GaussianBlurModule : public RendererModule
 {
 
 public:
 
 	//	Default Gaussian Blur Renderer Module Constructor, with the provided input and output textures.
-	GaussianBlurRendererModule(std::shared_ptr<Renderer> newModuleRenderer, const unsigned int & newBlurPassCount, const unsigned int & newInputTexture, const unsigned int & newOutputTexture, const unsigned int & newTextureWidth, const unsigned int & newTextureHeight);
+	GaussianBlurModule(std::shared_ptr<Renderer> newModuleRenderer, const unsigned int & newBlurPassCount, const unsigned int & newTextureID, const unsigned int & newTextureWidth, const unsigned int & newTextureHeight);
 
 	//	Default Gaussian Blur Renderer Module Destructor.
-	~GaussianBlurRendererModule();
+	~GaussianBlurModule();
 
 	//	Render the Gaussian Blur.
 	virtual void renderGaussianBlurModule();
@@ -55,13 +55,10 @@ private:
 	unsigned int vbFramebufferID;
 	unsigned int hbFramebufferID;
 
+	unsigned int textureID;
 
-	//	Input Textures for Copying in.
-	unsigned int inputTextureID;
+	//	Input and Output Textures for Copying Out.
 	unsigned int inputDepthTexture;
-
-	//	Output Textures for Copying Out.
-	unsigned int outputTextureID;
 	unsigned int outputDepthTexture;
 
 	//	Color Texture and Depth Texture One.	

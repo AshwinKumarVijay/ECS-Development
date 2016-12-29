@@ -1,14 +1,12 @@
-#include "GaussianBlurRendererModule.h"
+#include "GaussianBlurModule.h"
 
 
 //	Default Gaussian Blur Framebuffer ID Constructor.
-GaussianBlurRendererModule::GaussianBlurRendererModule(std::shared_ptr<Renderer> newModuleRenderer, const unsigned int & newBlurPassCount, const unsigned int & newInputTexture, const unsigned int & newOutputTexture, const unsigned int & newTextureWidth, const unsigned int & newTextureHeight)
+GaussianBlurModule::GaussianBlurModule(std::shared_ptr<Renderer> newModuleRenderer, const unsigned int & newBlurPassCount, const unsigned int & newTextureID, const unsigned int & newTextureWidth, const unsigned int & newTextureHeight)
 	:RendererModule(newModuleRenderer)
 {
 	//	The Input Texture ID and Output Texture ID.
-	inputTextureID = newInputTexture;
-	outputTextureID = newOutputTexture;
-
+	textureID = newTextureID;
 
 	//	The Texture Width and Texture Height.
 	textureWidth = newTextureWidth;
@@ -28,13 +26,13 @@ GaussianBlurRendererModule::GaussianBlurRendererModule(std::shared_ptr<Renderer>
 
 
 //	Default Gaussian Blur Framebuffer ID Destructor.
-GaussianBlurRendererModule::~GaussianBlurRendererModule()
+GaussianBlurModule::~GaussianBlurModule()
 {
 
 }
 
 //	Render the Gaussian Blur.
-void GaussianBlurRendererModule::renderGaussianBlurModule()
+void GaussianBlurModule::renderGaussianBlurModule()
 {
 	//	Activate the Copy Texture Program ID.
 	glUseProgram(copyTextureProgramID);
@@ -101,7 +99,7 @@ void GaussianBlurRendererModule::renderGaussianBlurModule()
 }
 
 //	Create the Gaussian Blur Textures.
-void GaussianBlurRendererModule::createGaussianBlurTextures()
+void GaussianBlurModule::createGaussianBlurTextures()
 {
 	
 
@@ -164,7 +162,7 @@ void GaussianBlurRendererModule::createGaussianBlurTextures()
 }
 
 //	Create the Gaussian Blur Framebuffers.
-void GaussianBlurRendererModule::createGaussianBlurFramebuffers()
+void GaussianBlurModule::createGaussianBlurFramebuffers()
 {
 	//	Generate and Bind the Framebuffers.
 	glGenFramebuffers(1, &inputFramebufferID);
@@ -229,7 +227,7 @@ void GaussianBlurRendererModule::createGaussianBlurFramebuffers()
 	glBindFramebuffer(GL_FRAMEBUFFER, outputFramebufferID);
 
 	//	Bind the Appropriate Color and Depth Textures.
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, outputTextureID, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, outputDepthTexture, 0);
 
 	//	Set the Ouput Draw Buffers.
@@ -243,7 +241,7 @@ void GaussianBlurRendererModule::createGaussianBlurFramebuffers()
 
 
 //	Upload the Gaussian Blur Textures.
-void GaussianBlurRendererModule::uploadGaussianBlurTextures(const GLuint & colorTexture, const GLuint & depthTexture)
+void GaussianBlurModule::uploadGaussianBlurTextures(const GLuint & colorTexture, const GLuint & depthTexture)
 {
 	//	The Active Texture.
 	glActiveTexture(GL_TEXTURE0 + 35);

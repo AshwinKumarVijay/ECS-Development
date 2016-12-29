@@ -81,13 +81,13 @@
     <ClCompile Include="Renderers\RendererModules\RendererModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.cpp" />
-    <ClCompile Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurRendererModule.cpp" />
     <ClCompile Include="Renderers\ModuleRenderer\ModuleRenderer.cpp" />
     <ClCompile Include="Renderers\RendererModules\LightsModule\LightsModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\GBufferModule\GBufferModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\ShadowsModule\ShadowsModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\DPassLightingModule\DPassLightingModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\FPassLightingModule\FPassLightingModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -177,15 +177,15 @@
     <ClInclude Include="Renderers\RendererModules\RendererModule.h" />
     <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.h" />
     <ClInclude Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.h" />
-    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurRendererModule.h" />
     <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AOBS.h" />
-    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurShaderSource.h" />
     <ClInclude Include="Renderers\ModuleRenderer\ModuleRenderer.h" />
     <ClInclude Include="Renderers\RendererModules\LightsModule\LightsModule.h" />
     <ClInclude Include="Renderers\RendererModules\GBufferModule\GBufferModule.h" />
     <ClInclude Include="Renderers\RendererModules\ShadowsModule\ShadowsModule.h" />
     <ClInclude Include="Renderers\RendererModules\DPassLightingModule\DPassLightingModule.h" />
     <ClInclude Include="Renderers\RendererModules\FPassLightingModule\FPassLightingModule.h" />
+    <ClInclude Include="Renderers\Renderer\SceneMetaData.h" />
+    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurModule.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />

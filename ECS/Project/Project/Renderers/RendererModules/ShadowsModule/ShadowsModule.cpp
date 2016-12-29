@@ -12,3 +12,7 @@ ShadowsModule::~ShadowsModule()
 {
 
 }
+
+void ShadowsModule::renderShadowsModule()
+{
+}

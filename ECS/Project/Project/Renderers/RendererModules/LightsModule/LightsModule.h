@@ -66,15 +66,20 @@ public:
 private:
 
 	//	Create the Light Textures And Framebuffers.
-	virtual void createLightTexturesAndFramebuffers(LightModuleMetaData & newLightModuleMetaData);
+	virtual void createLightTexturesAndFramebuffers();
 
 	//	Map of the Name of the Light to the Module Meta Data.
-	std::map<std::string, LightModuleMetaData> mapNameToLightModuleMetaData;
+	std::map<std::string, unsigned int> mapNameToLightModuleMetaDataIndex;
 	
 	//	Screen Width and Screen Height being of the screen being to.
-	int screenWidth, screenHeight;
+	unsigned int screenWidth, screenHeight;
 
 	//	Size of the Shadow Map being rendered to.
-	int shadowMapSize;
+	unsigned int shadowMapSize;
+
+	//	The Maximum Number of Lights allowed in the Scene.
+	unsigned int maxLightCount;
+	unsigned int currentLightCount;
+	std::vector<LightModuleMetaData> lightModuleMetaDatas;
 };
 

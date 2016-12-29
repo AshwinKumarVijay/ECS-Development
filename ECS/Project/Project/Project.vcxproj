@@ -158,7 +158,7 @@
     <ClCompile Include="Renderers\RendererModules\GBufferModule\GBufferModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\LightsModule\LightsModule.cpp" />
     <ClCompile Include="Renderers\ModuleRenderer\ModuleRenderer.cpp" />
-    <ClCompile Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurRendererModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.cpp" />
     <ClCompile Include="Components\SpeedComponent\SpeedComponent.cpp" />
@@ -241,13 +241,12 @@
     <ClInclude Include="Renderers\RendererModules\LightsModule\LightsModule.h" />
     <ClInclude Include="Renderers\ModuleRenderer\ModuleRenderer.h" />
     <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AOBS.h" />
-    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurRendererModule.h" />
+    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurModule.h" />
     <ClInclude Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.h" />
     <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.h" />
     <ClInclude Include="Components\SpeedComponent\SpeedComponent.h" />
     <ClInclude Include="Components\SelectionComponent\SelectionComponent.h" />
     <ClInclude Include="Components\MovementResponseComponent\MovementResponseComponent.h" />
-    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurShaderSource.h" />
     <ClInclude Include="Renderers\RendererModules\RendererModule.h" />
     <ClInclude Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.h" />
     <ClInclude Include="Renderers\RenderableManager\RenderableManager.h" />
